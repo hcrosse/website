@@ -21,7 +21,7 @@ const { title, description = 'Personal website' } = Astro.props;
   </head>
   <body>
     <div class="max-w-2xl mx-auto px-6">
-      <div class="pt-8 pb-2 text-sm">
+      <div class="pt-8 text-sm">
         <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ eza</span></p>
         <p><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>{"  "}<a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a>{"  "}<a href="/contact" class="text-terminal-yellow hover:text-terminal-green transition-colors">contact.yaml</a>{"  "}<a href="/colophon" class="text-terminal-yellow hover:text-terminal-green transition-colors">colophon.md</a>{"  "}<a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a></p>
       </div>
@@ -29,7 +29,7 @@ const { title, description = 'Personal website' } = Astro.props;
       <main class="pt-8 pb-8">
         <slot />
 
-        <div class="mt-12 text-sm">
+        <div class="mt-8 text-sm">
           <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ </span><span class="cursor-blink text-terminal-bright">&#x258F;</span>
         </div>
       </main>
