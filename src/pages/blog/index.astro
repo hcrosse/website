@@ -42,8 +42,8 @@ const maxSizeLen = Math.max(...sizeStrings.map((s) => s.length));
 
 <BaseLayout title="Blog">
   <div class="text-sm space-y-0.5">
-    <p><span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ cd blog</span></p>
-    <p><span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~/blog $ eza -lr -s date -t created</span></p>
+    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ cd </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog</a></p>
+    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~/blog $ eza -lr -s date -t created</span></p>
   </div>
   <div class="text-sm">
     <ul class="space-y-0.5">
@@ -51,7 +51,7 @@ const maxSizeLen = Math.max(...sizeStrings.map((s) => s.length));
         <li>
           <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
             <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{sizeStrings[i].padStart(maxSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
-            <span class="text-terminal-text group-hover:text-terminal-green transition-colors truncate">{post.data.title}</span>
+            <span class="text-terminal-text group-hover:text-terminal-green transition-colors truncate">{post.data.title.includes(' ') ? `'${post.data.title}'` : post.data.title}</span>
           </a>
         </li>
       ))}

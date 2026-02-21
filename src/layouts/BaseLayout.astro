@@ -23,14 +23,14 @@ const { title, description = 'Personal website' } = Astro.props;
     <div class="max-w-2xl mx-auto px-6">
       <div class="pt-8 pb-4 text-sm">
         <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ eza</span></p>
-        <p><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a>{"  "}<a href="/contact" class="text-terminal-text hover:text-terminal-green transition-colors">contact.yaml</a>{"  "}<a href="/colophon" class="text-terminal-text hover:text-terminal-green transition-colors">colophon.md</a>{"  "}<a href="/work" class="text-terminal-text hover:text-terminal-green transition-colors">work.md</a></p>
+        <p><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>{"  "}<a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a>{"  "}<a href="/contact" class="text-terminal-yellow hover:text-terminal-green transition-colors">contact.yaml</a>{"  "}<a href="/colophon" class="text-terminal-yellow hover:text-terminal-green transition-colors">colophon.md</a>{"  "}<a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a></p>
       </div>
 
       <main class="py-8">
         <slot />
 
         <div class="mt-16 text-sm">
-          <span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ </span><span class="cursor-blink text-terminal-bright">&#x258F;</span>
+          <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ </span><span class="cursor-blink text-terminal-bright">&#x258F;</span>
         </div>
       </main>
     </div>

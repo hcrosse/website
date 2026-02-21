@@ -35,6 +35,9 @@ function formatDate(date: Date): string {
 const blogSizeStrings = posts.map((p) => formatSize(blogSizes.get(p.id) ?? 0));
 const maxBlogSizeLen = Math.max(...blogSizeStrings.map((s) => s.length));
 
+const aboutRaw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/about.md'), 'utf-8');
+const aboutLines = aboutRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
+
 const workRaw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
 const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').slice(0, 6);
 ---
@@ -45,25 +48,27 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
     {/* about */}
     <section>
       <div class="mb-3 text-sm">
-        <span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ cat about.md</span>
+        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ cat </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>
       </div>
-      <p class="leading-relaxed">
-        Hey, I'm Harrison. I'm a software engineer who likes building things.
-        Welcome to my corner of the internet.
-      </p>
+      <div class="leading-relaxed">
+        {aboutLines.map((line) => {
+          if (line.trim() === '') return <p>&nbsp;</p>;
+          return <p>{line}</p>;
+        })}
+      </div>
     </section>
 
     {/* blog */}
     <section>
       <div class="mb-3 text-sm">
-        <span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ eza -lr -s date -t created </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a><span class="text-terminal-bright"> | head -3</span>
+        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ eza -lr -s date -t created </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a><span class="text-terminal-bright"> | head -3</span>
       </div>
       <ul class="space-y-0.5 text-sm">
         {posts.map((post, i) => (
           <li>
             <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
               <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{blogSizeStrings[i].padStart(maxBlogSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
-              <span class="text-terminal-text group-hover:text-terminal-green transition-colors truncate">{post.data.title}</span>
+              <span class="text-terminal-text group-hover:text-terminal-green transition-colors truncate">{post.data.title.includes(' ') ? `'${post.data.title}'` : post.data.title}</span>
             </a>
           </li>
         ))}
@@ -73,7 +78,7 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
     {/* work */}
     <section>
       <div class="mb-3 text-sm">
-        <span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ head -6 </span><a href="/work" class="text-terminal-text hover:text-terminal-green transition-colors">work.md</a>
+        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ head -6 </span><a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a>
       </div>
       <div class="text-sm">
         {workLines.map((line) => {
@@ -91,7 +96,7 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
     {/* contact */}
     <section>
       <div class="mb-3 text-sm">
-        <span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ bat </span><a href="/contact" class="text-terminal-text hover:text-terminal-green transition-colors">contact.yaml</a>
+        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ bat </span><a href="/contact" class="text-terminal-yellow hover:text-terminal-green transition-colors">contact.yaml</a>
       </div>
       <ul class="space-y-0.5 text-sm">
         <li class="flex"><span class="text-terminal-blue w-[10ch]">github:</span><a href="https://github.com/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">https://github.com/hcrosse</a></li>

@@ -3,13 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const raw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
+const raw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/about.md'), 'utf-8');
 const lines = raw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
 ---
 
-<BaseLayout title="Work">
+<BaseLayout title="About">
   <div class="text-sm">
-    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ bat </span><a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a></p>
+    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ bat </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a></p>
   </div>
   <div class="text-sm mt-2">
     {lines.map((line) => {
