@@ -1,25 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import fs from 'node:fs';
-import path from 'node:path';
+import { getEntry, render } from 'astro:content';
 
-const raw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/about.md'), 'utf-8');
-const lines = raw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
+const page = await getEntry('pages', 'about');
+const { Content } = await render(page);
 ---
 
 <BaseLayout title="About">
   <div class="text-sm">
     <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ glow </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a></p>
   </div>
-  <div class="text-sm mt-2">
-    {lines.map((line) => {
-      if (line.startsWith('## ')) {
-        return <p><span class="text-terminal-yellow">##</span><span class="text-terminal-bright font-bold">{line.slice(2)}</span></p>;
-      }
-      if (line.trim() === '') {
-        return <p>&nbsp;</p>;
-      }
-      return <p>{line}</p>;
-    })}
+  <div class="prose prose-glow max-w-none mt-2 text-sm">
+    <Content />
   </div>
 </BaseLayout>

@@ -1,52 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import fs from 'node:fs';
-import path from 'node:path';
+import { getEntry, render } from 'astro:content';
 
-const year = new Date().getFullYear();
-const raw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/colophon.md'), 'utf-8');
-const lines = raw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
-
-// Replace {year} placeholder
-const processed = lines.map((l) => l.replace('{year}', String(year)));
-
-// Convert markdown links to rendered clickable links
-function renderLinks(text: string): string {
-  return text.replace(
-    /\[([^\]]+)\]\(([^)]+)\)/g,
-    '<a href="$2" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">$1</a>'
-  );
-}
-
-// Detect color swatch lines: "Name #hexcode"
-const colorRe = /^(\w+)\s+(#[0-9a-fA-F]{6})$/;
+const page = await getEntry('pages', 'colophon');
+const { Content } = await render(page);
 ---
 
 <BaseLayout title="Colophon">
   <div class="text-sm">
     <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ glow </span><a href="/colophon" class="text-terminal-yellow hover:text-terminal-green transition-colors">colophon.md</a></p>
   </div>
-  <div class="text-sm mt-2">
-    {processed.map((line) => {
-      if (line.startsWith('## ')) {
-        return <p class="text-terminal-blue font-bold">{line}</p>;
-      }
-      if (line.trim() === '') {
-        return <p>&nbsp;</p>;
-      }
-      const colorMatch = line.match(colorRe);
-      if (colorMatch) {
-        const [, name, hex] = colorMatch;
-        const needsBorder = ['#1e1e2e', '#313244', '#45475a'].includes(hex);
-        return (
-          <p>
-            <span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style={`background:${hex}${needsBorder ? ';border:1px solid #585b70' : ''}`}></span>
-            <span class="text-terminal-dim">{name}</span> <span class="text-terminal-text">{hex}</span>
-          </p>
-        );
-      }
-      const displayed = line.startsWith('- ') ? '• ' + line.slice(2) : line;
-      return <p set:html={renderLinks(displayed)} />;
-    })}
+  <div class="prose prose-glow max-w-none mt-2 text-sm">
+    <Content />
   </div>
 </BaseLayout>
