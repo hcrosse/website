@@ -7,32 +7,6 @@ interface Props {
 }
 
 const { title, description = 'Personal website' } = Astro.props;
-const year = new Date().getFullYear();
-const pathname = Astro.url.pathname;
-
-// Derive terminal path from route
-function getTerminalPath(path: string): string {
-  if (path === '/' || path === '') return '~';
-  const clean = path.replace(/\/$/, '');
-  return '~' + clean;
-}
-
-// Determine which top-level route we're on
-function getActiveRoute(path: string): string {
-  if (path === '/' || path === '') return '/';
-  const segment = '/' + path.replace(/^\//, '').split('/')[0];
-  return segment;
-}
-
-const terminalPath = getTerminalPath(pathname);
-const activeRoute = getActiveRoute(pathname);
-
-const navLinks = [
-  { href: '/', label: 'home' },
-  { href: '/blog', label: 'blog' },
-  { href: '/work', label: 'work' },
-  { href: '/contact', label: 'contact' },
-];
 ---
 
 <html lang="en">
@@ -45,30 +19,20 @@ const navLinks = [
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <nav class="sticky top-0 z-50 border-b border-terminal-border bg-terminal-bg/90 backdrop-blur-sm px-6 py-3">
-      <div class="max-w-2xl mx-auto flex items-center justify-between text-sm">
-        <span class="font-bold"><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> {terminalPath} $</span></span>
-        <div class="flex gap-1">
-          {navLinks
-            .filter((link) => link.href !== activeRoute)
-            .map((link) => (
-              <a href={link.href} class="text-terminal-dim hover:text-terminal-bright transition-colors">[{link.label}]</a>
-            ))
-          }
-        </div>
+  <body>
+    <div class="max-w-2xl mx-auto px-6">
+      <div class="pt-8 pb-4 text-sm">
+        <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ eza</span></p>
+        <p><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a>{"  "}<a href="/contact" class="text-terminal-text hover:text-terminal-green transition-colors">contact.yaml</a>{"  "}<a href="/colophon" class="text-terminal-text hover:text-terminal-green transition-colors">colophon.md</a>{"  "}<a href="/work" class="text-terminal-text hover:text-terminal-green transition-colors">work.md</a></p>
       </div>
-    </nav>
-    <main class="flex-1 w-full px-6 py-12">
-      <div class="max-w-2xl mx-auto">
+
+      <main class="py-8">
         <slot />
-      </div>
-    </main>
-    <footer class="border-t border-terminal-border px-6 py-4">
-      <div class="max-w-2xl mx-auto flex flex-col sm:flex-row sm:justify-between gap-2 text-xs text-terminal-dim">
-        <span>Content licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="text-terminal-dim hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">CC BY-NC 4.0</a> &middot; &copy; {year}</span>
-        <a href="/colophon" class="text-terminal-dim hover:text-terminal-green transition-colors">colophon</a>
-      </div>
-    </footer>
+
+        <div class="mt-16 text-sm">
+          <span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ </span><span class="cursor-blink text-terminal-bright">&#x258F;</span>
+        </div>
+      </main>
+    </div>
   </body>
 </html>

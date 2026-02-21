@@ -3,11 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Colophon">
-  <div class="mb-3">
-    <span class="text-terminal-green">$</span>
-    <span class="text-terminal-bright ml-2">cat colophon.md</span>
+  <div class="text-sm mb-8">
+    <p><span class="text-terminal-green">crosse.dev</span><span class="text-terminal-bright"> ~ $ bat colophon.md</span></p>
   </div>
-  <hr class="border-terminal-border mb-8" />
 
   <div class="space-y-10">
 
@@ -16,7 +14,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p>
         Content on this site is released under the
         <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">Creative Commons BY-NC 4.0</a>
-        license, except where stated otherwise.
+        license, except where stated otherwise. &copy; {new Date().getFullYear()} Harrison Crosse.
       </p>
     </section>
 
