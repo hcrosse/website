@@ -24,7 +24,7 @@ Border #45475a
 
 - [Astro](https://astro.build)
 - [Tailwind CSS](https://tailwindcss.com)
-- Deployed on [GitHub Pages](https://pages.github.com)
+- Deployed on [Cloudflare Pages](https://pages.cloudflare.com)
 
 ## Source
 
