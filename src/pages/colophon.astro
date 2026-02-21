@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Colophon">
+  <div class="mb-3">
+    <span class="text-terminal-green">$</span>
+    <span class="text-terminal-bright ml-2">cat colophon.md</span>
+  </div>
+  <hr class="border-terminal-border mb-8" />
+
+  <div class="space-y-10">
+
+    <section>
+      <h2 class="text-terminal-bright font-bold mb-2">License</h2>
+      <p>
+        Content on this site is released under the
+        <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">Creative Commons BY-NC 4.0</a>
+        license, except where stated otherwise.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-terminal-bright font-bold mb-2">Typography</h2>
+      <p>
+        <span class="text-terminal-green">Berkeley Mono</span> by Neil Kummerfeld /
+        <a href="https://usgraphics.com" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">US Graphics</a>
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-terminal-bright font-bold mb-2">Colors</h2>
+      <ul class="space-y-1 text-sm">
+        <li><span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:#0a0e1a;border:1px solid #1f2937"></span><span class="text-terminal-dim">Background</span> <span class="text-terminal-text">#0a0e1a</span></li>
+        <li><span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:#111827;border:1px solid #1f2937"></span><span class="text-terminal-dim">Surface</span> <span class="text-terminal-text">#111827</span></li>
+        <li><span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:#d1d5db"></span><span class="text-terminal-dim">Text</span> <span class="text-terminal-text">#d1d5db</span></li>
+        <li><span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:#f3f4f6"></span><span class="text-terminal-dim">Bright</span> <span class="text-terminal-text">#f3f4f6</span></li>
+        <li><span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:#4ade80"></span><span class="text-terminal-dim">Green</span> <span class="text-terminal-text">#4ade80</span></li>
+        <li><span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:#6b7280"></span><span class="text-terminal-dim">Dim</span> <span class="text-terminal-text">#6b7280</span></li>
+        <li><span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:#1f2937;border:1px solid #374151"></span><span class="text-terminal-dim">Border</span> <span class="text-terminal-text">#1f2937</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-terminal-bright font-bold mb-2">Built with</h2>
+      <ul class="space-y-1">
+        <li><a href="https://astro.build" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">Astro</a></li>
+        <li><a href="https://tailwindcss.com" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">Tailwind CSS</a></li>
+        <li>Deployed on <a href="https://pages.github.com" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">GitHub Pages</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-terminal-bright font-bold mb-2">Source</h2>
+      <p>
+        <a href="https://github.com/hcrosse/website" class="text-terminal-green hover:text-terminal-green-dim transition-colors" target="_blank" rel="noopener noreferrer">github.com/hcrosse/website</a>
+      </p>
+    </section>
+
+  </div>
+</BaseLayout>

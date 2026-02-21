@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Harrison Crosse">
+  <div class="space-y-16">
+
+    {/* about */}
+    <section>
+      <div class="mb-3">
+        <span class="text-terminal-green">$</span>
+        <span class="text-terminal-bright ml-2">cat about.md</span>
+      </div>
+      <hr class="border-terminal-border mb-4" />
+      <p class="leading-relaxed">
+        Hey, I'm Harrison. I'm a software engineer who likes building things.
+        Welcome to my corner of the internet.
+      </p>
+    </section>
+
+    {/* blog */}
+    <section>
+      <div class="mb-3">
+        <span class="text-terminal-green">$</span>
+        <span class="text-terminal-bright ml-2">tail -3 blog/</span>
+      </div>
+      <hr class="border-terminal-border mb-4" />
+      <ul class="space-y-3">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id}`} class="group flex items-baseline gap-3">
+              <time
+                class="text-terminal-dim text-sm shrink-0"
+                datetime={post.data.date.toISOString()}
+              >
+                {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              </time>
+              <span class="text-terminal-text group-hover:text-terminal-green transition-colors">
+                {post.data.title}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/blog" class="inline-block mt-4 text-sm text-terminal-dim hover:text-terminal-green transition-colors">
+        → view all posts
+      </a>
+    </section>
+
+    {/* work */}
+    <section id="work">
+      <div class="mb-3">
+        <span class="text-terminal-green">$</span>
+        <span class="text-terminal-bright ml-2">cat work.md</span>
+      </div>
+      <hr class="border-terminal-border mb-4" />
+      <p class="text-terminal-dim italic">
+        Work experience coming soon.
+      </p>
+    </section>
+
+    {/* contact */}
+    <section id="contact">
+      <div class="mb-3">
+        <span class="text-terminal-green">$</span>
+        <span class="text-terminal-bright ml-2">cat contact.info</span>
+      </div>
+      <hr class="border-terminal-border mb-4" />
+      <ul class="space-y-1">
+        <li>
+          <span class="text-terminal-dim">github</span>
+          <span class="text-terminal-dim mx-2">&rarr;</span>
+          <a href="https://github.com/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">hcrosse</a>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+</BaseLayout>
