@@ -41,6 +41,8 @@
   --color-terminal-green: #20c20e;
   --color-terminal-green-dim: #1a9e0b;
   --color-terminal-dim: #6c7086;
+  --color-terminal-yellow: #f9e2af;
+  --color-terminal-blue: #89b4fa;
   --color-terminal-border: #45475a;
   --font-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, "Liberation Mono", monospace;

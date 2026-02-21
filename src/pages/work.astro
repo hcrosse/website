@@ -1,32 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const raw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
+const body = raw.replace(/^---[\s\S]*?---\n/, '').trim();
 ---
 
 <BaseLayout title="Work">
   <div class="text-sm space-y-0.5">
     <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ cat work.md</span></p>
   </div>
-  <div class="text-sm mt-2 space-y-4">
-    <div>
-      <p class="text-terminal-bright">## Docker</p>
-      <p>Senior Software Engineer | 2025 &ndash; Present</p>
-    </div>
-    <div>
-      <p class="text-terminal-bright">## Calendly</p>
-      <p>Senior Data Engineer | 2024 &ndash; 2024</p>
-      <p>Data Engineer | 2022 &ndash; 2024</p>
-    </div>
-    <div>
-      <p class="text-terminal-bright">## Amobee</p>
-      <p>Software Engineer, Data Systems | 2021 &ndash; 2022</p>
-    </div>
-    <div>
-      <p class="text-terminal-bright">## Sayari Labs</p>
-      <p>Data Engineer | 2020 &ndash; 2021</p>
-    </div>
-    <div>
-      <p class="text-terminal-bright">## Booz Allen Hamilton</p>
-      <p>Data Scientist | 2019 &ndash; 2020</p>
-    </div>
-  </div>
+  <pre class="text-sm mt-2 whitespace-pre-wrap">{body}</pre>
 </BaseLayout>

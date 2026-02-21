@@ -1,10 +1,43 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
+
+// Blog file sizes
+const blogSizes = new Map<string, number>();
+for (const post of posts) {
+  try {
+    const stat = fs.statSync(path.join(process.cwd(), 'src/content/blog', `${post.id}.md`));
+    blogSizes.set(post.id, stat.size);
+  } catch {
+    blogSizes.set(post.id, 0);
+  }
+}
+
+function formatSize(bytes: number): string {
+  if (bytes >= 1024) return (bytes / 1024).toFixed(1) + 'k';
+  return bytes.toString();
+}
+
+function formatDate(date: Date): string {
+  const day = date.getDate().toString().padStart(2, ' ');
+  const month = date.toLocaleDateString('en-US', { month: 'short' });
+  const hours = date.getHours().toString().padStart(2, '0');
+  const mins = date.getMinutes().toString().padStart(2, '0');
+  return `${day} ${month} ${hours}:${mins}`;
+}
+
+const blogSizeStrings = posts.map((p) => formatSize(blogSizes.get(p.id) ?? 0));
+const maxBlogSizeLen = Math.max(...blogSizeStrings.map((s) => s.length));
+
+const workRaw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
+const workBody = workRaw.replace(/^---[\s\S]*?---\n/, '').trim();
+const workHead = workBody.split('\n').slice(0, 6).join('\n');
 ---
 
 <BaseLayout title="Harrison Crosse">
@@ -27,22 +60,15 @@ const posts = (await getCollection('blog'))
     <section>
       <div class="mb-3">
         <span class="text-terminal-green">$</span>
-        <span class="text-terminal-bright ml-2">tail -3 blog/</span>
+        <span class="text-terminal-bright ml-2">ls -lt blog/ | head -3</span>
       </div>
       <hr class="border-terminal-border mb-4" />
-      <ul class="space-y-3">
-        {posts.map((post) => (
+      <ul class="space-y-0.5 text-sm">
+        {posts.map((post, i) => (
           <li>
-            <a href={`/blog/${post.id}`} class="group flex items-baseline gap-3">
-              <time
-                class="text-terminal-dim text-sm shrink-0"
-                datetime={post.data.date.toISOString()}
-              >
-                {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-              </time>
-              <span class="text-terminal-text group-hover:text-terminal-green transition-colors">
-                {post.data.title}
-              </span>
+            <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
+              <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{blogSizeStrings[i].padStart(maxBlogSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
+              <span class="text-terminal-text group-hover:text-terminal-green transition-colors truncate">{post.data.title}</span>
             </a>
           </li>
         ))}
@@ -56,32 +82,13 @@ const posts = (await getCollection('blog'))
     <section>
       <div class="mb-3">
         <span class="text-terminal-green">$</span>
-        <span class="text-terminal-bright ml-2">cat work.md</span>
+        <span class="text-terminal-bright ml-2">head -6 work.md</span>
       </div>
       <hr class="border-terminal-border mb-4" />
-      <div class="text-sm space-y-4">
-        <div>
-          <p class="text-terminal-bright">## Docker</p>
-          <p>Senior Software Engineer | 2025 &ndash; Present</p>
-        </div>
-        <div>
-          <p class="text-terminal-bright">## Calendly</p>
-          <p>Senior Data Engineer | 2024 &ndash; 2024</p>
-          <p>Data Engineer | 2022 &ndash; 2024</p>
-        </div>
-        <div>
-          <p class="text-terminal-bright">## Amobee</p>
-          <p>Software Engineer, Data Systems | 2021 &ndash; 2022</p>
-        </div>
-        <div>
-          <p class="text-terminal-bright">## Sayari Labs</p>
-          <p>Data Engineer | 2020 &ndash; 2021</p>
-        </div>
-        <div>
-          <p class="text-terminal-bright">## Booz Allen Hamilton</p>
-          <p>Data Scientist | 2019 &ndash; 2020</p>
-        </div>
-      </div>
+      <pre class="text-sm whitespace-pre-wrap">{workHead}</pre>
+      <a href="/work" class="inline-block mt-4 text-sm text-terminal-dim hover:text-terminal-green transition-colors">
+        → view all
+      </a>
     </section>
 
     {/* contact */}
