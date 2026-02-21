@@ -83,7 +83,7 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
       <div class="text-sm">
         {workLines.map((line) => {
           if (line.startsWith('## ')) {
-            return <p><span class="text-terminal-yellow">##</span><span class="text-terminal-bright font-bold">{line.slice(2)}</span></p>;
+            return <p class="text-terminal-blue font-bold">{line}</p>;
           }
           if (line.trim() === '') {
             return <p>&nbsp;</p>;

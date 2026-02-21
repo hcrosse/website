@@ -10,7 +10,7 @@ const lines = raw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
 // Replace {year} placeholder
 const processed = lines.map((l) => l.replace('{year}', String(year)));
 
-// Convert markdown links [text](url) to HTML
+// Convert markdown links to rendered clickable links
 function renderLinks(text: string): string {
   return text.replace(
     /\[([^\]]+)\]\(([^)]+)\)/g,
@@ -29,7 +29,7 @@ const colorRe = /^(\w+)\s+(#[0-9a-fA-F]{6})$/;
   <div class="text-sm mt-2">
     {processed.map((line) => {
       if (line.startsWith('## ')) {
-        return <p><span class="text-terminal-yellow">##</span><span class="text-terminal-bright font-bold">{line.slice(2)}</span></p>;
+        return <p class="text-terminal-blue font-bold">{line}</p>;
       }
       if (line.trim() === '') {
         return <p>&nbsp;</p>;
@@ -45,8 +45,8 @@ const colorRe = /^(\w+)\s+(#[0-9a-fA-F]{6})$/;
           </p>
         );
       }
-      const stripped = line.startsWith('- ') ? line.slice(2) : line;
-      return <p set:html={renderLinks(stripped)} />;
+      const displayed = line.startsWith('- ') ? '• ' + line.slice(2) : line;
+      return <p set:html={renderLinks(displayed)} />;
     })}
   </div>
 </BaseLayout>
