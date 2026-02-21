@@ -90,12 +90,12 @@ body {
 
 .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-terminal-lavender) 40%, transparent);
-  transition: border-color 0.15s;
+  border-bottom: none;
+  transition: color 0.15s;
 }
 
 .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):hover {
-  border-bottom-color: var(--color-terminal-lavender);
+  color: var(--color-terminal-blue);
 }
 
 .prose :where(h1)::before { content: "# "; }
