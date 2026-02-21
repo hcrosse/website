@@ -36,8 +36,7 @@ const blogSizeStrings = posts.map((p) => formatSize(blogSizes.get(p.id) ?? 0));
 const maxBlogSizeLen = Math.max(...blogSizeStrings.map((s) => s.length));
 
 const workRaw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
-const workBody = workRaw.replace(/^---[\s\S]*?---\n/, '').trim();
-const workHead = workBody.split('\n').slice(0, 6).join('\n');
+const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').slice(0, 6);
 ---
 
 <BaseLayout title="Harrison Crosse">
@@ -85,7 +84,17 @@ const workHead = workBody.split('\n').slice(0, 6).join('\n');
         <span class="text-terminal-bright ml-2">head -6 work.md</span>
       </div>
       <hr class="border-terminal-border mb-4" />
-      <pre class="text-sm whitespace-pre-wrap">{workHead}</pre>
+      <div class="text-sm">
+        {workLines.map((line) => {
+          if (line.startsWith('## ')) {
+            return <p><span class="text-terminal-yellow">##</span><span class="text-terminal-bright font-bold">{line.slice(2)}</span></p>;
+          }
+          if (line.trim() === '') {
+            return <p>&nbsp;</p>;
+          }
+          return <p>{line}</p>;
+        })}
+      </div>
       <a href="/work" class="inline-block mt-4 text-sm text-terminal-dim hover:text-terminal-green transition-colors">
         → view all
       </a>

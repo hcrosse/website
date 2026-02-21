@@ -4,12 +4,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const raw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
-const body = raw.replace(/^---[\s\S]*?---\n/, '').trim();
+const lines = raw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
 ---
 
 <BaseLayout title="Work">
   <div class="text-sm space-y-0.5">
-    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ cat work.md</span></p>
+    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ bat work.md</span></p>
   </div>
-  <pre class="text-sm mt-2 whitespace-pre-wrap">{body}</pre>
+  <div class="text-sm mt-2">
+    {lines.map((line) => {
+      if (line.startsWith('## ')) {
+        return <p><span class="text-terminal-yellow">##</span><span class="text-terminal-bright font-bold">{line.slice(2)}</span></p>;
+      }
+      if (line.trim() === '') {
+        return <p>&nbsp;</p>;
+      }
+      return <p>{line}</p>;
+    })}
+  </div>
 </BaseLayout>
