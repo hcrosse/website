@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -35,11 +35,16 @@ function formatDate(date: Date): string {
 const blogSizeStrings = posts.map((p) => formatSize(blogSizes.get(p.id) ?? 0));
 const maxBlogSizeLen = Math.max(...blogSizeStrings.map((s) => s.length));
 
-const aboutRaw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/about.md'), 'utf-8');
-const aboutLines = aboutRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
+const aboutPage = await getEntry('pages', 'about');
+const { Content: AboutContent } = await render(aboutPage);
 
 const workRaw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
-const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').slice(0, 6);
+const workAll = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
+const workLines = workAll.filter((line, i) => {
+  if (line.trim() !== '') return true;
+  const next = workAll[i + 1];
+  return next && next.startsWith('## ');
+}).slice(0, 6);
 ---
 
 <BaseLayout title="Harrison Crosse">
@@ -50,11 +55,8 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
       <div class="mb-2 text-sm">
         <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ glow </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>
       </div>
-      <div class="text-sm">
-        {aboutLines.map((line) => {
-          if (line.trim() === '') return <p>&nbsp;</p>;
-          return <p>{line}</p>;
-        })}
+      <div class="prose prose-glow max-w-none text-sm">
+        <AboutContent />
       </div>
     </section>
 
