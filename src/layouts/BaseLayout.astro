@@ -8,6 +8,31 @@ interface Props {
 
 const { title, description = 'Personal website' } = Astro.props;
 const year = new Date().getFullYear();
+const pathname = Astro.url.pathname;
+
+// Derive terminal path from route
+function getTerminalPath(path: string): string {
+  if (path === '/' || path === '') return '~';
+  const clean = path.replace(/\/$/, '');
+  return '~' + clean;
+}
+
+// Determine which top-level route we're on
+function getActiveRoute(path: string): string {
+  if (path === '/' || path === '') return '/';
+  const segment = '/' + path.replace(/^\//, '').split('/')[0];
+  return segment;
+}
+
+const terminalPath = getTerminalPath(pathname);
+const activeRoute = getActiveRoute(pathname);
+
+const navLinks = [
+  { href: '/', label: 'home' },
+  { href: '/blog', label: 'blog' },
+  { href: '/work', label: 'work' },
+  { href: '/contact', label: 'contact' },
+];
 ---
 
 <html lang="en">
@@ -22,13 +47,15 @@ const year = new Date().getFullYear();
   </head>
   <body class="min-h-screen flex flex-col">
     <nav class="sticky top-0 z-50 border-b border-terminal-border bg-terminal-bg/90 backdrop-blur-sm px-6 py-3">
-      <div class="max-w-2xl mx-auto flex items-center gap-1 text-sm">
-        <span class="text-terminal-green font-bold">visitor@crosse.dev:~$</span>
-        <div class="flex gap-1 ml-2">
-          <a href="/" class="text-terminal-dim hover:text-terminal-bright transition-colors">[home]</a>
-          <a href="/blog" class="text-terminal-dim hover:text-terminal-bright transition-colors">[blog]</a>
-          <a href="/#work" class="text-terminal-dim hover:text-terminal-bright transition-colors">[work]</a>
-          <a href="/#contact" class="text-terminal-dim hover:text-terminal-bright transition-colors">[contact]</a>
+      <div class="max-w-2xl mx-auto flex items-center justify-between text-sm">
+        <span class="font-bold"><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> {terminalPath} $</span></span>
+        <div class="flex gap-1">
+          {navLinks
+            .filter((link) => link.href !== activeRoute)
+            .map((link) => (
+              <a href={link.href} class="text-terminal-dim hover:text-terminal-bright transition-colors">[{link.label}]</a>
+            ))
+          }
         </div>
       </div>
     </nav>
