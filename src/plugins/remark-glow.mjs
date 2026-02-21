@@ -11,6 +11,18 @@ export default function remarkGlow() {
       }
     });
 
+    visit(tree, 'heading', (node, index, parent) => {
+      const prefix = '#'.repeat(node.depth) + ' ';
+      parent.children[index] = {
+        type: 'paragraph',
+        data: { hProperties: { className: ['glow-heading'] } },
+        children: [
+          { type: 'text', value: prefix },
+          ...node.children,
+        ],
+      };
+    });
+
     visit(tree, 'list', (node) => {
       const isColorList = node.children.every((item) => {
         if (item.type !== 'listItem') return false;

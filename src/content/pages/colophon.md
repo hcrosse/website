@@ -12,13 +12,10 @@ Content on this site is released under the [Creative Commons BY-NC 4.0](https://
 
 ## Colors
 
-Base #1e1e2e
-Surface #313244
-Text #cdd6f4
-Subtext #bac2de
-Green #20c20e
-Overlay #6c7086
-Border #45475a
+[Catppuccin Mocha](https://catppuccin.com) with custom greens:
+
+- Green `#20c20e`
+- Green Dim `#1a9e0b`
 
 ## Built with
 
