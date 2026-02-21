@@ -7,6 +7,7 @@ Senior Software Engineer | 2025 – Present
 
 ## Calendly
 Senior Data Engineer | 2024 – 2024
+
 Data Engineer | 2022 – 2024
 
 ## Amobee
