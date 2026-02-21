@@ -12,10 +12,7 @@ Content on this site is released under the [Creative Commons BY-NC 4.0](https://
 
 ## Colors
 
-[Catppuccin Mocha](https://catppuccin.com) with custom greens:
-
-- Green `#20c20e`
-- Green Dim `#1a9e0b`
+[Catppuccin Mocha](https://catppuccin.com)
 
 ## Built with
 

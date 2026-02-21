@@ -38,8 +38,8 @@
   --color-terminal-surface: #313244;
   --color-terminal-text: #cdd6f4;
   --color-terminal-bright: #bac2de;
-  --color-terminal-green: #20c20e;
-  --color-terminal-green-dim: #1a9e0b;
+  --color-terminal-green: #a6e3a1;
+  --color-terminal-green-dim: #81c784;
   --color-terminal-dim: #6c7086;
   --color-terminal-yellow: #f9e2af;
   --color-terminal-blue: #89b4fa;
@@ -57,7 +57,7 @@ html {
 body {
   background-color: var(--color-terminal-bg);
   background-image: radial-gradient(
-    rgba(32, 194, 14, 0.15) 1px,
+    rgba(166, 227, 161, 0.15) 1px,
     transparent 1px
   );
   background-size: 24px 24px;
