@@ -59,9 +59,29 @@ const posts = (await getCollection('blog'))
         <span class="text-terminal-bright ml-2">cat work.md</span>
       </div>
       <hr class="border-terminal-border mb-4" />
-      <p class="text-terminal-dim italic">
-        Coming soon.
-      </p>
+      <div class="text-sm space-y-4">
+        <div>
+          <p class="text-terminal-bright">## Docker</p>
+          <p>Senior Software Engineer | 2025 &ndash; Present</p>
+        </div>
+        <div>
+          <p class="text-terminal-bright">## Calendly</p>
+          <p>Senior Data Engineer | 2024 &ndash; 2024</p>
+          <p>Data Engineer | 2022 &ndash; 2024</p>
+        </div>
+        <div>
+          <p class="text-terminal-bright">## Amobee</p>
+          <p>Software Engineer, Data Systems | 2021 &ndash; 2022</p>
+        </div>
+        <div>
+          <p class="text-terminal-bright">## Sayari Labs</p>
+          <p>Data Engineer | 2020 &ndash; 2021</p>
+        </div>
+        <div>
+          <p class="text-terminal-bright">## Booz Allen Hamilton</p>
+          <p>Data Scientist | 2019 &ndash; 2020</p>
+        </div>
+      </div>
     </section>
 
     {/* contact */}
@@ -71,17 +91,9 @@ const posts = (await getCollection('blog'))
         <span class="text-terminal-bright ml-2">cat contact.info</span>
       </div>
       <hr class="border-terminal-border mb-4" />
-      <ul class="space-y-1">
-        <li>
-          <span class="text-terminal-dim">github</span>
-          <span class="text-terminal-dim mx-2">&rarr;</span>
-          <a href="https://github.com/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">hcrosse</a>
-        </li>
-        <li>
-          <span class="text-terminal-dim">linkedin</span>
-          <span class="text-terminal-dim mx-2">&rarr;</span>
-          <a href="https://linkedin.com/in/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">hcrosse</a>
-        </li>
+      <ul class="space-y-0.5 text-sm">
+        <li class="flex"><span class="text-terminal-dim w-[10ch]">github:</span><a href="https://github.com/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">https://github.com/hcrosse</a></li>
+        <li class="flex"><span class="text-terminal-dim w-[10ch]">linkedin:</span><a href="https://linkedin.com/in/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">https://linkedin.com/in/hcrosse</a></li>
       </ul>
     </section>
 
