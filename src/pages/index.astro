@@ -59,7 +59,7 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
     <section>
       <div class="mb-3">
         <span class="text-terminal-green">$</span>
-        <span class="text-terminal-bright ml-2">ls -lt blog/ | head -3</span>
+        <span class="text-terminal-bright ml-2">eza -lr -s date -t created blog/ | head -3</span>
       </div>
       <hr class="border-terminal-border mb-4" />
       <ul class="space-y-0.5 text-sm">
@@ -104,12 +104,12 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
     <section>
       <div class="mb-3">
         <span class="text-terminal-green">$</span>
-        <span class="text-terminal-bright ml-2">cat contact.info</span>
+        <span class="text-terminal-bright ml-2">bat contact.yaml</span>
       </div>
       <hr class="border-terminal-border mb-4" />
       <ul class="space-y-0.5 text-sm">
-        <li class="flex"><span class="text-terminal-dim w-[10ch]">github:</span><a href="https://github.com/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">https://github.com/hcrosse</a></li>
-        <li class="flex"><span class="text-terminal-dim w-[10ch]">linkedin:</span><a href="https://linkedin.com/in/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">https://linkedin.com/in/hcrosse</a></li>
+        <li class="flex"><span class="text-terminal-blue w-[10ch]">github:</span><a href="https://github.com/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">https://github.com/hcrosse</a></li>
+        <li class="flex"><span class="text-terminal-blue w-[10ch]">linkedin:</span><a href="https://linkedin.com/in/hcrosse" class="text-terminal-text hover:text-terminal-green transition-colors" target="_blank" rel="noopener noreferrer">https://linkedin.com/in/hcrosse</a></li>
       </ul>
     </section>
 
