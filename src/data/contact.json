@@ -1,0 +1,5 @@
+[
+  { "label": "email", "url": "mailto:harrison@crosse.dev", "text": "harrison@crosse.dev" },
+  { "label": "github", "url": "https://github.com/hcrosse", "text": "https://github.com/hcrosse", "external": true },
+  { "label": "linkedin", "url": "https://linkedin.com/in/hcrosse", "text": "https://linkedin.com/in/hcrosse", "external": true }
+]

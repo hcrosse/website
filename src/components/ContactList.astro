@@ -1,0 +1,12 @@
+---
+import contacts from '../data/contact.json';
+---
+
+<ul class="space-y-0.5">
+  {contacts.map((c) => (
+    <li class="flex">
+      <span class="text-terminal-blue w-[10ch]">{c.label}:</span>
+      <a href={c.url} class="text-terminal-text hover:text-terminal-green transition-colors" {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{c.text}</a>
+    </li>
+  ))}
+</ul>
