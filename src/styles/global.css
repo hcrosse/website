@@ -73,16 +73,16 @@ body {
 /* Prose overrides for dark terminal theme */
 .prose {
   --tw-prose-body: var(--color-terminal-text);
-  --tw-prose-headings: var(--color-terminal-bright);
-  --tw-prose-links: var(--color-terminal-green);
+  --tw-prose-headings: var(--color-terminal-blue);
+  --tw-prose-links: var(--color-terminal-lavender);
   --tw-prose-bold: var(--color-terminal-bright);
   --tw-prose-code: var(--color-terminal-green);
   --tw-prose-pre-bg: var(--color-terminal-surface);
   --tw-prose-pre-code: var(--color-terminal-text);
   --tw-prose-quotes: var(--color-terminal-dim);
   --tw-prose-quote-borders: var(--color-terminal-border);
-  --tw-prose-counters: var(--color-terminal-dim);
-  --tw-prose-bullets: var(--color-terminal-dim);
+  --tw-prose-counters: var(--color-terminal-green);
+  --tw-prose-bullets: var(--color-terminal-green);
   --tw-prose-hr: var(--color-terminal-border);
   --tw-prose-th-borders: var(--color-terminal-border);
   --tw-prose-td-borders: var(--color-terminal-border);
@@ -90,13 +90,17 @@ body {
 
 .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-terminal-green) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-terminal-lavender) 40%, transparent);
   transition: border-color 0.15s;
 }
 
 .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):hover {
-  border-bottom-color: var(--color-terminal-green);
+  border-bottom-color: var(--color-terminal-lavender);
 }
+
+.prose :where(h1)::before { content: "# "; }
+.prose :where(h2)::before { content: "## "; }
+.prose :where(h3)::before { content: "### "; }
 
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-family: var(--font-mono);

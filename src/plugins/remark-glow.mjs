@@ -4,24 +4,27 @@ const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 const DARK_COLORS = ['#1e1e2e', '#313244', '#45475a'];
 
 export default function remarkGlow() {
-  return (tree) => {
+  return (tree, file) => {
+    const isPage = file.history?.[0]?.includes('/content/pages/');
     visit(tree, 'text', (node) => {
       if (node.value.includes('{year}')) {
         node.value = node.value.replace(/\{year\}/g, String(new Date().getFullYear()));
       }
     });
 
-    visit(tree, 'heading', (node, index, parent) => {
-      const prefix = '#'.repeat(node.depth) + ' ';
-      parent.children[index] = {
-        type: 'paragraph',
-        data: { hProperties: { className: ['glow-heading'] } },
-        children: [
-          { type: 'text', value: prefix },
-          ...node.children,
-        ],
-      };
-    });
+    if (isPage) {
+      visit(tree, 'heading', (node, index, parent) => {
+        const prefix = '#'.repeat(node.depth) + ' ';
+        parent.children[index] = {
+          type: 'paragraph',
+          data: { hProperties: { className: ['glow-heading'] } },
+          children: [
+            { type: 'text', value: prefix },
+            ...node.children,
+          ],
+        };
+      });
+    }
 
     visit(tree, 'list', (node) => {
       const isColorList = node.children.every((item) => {
