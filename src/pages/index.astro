@@ -48,9 +48,9 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
     {/* about */}
     <section>
       <div class="mb-3 text-sm">
-        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ cat </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>
+        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ bat </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>
       </div>
-      <div class="leading-relaxed">
+      <div class="text-sm">
         {aboutLines.map((line) => {
           if (line.trim() === '') return <p>&nbsp;</p>;
           return <p>{line}</p>;
@@ -68,7 +68,7 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
           <li>
             <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
               <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{blogSizeStrings[i].padStart(maxBlogSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
-              <span class="text-terminal-text group-hover:text-terminal-green transition-colors truncate">{post.data.title.includes(' ') ? `'${post.data.title}'` : post.data.title}</span>
+              <span class="text-terminal-yellow group-hover:text-terminal-green transition-colors truncate">{post.id}.md</span>
             </a>
           </li>
         ))}
@@ -78,7 +78,7 @@ const workLines = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n').sl
     {/* work */}
     <section>
       <div class="mb-3 text-sm">
-        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ head -6 </span><a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a>
+        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ bat </span><a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a><span class="text-terminal-bright"> | head -6</span>
       </div>
       <div class="text-sm">
         {workLines.map((line) => {
