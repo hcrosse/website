@@ -5,12 +5,12 @@ import ContactList from '../components/ContactList.astro';
 ---
 
 <BaseLayout title="Contact">
-  <div class="text-sm">
+  <div>
     <p>
       <Prompt cmd="glow" file={{ href: '/contact', name: 'contact.yaml' }} />
     </p>
   </div>
-  <div class="text-sm mt-2">
+  <div class="mt-2">
     <ContactList />
   </div>
 </BaseLayout>

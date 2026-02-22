@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import fs from 'node:fs';
-import path from 'node:path';
 
 interface Props {
   limit?: number;
@@ -19,7 +18,7 @@ const sizes = new Map<string, number>();
 for (const post of posts) {
   try {
     const stat = fs.statSync(
-      path.join(process.cwd(), 'src/content/blog', `${post.id}.md`),
+      `${process.cwd()}/src/content/blog/${post.id}.md`,
     );
     sizes.set(post.id, stat.size);
   } catch {

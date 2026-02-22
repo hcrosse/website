@@ -1,0 +1,25 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Prompt from '../components/Prompt.astro';
+import { getEntry, render } from 'astro:content';
+
+interface Props {
+  page: 'about' | 'work' | 'colophon';
+  title: string;
+}
+
+const { page, title } = Astro.props;
+const entry = await getEntry('pages', page);
+const { Content } = await render(entry);
+const filename = `${page}.md`;
+---
+
+<BaseLayout title={title}>
+  <div>
+    <p><Prompt cmd="glow" file={{ href: `/${page}`, name: filename }} /></p>
+  </div>
+  <div class="prose prose-glow max-w-none mt-2">
+    <Content />
+    <slot />
+  </div>
+</BaseLayout>

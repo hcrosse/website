@@ -1,17 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Prompt from '../components/Prompt.astro';
-import { getEntry, render } from 'astro:content';
-
-const page = await getEntry('pages', 'work');
-const { Content } = await render(page);
+import GlowPage from '../layouts/GlowPage.astro';
 ---
 
-<BaseLayout title="Work">
-  <div class="text-sm">
-    <p><Prompt cmd="glow" file={{ href: '/work', name: 'work.md' }} /></p>
-  </div>
-  <div class="prose prose-glow max-w-none mt-2 text-sm">
-    <Content />
-  </div>
-</BaseLayout>
+<GlowPage page="work" title="Work" />

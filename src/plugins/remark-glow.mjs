@@ -1,7 +1,7 @@
 import { visit } from 'unist-util-visit';
+import { DARK_COLORS } from '../data/colors.js';
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
-const DARK_COLORS = ['#1e1e2e', '#313244', '#45475a'];
 
 export default function remarkGlow() {
   return (tree, file) => {

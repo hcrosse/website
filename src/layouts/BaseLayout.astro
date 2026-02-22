@@ -8,6 +8,14 @@ interface Props {
 }
 
 const { title, description = 'Personal website' } = Astro.props;
+
+const nav = [
+  { href: '/about', name: 'about.md' },
+  { href: '/blog', name: 'blog/', dir: true },
+  { href: '/contact', name: 'contact.yaml' },
+  { href: '/colophon', name: 'colophon.md' },
+  { href: '/work', name: 'work.md' },
+];
 ---
 
 <html lang="en">
@@ -22,37 +30,15 @@ const { title, description = 'Personal website' } = Astro.props;
   </head>
   <body>
     <div class="max-w-2xl mx-auto px-6">
-      <div class="pt-8 text-sm">
+      <div class="pt-8">
         <p><Prompt cmd="eza" /></p>
-        <p>
-          <a
-            href="/about"
-            class="text-terminal-yellow hover:text-terminal-green transition-colors"
-            >about.md</a
-          >{'  '}<a
-            href="/blog"
-            class="text-terminal-blue font-bold hover:text-terminal-green transition-colors"
-            >blog/</a
-          >{'  '}<a
-            href="/contact"
-            class="text-terminal-yellow hover:text-terminal-green transition-colors"
-            >contact.yaml</a
-          >{'  '}<a
-            href="/colophon"
-            class="text-terminal-yellow hover:text-terminal-green transition-colors"
-            >colophon.md</a
-          >{'  '}<a
-            href="/work"
-            class="text-terminal-yellow hover:text-terminal-green transition-colors"
-            >work.md</a
-          >
-        </p>
+        <p>{nav.map((item, i) => <>{i > 0 && '  '}<a href={item.href} class:list={['hover:text-terminal-green transition-colors', item.dir ? 'text-terminal-blue font-bold' : 'text-terminal-yellow']}>{item.name}</a></>)}</p>
       </div>
 
       <main class="pt-8 pb-8">
         <slot />
 
-        <div class="mt-8 text-sm">
+        <div class="mt-8">
           <Prompt cursor />
         </div>
       </main>

@@ -51,11 +51,9 @@
     'Liberation Mono', monospace;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   background-color: var(--color-terminal-bg);
   background-image: radial-gradient(
     rgba(166, 227, 161, 0.15) 1px,
@@ -77,6 +75,8 @@ body {
 
 /* Prose overrides for dark terminal theme */
 .prose {
+  font-size: inherit;
+  line-height: inherit;
   --tw-prose-body: var(--color-terminal-text);
   --tw-prose-headings: var(--color-terminal-blue);
   --tw-prose-links: var(--color-terminal-lavender);

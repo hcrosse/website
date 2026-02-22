@@ -5,11 +5,11 @@ import BlogListing from '../../components/BlogListing.astro';
 ---
 
 <BaseLayout title="Blog">
-  <div class="text-sm space-y-0.5">
+  <div class="space-y-0.5">
     <p><Prompt cmd="cd" dir={{ href: '/blog', name: 'blog' }} /></p>
     <p><Prompt cwd="~/blog" cmd="eza -lr -s date -t created" /></p>
   </div>
-  <div class="text-sm mt-2">
+  <div class="mt-2">
     <BlogListing />
   </div>
 </BaseLayout>

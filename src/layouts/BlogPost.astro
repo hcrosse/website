@@ -15,7 +15,7 @@ const slug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
 <BaseLayout title={title} description={description}>
   <article>
     <header class="mb-8">
-      <div class="text-sm space-y-0.5 mb-2">
+      <div class="space-y-0.5 mb-2">
         <p><Prompt cmd="cd" dir={{ href: '/blog', name: 'blog' }} /></p>
         <p>
           <Prompt
@@ -26,12 +26,9 @@ const slug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
         </p>
       </div>
     </header>
-    <div class="prose max-w-none text-sm">
+    <div class="prose max-w-none">
       <h1 class="!mb-1">{title}</h1>
-      <time
-        class="text-sm text-terminal-dim block"
-        datetime={date.toISOString()}
-      >
+      <time class="text-terminal-dim block" datetime={date.toISOString()}>
         {
           date.toLocaleDateString('en-US', {
             year: 'numeric',

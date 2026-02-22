@@ -7,3 +7,4 @@ bun.lock
 # Whitespace-sensitive inline HTML
 src/components/Prompt.astro
 src/components/BlogListing.astro
+src/layouts/BaseLayout.astro

@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getEntry, render } from 'astro:content';
 import fs from 'node:fs';
-import path from 'node:path';
 import ContactList from '../components/ContactList.astro';
 import BlogListing from '../components/BlogListing.astro';
 import Prompt from '../components/Prompt.astro';
@@ -11,7 +10,7 @@ const aboutPage = await getEntry('pages', 'about');
 const { Content: AboutContent } = await render(aboutPage);
 
 const workRaw = fs.readFileSync(
-  path.join(process.cwd(), 'src/content/pages/work.md'),
+  `${process.cwd()}/src/content/pages/work.md`,
   'utf-8',
 );
 const workAll = workRaw
@@ -31,38 +30,38 @@ const workLines = workAll
   <div class="space-y-8">
     {/* about */}
     <section>
-      <div class="text-sm">
+      <div>
         <Prompt cmd="glow" file={{ href: '/about', name: 'about.md' }} />
       </div>
-      <div class="prose prose-glow max-w-none mt-2 text-sm">
+      <div class="prose prose-glow max-w-none mt-2">
         <AboutContent />
       </div>
     </section>
 
     {/* blog */}
     <section>
-      <div class="text-sm">
+      <div>
         <Prompt
           cmd="eza -lr -s date -t created"
           dir={{ href: '/blog', name: 'blog/' }}
           suffix="| head -3"
         />
       </div>
-      <div class="text-sm mt-2">
+      <div class="mt-2">
         <BlogListing limit={3} />
       </div>
     </section>
 
     {/* work */}
     <section>
-      <div class="text-sm">
+      <div>
         <Prompt
           cmd="glow"
           file={{ href: '/work', name: 'work.md' }}
           suffix="| head -6"
         />
       </div>
-      <div class="text-sm mt-2">
+      <div class="mt-2">
         {
           workLines.map((line) => {
             if (line.startsWith('## ')) {
@@ -79,10 +78,10 @@ const workLines = workAll
 
     {/* contact */}
     <section>
-      <div class="text-sm">
+      <div>
         <Prompt cmd="glow" file={{ href: '/contact', name: 'contact.yaml' }} />
       </div>
-      <div class="text-sm mt-2">
+      <div class="mt-2">
         <ContactList />
       </div>
     </section>
