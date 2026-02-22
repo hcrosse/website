@@ -31,38 +31,38 @@ const workLines = workAll
   <div class="space-y-8">
     {/* about */}
     <section>
-      <div class="mb-2 text-sm">
+      <div class="text-sm">
         <Prompt cmd="glow" file={{ href: '/about', name: 'about.md' }} />
       </div>
-      <div class="prose prose-glow max-w-none text-sm">
+      <div class="prose prose-glow max-w-none mt-2 text-sm">
         <AboutContent />
       </div>
     </section>
 
     {/* blog */}
     <section>
-      <div class="mb-2 text-sm">
+      <div class="text-sm">
         <Prompt
           cmd="eza -lr -s date -t created"
           dir={{ href: '/blog', name: 'blog/' }}
           suffix="| head -3"
         />
       </div>
-      <div class="text-sm">
+      <div class="text-sm mt-2">
         <BlogListing limit={3} />
       </div>
     </section>
 
     {/* work */}
     <section>
-      <div class="mb-2 text-sm">
+      <div class="text-sm">
         <Prompt
           cmd="glow"
           file={{ href: '/work', name: 'work.md' }}
           suffix="| head -6"
         />
       </div>
-      <div class="text-sm">
+      <div class="text-sm mt-2">
         {
           workLines.map((line) => {
             if (line.startsWith('## ')) {
@@ -79,10 +79,10 @@ const workLines = workAll
 
     {/* contact */}
     <section>
-      <div class="mb-2 text-sm">
+      <div class="text-sm">
         <Prompt cmd="glow" file={{ href: '/contact', name: 'contact.yaml' }} />
       </div>
-      <div class="text-sm">
+      <div class="text-sm mt-2">
         <ContactList />
       </div>
     </section>
