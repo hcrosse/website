@@ -23,7 +23,7 @@ const { title, description = 'Personal website' } = Astro.props;
   <body>
     <div class="max-w-2xl mx-auto px-6">
       <div class="pt-8 text-sm">
-        <p><Prompt /><span class="text-terminal-bright"> ~ $ eza</span></p>
+        <p><Prompt cmd="eza" /></p>
         <p>
           <a
             href="/about"
@@ -53,9 +53,7 @@ const { title, description = 'Personal website' } = Astro.props;
         <slot />
 
         <div class="mt-8 text-sm">
-          <Prompt /><span class="text-terminal-bright"> ~ $ </span><span
-            class="cursor-blink text-terminal-bright">&#x258F;</span
-          >
+          <Prompt cursor />
         </div>
       </main>
     </div>

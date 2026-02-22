@@ -6,18 +6,8 @@ import BlogListing from '../../components/BlogListing.astro';
 
 <BaseLayout title="Blog">
   <div class="text-sm space-y-0.5">
-    <p>
-      <Prompt /><span class="text-terminal-bright"> ~ $ cd </span><a
-        href="/blog"
-        class="text-terminal-blue font-bold hover:text-terminal-green transition-colors"
-        >blog</a
-      >
-    </p>
-    <p>
-      <Prompt /><span class="text-terminal-bright">
-        ~/blog $ eza -lr -s date -t created</span
-      >
-    </p>
+    <p><Prompt cmd="cd" dir={{ href: '/blog', name: 'blog' }} /></p>
+    <p><Prompt cwd="~/blog" cmd="eza -lr -s date -t created" /></p>
   </div>
   <div class="text-sm mt-2">
     <BlogListing />

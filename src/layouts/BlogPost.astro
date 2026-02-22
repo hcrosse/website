@@ -16,21 +16,13 @@ const slug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
   <article>
     <header class="mb-8">
       <div class="text-sm space-y-0.5 mb-2">
+        <p><Prompt cmd="cd" dir={{ href: '/blog', name: 'blog' }} /></p>
         <p>
-          <Prompt /><span class="text-terminal-bright"> ~ $ cd </span><a
-            href="/blog"
-            class="text-terminal-blue font-bold hover:text-terminal-green transition-colors"
-            >blog</a
-          >
-        </p>
-        <p>
-          <Prompt /><span class="text-terminal-bright">
-            ~/blog $ glow -s blog
-          </span><a
-            href={`/blog/${slug}`}
-            class="text-terminal-yellow hover:text-terminal-green transition-colors"
-            >{slug}.md</a
-          >
+          <Prompt
+            cwd="~/blog"
+            cmd="glow -s blog"
+            file={{ href: `/blog/${slug}`, name: `${slug}.md` }}
+          />
         </p>
       </div>
     </header>

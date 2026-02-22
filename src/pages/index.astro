@@ -32,11 +32,7 @@ const workLines = workAll
     {/* about */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
-          href="/about"
-          class="text-terminal-yellow hover:text-terminal-green transition-colors"
-          >about.md</a
-        >
+        <Prompt cmd="glow" file={{ href: '/about', name: 'about.md' }} />
       </div>
       <div class="prose prose-glow max-w-none text-sm">
         <AboutContent />
@@ -46,13 +42,11 @@ const workLines = workAll
     {/* blog */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright">
-          ~ $ eza -lr -s date -t created
-        </span><a
-          href="/blog"
-          class="text-terminal-blue font-bold hover:text-terminal-green transition-colors"
-          >blog/</a
-        ><span class="text-terminal-bright"> | head -3</span>
+        <Prompt
+          cmd="eza -lr -s date -t created"
+          dir={{ href: '/blog', name: 'blog/' }}
+          suffix="| head -3"
+        />
       </div>
       <div class="text-sm">
         <BlogListing limit={3} />
@@ -62,11 +56,11 @@ const workLines = workAll
     {/* work */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
-          href="/work"
-          class="text-terminal-yellow hover:text-terminal-green transition-colors"
-          >work.md</a
-        ><span class="text-terminal-bright"> | head -6</span>
+        <Prompt
+          cmd="glow"
+          file={{ href: '/work', name: 'work.md' }}
+          suffix="| head -6"
+        />
       </div>
       <div class="text-sm">
         {
@@ -86,11 +80,7 @@ const workLines = workAll
     {/* contact */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
-          href="/contact"
-          class="text-terminal-yellow hover:text-terminal-green transition-colors"
-          >contact.yaml</a
-        >
+        <Prompt cmd="glow" file={{ href: '/contact', name: 'contact.yaml' }} />
       </div>
       <div class="text-sm">
         <ContactList />

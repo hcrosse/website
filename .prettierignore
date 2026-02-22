@@ -3,3 +3,7 @@ dist/
 node_modules/
 public/fonts/
 bun.lock
+
+# Whitespace-sensitive inline HTML
+src/components/Prompt.astro
+src/components/BlogListing.astro

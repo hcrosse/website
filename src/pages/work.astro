@@ -9,13 +9,7 @@ const { Content } = await render(page);
 
 <BaseLayout title="Work">
   <div class="text-sm">
-    <p>
-      <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
-        href="/work"
-        class="text-terminal-yellow hover:text-terminal-green transition-colors"
-        >work.md</a
-      >
-    </p>
+    <p><Prompt cmd="glow" file={{ href: '/work', name: 'work.md' }} /></p>
   </div>
   <div class="prose prose-glow max-w-none mt-2 text-sm">
     <Content />

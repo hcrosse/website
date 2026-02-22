@@ -1,5 +1,16 @@
-<a
-  href="/"
-  class="text-terminal-green hover:text-terminal-green-dim transition-colors"
-  >crosse.dev</a
->
+---
+interface Props {
+  cwd?: string;
+  cmd?: string;
+  file?: { href: string; name: string };
+  dir?: { href: string; name: string };
+  suffix?: string;
+  cursor?: boolean;
+}
+
+const { cwd = '~', cmd, file, dir, suffix, cursor } = Astro.props;
+const hasTarget = !!(file || dir);
+const cmdText = ` ${cwd} $ ${cmd || ''}${hasTarget ? ' ' : ''}`;
+---
+
+<a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright">{cmdText}</span>{file && <a href={file.href} class="text-terminal-yellow hover:text-terminal-green transition-colors">{file.name}</a>}{dir && <a href={dir.href} class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">{dir.name}</a>}{suffix && <span class="text-terminal-bright">{` ${suffix}`}</span>}{cursor && <span class="cursor-blink text-terminal-bright">&#x258F;</span>}
