@@ -1,5 +1,6 @@
 ---
 title: Colophon
+description: How this site was built
 ---
 
 ## License

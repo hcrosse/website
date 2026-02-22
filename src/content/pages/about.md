@@ -1,5 +1,6 @@
 ---
 title: About
+description: Background and interests
 ---
 
 Hi, I'm Harrison. I'm passionate about building data infrastructure and tooling.
