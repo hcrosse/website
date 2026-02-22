@@ -30,9 +30,7 @@ const workLines = workAll
   <div class="space-y-8">
     {/* about */}
     <section>
-      <div>
-        <Prompt cmd="glow" file={{ href: '/about', name: 'about.md' }} />
-      </div>
+      <Prompt cmd="glow" file={{ href: '/about', name: 'about.md' }} />
       <div class="prose prose-glow max-w-none mt-2">
         <AboutContent />
       </div>
@@ -40,13 +38,11 @@ const workLines = workAll
 
     {/* blog */}
     <section>
-      <div>
-        <Prompt
-          cmd="eza -lr -s date -t created"
-          dir={{ href: '/blog', name: 'blog/' }}
-          suffix="| head -3"
-        />
-      </div>
+      <Prompt
+        cmd="eza -lr -s date -t created"
+        dir={{ href: '/blog', name: 'blog/' }}
+        suffix="| head -3"
+      />
       <div class="mt-2">
         <BlogListing limit={3} />
       </div>
@@ -54,13 +50,11 @@ const workLines = workAll
 
     {/* work */}
     <section>
-      <div>
-        <Prompt
-          cmd="glow"
-          file={{ href: '/work', name: 'work.md' }}
-          suffix="| head -6"
-        />
-      </div>
+      <Prompt
+        cmd="glow"
+        file={{ href: '/work', name: 'work.md' }}
+        suffix="| head -6"
+      />
       <div class="mt-2">
         {
           workLines.map((line) => {
@@ -78,9 +72,7 @@ const workLines = workAll
 
     {/* contact */}
     <section>
-      <div>
-        <Prompt cmd="glow" file={{ href: '/contact', name: 'contact.yaml' }} />
-      </div>
+      <Prompt cmd="glow" file={{ href: '/contact', name: 'contact.yaml' }} />
       <div class="mt-2">
         <ContactList />
       </div>

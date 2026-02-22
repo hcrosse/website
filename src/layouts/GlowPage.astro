@@ -15,9 +15,7 @@ const filename = `${page}.md`;
 ---
 
 <BaseLayout title={title}>
-  <div>
-    <p><Prompt cmd="glow" file={{ href: `/${page}`, name: filename }} /></p>
-  </div>
+  <p><Prompt cmd="glow" file={{ href: `/${page}`, name: filename }} /></p>
   <div class="prose prose-glow max-w-none mt-2">
     <Content />
     <slot />

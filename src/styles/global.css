@@ -160,11 +160,6 @@ body {
   margin-top: 0;
 }
 
-.prose-glow .color-swatches {
-  list-style: none;
-  padding-left: 0;
-}
-
 @keyframes blink {
   0%,
   100% {
