@@ -95,7 +95,6 @@ body {
 
 .prose :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   text-decoration: none;
-  border-bottom: none;
   transition: color 0.15s;
 }
 
@@ -137,6 +136,13 @@ body {
 }
 
 .prose-glow
+  :where(p + p, ul + p, ol + p):not(
+    :where([class~='not-prose'], [class~='not-prose'] *)
+  ) {
+  margin-top: 0.75em;
+}
+
+.prose-glow
   :where(ul, ol):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   margin-top: 0.25em;
   margin-bottom: 0.25em;
@@ -154,6 +160,10 @@ body {
   color: var(--color-terminal-blue);
   font-weight: 700;
   margin-top: 0.75em;
+}
+
+.prose-glow .glow-heading + p {
+  margin-top: 0;
 }
 
 .prose-glow .glow-heading:first-child {
