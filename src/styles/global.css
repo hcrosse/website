@@ -124,34 +124,10 @@ body {
   border-radius: 0.375rem;
 }
 
-/* Glow-style prose for markdown pages (about, work, colophon) */
+/* Glow-style prose overrides (used with .prose on pages) */
+/* Only what differs from .prose: heading color + tight spacing */
 .prose-glow {
   --tw-prose-headings: var(--color-terminal-sapphire);
-  --tw-prose-body: var(--color-terminal-text);
-  --tw-prose-links: var(--color-terminal-lavender);
-  --tw-prose-bold: var(--color-terminal-bright);
-  --tw-prose-bullets: var(--color-terminal-green);
-  --tw-prose-counters: var(--color-terminal-green);
-  --tw-prose-code: var(--color-terminal-green);
-  --tw-prose-pre-bg: var(--color-terminal-surface);
-  --tw-prose-pre-code: var(--color-terminal-text);
-  --tw-prose-quotes: var(--color-terminal-dim);
-  --tw-prose-quote-borders: var(--color-terminal-border);
-  --tw-prose-hr: var(--color-terminal-border);
-  --tw-prose-th-borders: var(--color-terminal-border);
-  --tw-prose-td-borders: var(--color-terminal-border);
-}
-
-.prose-glow
-  :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
-  text-decoration: none;
-  border-bottom: none;
-  transition: color 0.15s;
-}
-
-.prose-glow
-  :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)):hover {
-  color: var(--color-terminal-blue);
 }
 
 .prose-glow
