@@ -9,7 +9,13 @@ const { Content } = await render(page);
 
 <BaseLayout title="Colophon">
   <div class="text-sm">
-    <p><Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/colophon" class="text-terminal-yellow hover:text-terminal-green transition-colors">colophon.md</a></p>
+    <p>
+      <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
+        href="/colophon"
+        class="text-terminal-yellow hover:text-terminal-green transition-colors"
+        >colophon.md</a
+      >
+    </p>
   </div>
   <div class="prose prose-glow max-w-none mt-2 text-sm">
     <Content />

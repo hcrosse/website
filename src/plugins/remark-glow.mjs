@@ -8,7 +8,10 @@ export default function remarkGlow() {
     const isPage = file.history?.[0]?.includes('/content/pages/');
     visit(tree, 'text', (node) => {
       if (node.value.includes('{year}')) {
-        node.value = node.value.replace(/\{year\}/g, String(new Date().getFullYear()));
+        node.value = node.value.replace(
+          /\{year\}/g,
+          String(new Date().getFullYear()),
+        );
       }
     });
 
@@ -18,10 +21,7 @@ export default function remarkGlow() {
         parent.children[index] = {
           type: 'paragraph',
           data: { hProperties: { className: ['glow-heading'] } },
-          children: [
-            { type: 'text', value: prefix },
-            ...node.children,
-          ],
+          children: [{ type: 'text', value: prefix }, ...node.children],
         };
       });
     }
@@ -43,7 +43,9 @@ export default function remarkGlow() {
         const para = item.children[0];
         const last = para.children[para.children.length - 1];
         const hex = last.value;
-        const border = DARK_COLORS.includes(hex) ? ';border:1px solid #585b70' : '';
+        const border = DARK_COLORS.includes(hex)
+          ? ';border:1px solid #585b70'
+          : '';
         para.children.unshift({
           type: 'html',
           value: `<span class="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style="background:${hex}${border}"></span>`,

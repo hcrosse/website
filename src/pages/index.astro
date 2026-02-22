@@ -10,22 +10,33 @@ import Prompt from '../components/Prompt.astro';
 const aboutPage = await getEntry('pages', 'about');
 const { Content: AboutContent } = await render(aboutPage);
 
-const workRaw = fs.readFileSync(path.join(process.cwd(), 'src/content/pages/work.md'), 'utf-8');
-const workAll = workRaw.replace(/^---[\s\S]*?---\n/, '').trim().split('\n');
-const workLines = workAll.filter((line, i) => {
-  if (line.trim() !== '') return true;
-  const next = workAll[i + 1];
-  return next && next.startsWith('## ');
-}).slice(0, 6);
+const workRaw = fs.readFileSync(
+  path.join(process.cwd(), 'src/content/pages/work.md'),
+  'utf-8',
+);
+const workAll = workRaw
+  .replace(/^---[\s\S]*?---\n/, '')
+  .trim()
+  .split('\n');
+const workLines = workAll
+  .filter((line, i) => {
+    if (line.trim() !== '') return true;
+    const next = workAll[i + 1];
+    return next && next.startsWith('## ');
+  })
+  .slice(0, 6);
 ---
 
 <BaseLayout title="Harrison Crosse">
   <div class="space-y-8">
-
     {/* about */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>
+        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
+          href="/about"
+          class="text-terminal-yellow hover:text-terminal-green transition-colors"
+          >about.md</a
+        >
       </div>
       <div class="prose prose-glow max-w-none text-sm">
         <AboutContent />
@@ -35,7 +46,13 @@ const workLines = workAll.filter((line, i) => {
     {/* blog */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright"> ~ $ eza -lr -s date -t created </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a><span class="text-terminal-bright"> | head -3</span>
+        <Prompt /><span class="text-terminal-bright">
+          ~ $ eza -lr -s date -t created
+        </span><a
+          href="/blog"
+          class="text-terminal-blue font-bold hover:text-terminal-green transition-colors"
+          >blog/</a
+        ><span class="text-terminal-bright"> | head -3</span>
       </div>
       <div class="text-sm">
         <BlogListing limit={3} />
@@ -45,30 +62,39 @@ const workLines = workAll.filter((line, i) => {
     {/* work */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a><span class="text-terminal-bright"> | head -6</span>
+        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
+          href="/work"
+          class="text-terminal-yellow hover:text-terminal-green transition-colors"
+          >work.md</a
+        ><span class="text-terminal-bright"> | head -6</span>
       </div>
       <div class="text-sm">
-        {workLines.map((line) => {
-          if (line.startsWith('## ')) {
-            return <p class="text-terminal-blue font-bold">{line}</p>;
-          }
-          if (line.trim() === '') {
-            return <p>&nbsp;</p>;
-          }
-          return <p>{line}</p>;
-        })}
+        {
+          workLines.map((line) => {
+            if (line.startsWith('## ')) {
+              return <p class="text-terminal-blue font-bold">{line}</p>;
+            }
+            if (line.trim() === '') {
+              return <p>&nbsp;</p>;
+            }
+            return <p>{line}</p>;
+          })
+        }
       </div>
     </section>
 
     {/* contact */}
     <section>
       <div class="mb-2 text-sm">
-        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/contact" class="text-terminal-yellow hover:text-terminal-green transition-colors">contact.yaml</a>
+        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
+          href="/contact"
+          class="text-terminal-yellow hover:text-terminal-green transition-colors"
+          >contact.yaml</a
+        >
       </div>
       <div class="text-sm">
         <ContactList />
       </div>
     </section>
-
   </div>
 </BaseLayout>

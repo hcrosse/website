@@ -6,7 +6,13 @@ import ContactList from '../components/ContactList.astro';
 
 <BaseLayout title="Contact">
   <div class="text-sm">
-    <p><Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/contact" class="text-terminal-yellow hover:text-terminal-green transition-colors">contact.yaml</a></p>
+    <p>
+      <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a
+        href="/contact"
+        class="text-terminal-yellow hover:text-terminal-green transition-colors"
+        >contact.yaml</a
+      >
+    </p>
   </div>
   <div class="text-sm mt-2">
     <ContactList />

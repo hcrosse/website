@@ -1,33 +1,33 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
 @font-face {
-  font-family: "Berkeley Mono";
-  src: url("/fonts/BerkeleyMono-Regular.woff2") format("woff2");
+  font-family: 'Berkeley Mono';
+  src: url('/fonts/BerkeleyMono-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Berkeley Mono";
-  src: url("/fonts/BerkeleyMono-Bold.woff2") format("woff2");
+  font-family: 'Berkeley Mono';
+  src: url('/fonts/BerkeleyMono-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Berkeley Mono";
-  src: url("/fonts/BerkeleyMono-Oblique.woff2") format("woff2");
+  font-family: 'Berkeley Mono';
+  src: url('/fonts/BerkeleyMono-Oblique.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Berkeley Mono";
-  src: url("/fonts/BerkeleyMono-Bold-Oblique.woff2") format("woff2");
+  font-family: 'Berkeley Mono';
+  src: url('/fonts/BerkeleyMono-Bold-Oblique.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -46,8 +46,9 @@
   --color-terminal-sapphire: #74c7ec;
   --color-terminal-lavender: #b4befe;
   --color-terminal-border: #45475a;
-  --font-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, "SF Mono",
-    Menlo, Consolas, "Liberation Mono", monospace;
+  --font-mono:
+    'Berkeley Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
 }
 
 html {
@@ -66,7 +67,11 @@ body {
 }
 
 ::selection {
-  background-color: color-mix(in srgb, var(--color-terminal-green) 30%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-terminal-green) 30%,
+    transparent
+  );
   color: var(--color-terminal-bright);
 }
 
@@ -88,26 +93,33 @@ body {
   --tw-prose-td-borders: var(--color-terminal-border);
 }
 
-.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.prose :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   text-decoration: none;
   border-bottom: none;
   transition: color 0.15s;
 }
 
-.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):hover {
+.prose
+  :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)):hover {
   color: var(--color-terminal-blue);
 }
 
-.prose :where(h1)::before { content: "# "; }
-.prose :where(h2)::before { content: "## "; }
-.prose :where(h3)::before { content: "### "; }
+.prose :where(h1)::before {
+  content: '# ';
+}
+.prose :where(h2)::before {
+  content: '## ';
+}
+.prose :where(h3)::before {
+  content: '### ';
+}
 
-.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   font-family: var(--font-mono);
   font-size: 0.875em;
 }
 
-.prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.prose :where(pre):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   border: 1px solid var(--color-terminal-border);
   border-radius: 0.375rem;
 }
@@ -130,28 +142,33 @@ body {
   --tw-prose-td-borders: var(--color-terminal-border);
 }
 
-.prose-glow :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.prose-glow
+  :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   text-decoration: none;
   border-bottom: none;
   transition: color 0.15s;
 }
 
-.prose-glow :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):hover {
+.prose-glow
+  :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)):hover {
   color: var(--color-terminal-blue);
 }
 
-.prose-glow :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.prose-glow
+  :where(p):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.prose-glow :where(ul, ol):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.prose-glow
+  :where(ul, ol):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   margin-top: 0.25em;
   margin-bottom: 0.25em;
   padding-left: 1.25em;
 }
 
-.prose-glow :where(li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.prose-glow
+  :where(li):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 0;
@@ -173,8 +190,13 @@ body {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .cursor-blink {

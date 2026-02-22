@@ -16,14 +16,37 @@ const slug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
   <article>
     <header class="mb-8">
       <div class="text-sm space-y-0.5 mb-2">
-        <p><Prompt /><span class="text-terminal-bright"> ~ $ cd </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog</a></p>
-        <p><Prompt /><span class="text-terminal-bright"> ~/blog $ glow -s blog </span><a href={`/blog/${slug}`} class="text-terminal-yellow hover:text-terminal-green transition-colors">{slug}.md</a></p>
+        <p>
+          <Prompt /><span class="text-terminal-bright"> ~ $ cd </span><a
+            href="/blog"
+            class="text-terminal-blue font-bold hover:text-terminal-green transition-colors"
+            >blog</a
+          >
+        </p>
+        <p>
+          <Prompt /><span class="text-terminal-bright">
+            ~/blog $ glow -s blog
+          </span><a
+            href={`/blog/${slug}`}
+            class="text-terminal-yellow hover:text-terminal-green transition-colors"
+            >{slug}.md</a
+          >
+        </p>
       </div>
     </header>
     <div class="prose max-w-none text-sm">
       <h1 class="!mb-1">{title}</h1>
-      <time class="text-sm text-terminal-dim block" datetime={date.toISOString()}>
-        {date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      <time
+        class="text-sm text-terminal-dim block"
+        datetime={date.toISOString()}
+      >
+        {
+          date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        }
       </time>
       <slot />
     </div>

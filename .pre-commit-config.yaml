@@ -1,0 +1,47 @@
+# Install pre-commit (prek):
+#   brew install prek
+#   prek install
+# Apply to all files without committing:
+#   prek run -a
+# Update this file:
+#   prek autoupdate
+# Commit without running pre-commit:
+#   git commit --no-verify
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+
+  # Formatting
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        language: system
+        entry: bunx prettier --write --plugin prettier-plugin-astro
+        files: \.(js|mjs|ts|tsx|json|css|md|astro)$
+
+  # Linting
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        language: system
+        entry: bunx eslint --fix
+        files: \.(js|mjs|ts|astro)$
+
+  # Markdown
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.45.0
+    hooks:
+      - id: markdownlint
+        args: [--fix, --disable, MD013, MD029, --]
