@@ -12,6 +12,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.17.1",
+    "remark-breaks": "^4.0.0",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {

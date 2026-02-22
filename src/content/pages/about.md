@@ -2,5 +2,6 @@
 title: About
 ---
 
-Hi, I'm Harrison. I'm a software engineer who likes building things.
-Welcome to my corner of the internet.
+Hi, I'm Harrison. I'm passionate about building data infrastructure and tooling.
+
+In my free time I like discovering new music, keeping up with my Letterboxd watchlist, and enjoying nature.
