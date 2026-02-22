@@ -1,60 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import fs from 'node:fs';
-import path from 'node:path';
-
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
-
-// Get real file sizes
-const sizes = new Map<string, number>();
-for (const post of posts) {
-  const filePath = path.join(process.cwd(), 'src/content/blog', `${post.id}.md`);
-  try {
-    const stat = fs.statSync(filePath);
-    sizes.set(post.id, stat.size);
-  } catch {
-    sizes.set(post.id, 0);
-  }
-}
-
-function formatSize(bytes: number): string {
-  if (bytes >= 1024) {
-    return (bytes / 1024).toFixed(1) + 'k';
-  }
-  return bytes.toString();
-}
-
-function formatDate(date: Date): string {
-  const day = date.getDate().toString().padStart(2, ' ');
-  const month = date.toLocaleDateString('en-US', { month: 'short' });
-  const hours = date.getHours().toString().padStart(2, '0');
-  const mins = date.getMinutes().toString().padStart(2, '0');
-  return `${day} ${month} ${hours}:${mins}`;
-}
-
-// Find longest size string for alignment
-const sizeStrings = posts.map((p) => formatSize(sizes.get(p.id) ?? 0));
-const maxSizeLen = Math.max(...sizeStrings.map((s) => s.length));
+import Prompt from '../../components/Prompt.astro';
+import BlogListing from '../../components/BlogListing.astro';
 ---
 
 <BaseLayout title="Blog">
   <div class="text-sm space-y-0.5">
-    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ cd </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog</a></p>
-    <p><a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~/blog $ eza -lr -s date -t created</span></p>
+    <p><Prompt /><span class="text-terminal-bright"> ~ $ cd </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog</a></p>
+    <p><Prompt /><span class="text-terminal-bright"> ~/blog $ eza -lr -s date -t created</span></p>
   </div>
   <div class="text-sm mt-2">
-    <ul class="space-y-0.5">
-      {posts.map((post, i) => (
-        <li>
-          <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
-            <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{sizeStrings[i].padStart(maxSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
-            <span class="text-terminal-yellow group-hover:text-terminal-green transition-colors truncate">{post.id}.md</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <BlogListing />
   </div>
 </BaseLayout>

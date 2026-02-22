@@ -1,40 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection, getEntry, render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import fs from 'node:fs';
 import path from 'node:path';
 import ContactList from '../components/ContactList.astro';
-
-const posts = (await getCollection('blog'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
-
-// Blog file sizes
-const blogSizes = new Map<string, number>();
-for (const post of posts) {
-  try {
-    const stat = fs.statSync(path.join(process.cwd(), 'src/content/blog', `${post.id}.md`));
-    blogSizes.set(post.id, stat.size);
-  } catch {
-    blogSizes.set(post.id, 0);
-  }
-}
-
-function formatSize(bytes: number): string {
-  if (bytes >= 1024) return (bytes / 1024).toFixed(1) + 'k';
-  return bytes.toString();
-}
-
-function formatDate(date: Date): string {
-  const day = date.getDate().toString().padStart(2, ' ');
-  const month = date.toLocaleDateString('en-US', { month: 'short' });
-  const hours = date.getHours().toString().padStart(2, '0');
-  const mins = date.getMinutes().toString().padStart(2, '0');
-  return `${day} ${month} ${hours}:${mins}`;
-}
-
-const blogSizeStrings = posts.map((p) => formatSize(blogSizes.get(p.id) ?? 0));
-const maxBlogSizeLen = Math.max(...blogSizeStrings.map((s) => s.length));
+import BlogListing from '../components/BlogListing.astro';
+import Prompt from '../components/Prompt.astro';
 
 const aboutPage = await getEntry('pages', 'about');
 const { Content: AboutContent } = await render(aboutPage);
@@ -54,7 +25,7 @@ const workLines = workAll.filter((line, i) => {
     {/* about */}
     <section>
       <div class="mb-2 text-sm">
-        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ glow </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>
+        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/about" class="text-terminal-yellow hover:text-terminal-green transition-colors">about.md</a>
       </div>
       <div class="prose prose-glow max-w-none text-sm">
         <AboutContent />
@@ -64,24 +35,17 @@ const workLines = workAll.filter((line, i) => {
     {/* blog */}
     <section>
       <div class="mb-2 text-sm">
-        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ eza -lr -s date -t created </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a><span class="text-terminal-bright"> | head -3</span>
+        <Prompt /><span class="text-terminal-bright"> ~ $ eza -lr -s date -t created </span><a href="/blog" class="text-terminal-blue font-bold hover:text-terminal-green transition-colors">blog/</a><span class="text-terminal-bright"> | head -3</span>
       </div>
-      <ul class="space-y-0.5 text-sm">
-        {posts.map((post, i) => (
-          <li>
-            <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
-              <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{blogSizeStrings[i].padStart(maxBlogSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
-              <span class="text-terminal-yellow group-hover:text-terminal-green transition-colors truncate">{post.id}.md</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div class="text-sm">
+        <BlogListing limit={3} />
+      </div>
     </section>
 
     {/* work */}
     <section>
       <div class="mb-2 text-sm">
-        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ glow </span><a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a><span class="text-terminal-bright"> | head -6</span>
+        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/work" class="text-terminal-yellow hover:text-terminal-green transition-colors">work.md</a><span class="text-terminal-bright"> | head -6</span>
       </div>
       <div class="text-sm">
         {workLines.map((line) => {
@@ -99,7 +63,7 @@ const workLines = workAll.filter((line, i) => {
     {/* contact */}
     <section>
       <div class="mb-2 text-sm">
-        <a href="/" class="text-terminal-green hover:text-terminal-green-dim transition-colors">crosse.dev</a><span class="text-terminal-bright"> ~ $ glow </span><a href="/contact" class="text-terminal-yellow hover:text-terminal-green transition-colors">contact.yaml</a>
+        <Prompt /><span class="text-terminal-bright"> ~ $ glow </span><a href="/contact" class="text-terminal-yellow hover:text-terminal-green transition-colors">contact.yaml</a>
       </div>
       <div class="text-sm">
         <ContactList />

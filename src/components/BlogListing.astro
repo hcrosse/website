@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const posts = limit ? allPosts.slice(0, limit) : allPosts;
+
+// Get real file sizes
+const sizes = new Map<string, number>();
+for (const post of posts) {
+  try {
+    const stat = fs.statSync(path.join(process.cwd(), 'src/content/blog', `${post.id}.md`));
+    sizes.set(post.id, stat.size);
+  } catch {
+    sizes.set(post.id, 0);
+  }
+}
+
+function formatSize(bytes: number): string {
+  if (bytes >= 1024) return (bytes / 1024).toFixed(1) + 'k';
+  return bytes.toString();
+}
+
+function formatDate(date: Date): string {
+  const day = date.getDate().toString().padStart(2, ' ');
+  const month = date.toLocaleDateString('en-US', { month: 'short' });
+  const hours = date.getHours().toString().padStart(2, '0');
+  const mins = date.getMinutes().toString().padStart(2, '0');
+  return `${day} ${month} ${hours}:${mins}`;
+}
+
+const sizeStrings = posts.map((p) => formatSize(sizes.get(p.id) ?? 0));
+const maxSizeLen = Math.max(...sizeStrings.map((s) => s.length));
+---
+
+<ul class="space-y-0.5">
+  {posts.map((post, i) => (
+    <li>
+      <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
+        <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{sizeStrings[i].padStart(maxSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
+        <span class="text-terminal-yellow group-hover:text-terminal-green transition-colors truncate">{post.id}.md</span>
+      </a>
+    </li>
+  ))}
+</ul>
