@@ -1,7 +1,8 @@
 ---
 import GlowPage from '../layouts/GlowPage.astro';
 
-const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA;
+const commitSha =
+  import.meta.env.CF_PAGES_COMMIT_SHA || process.env.CF_PAGES_COMMIT_SHA;
 const buildTime = new Date().toISOString();
 
 const { default: astroPkg } = await import('astro/package.json');
