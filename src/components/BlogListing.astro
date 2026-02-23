@@ -47,8 +47,8 @@ const maxSizeLen = Math.max(...sizeStrings.map((s) => s.length));
   {posts.map((post, i) => (
     <li>
       <a href={`/blog/${post.id}`} class="group flex hover:text-terminal-green transition-colors">
-        <span class="shrink-0 whitespace-pre"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  <span class="text-terminal-green">{sizeStrings[i].padStart(maxSizeLen)}</span>  <span class="text-terminal-yellow">hcrosse</span>  <span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
-        <span class="text-terminal-yellow group-hover:text-terminal-green transition-colors truncate">{post.id}.md</span>
+        <span class="shrink-0 whitespace-pre"><span class="hidden sm:inline"><span class="text-terminal-dim">.</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span><span class="text-terminal-yellow">r</span><span class="text-terminal-dim">--</span>  </span><span class="text-terminal-green">{sizeStrings[i].padStart(maxSizeLen)}</span>  <span class="hidden sm:inline"><span class="text-terminal-yellow">hcrosse</span>  </span><span class="text-terminal-blue">{formatDate(post.data.date)}</span>  </span>
+        <span class="text-terminal-yellow group-hover:text-terminal-green transition-colors">{post.id}.md</span>
       </a>
     </li>
   ))}
