@@ -9,7 +9,7 @@ import contacts from '../data/contact.json';
         <span class="text-terminal-blue w-[10ch]">{c.label}:</span>
         <a
           href={c.url}
-          class="text-terminal-text hover:text-terminal-green transition-colors"
+          class="text-terminal-green hover:text-terminal-green-dim transition-colors"
           {...(c.external
             ? { target: '_blank', rel: 'noopener noreferrer' }
             : {})}
