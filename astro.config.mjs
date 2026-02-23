@@ -15,5 +15,10 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    define: {
+      'import.meta.env.CF_PAGES_COMMIT_SHA': JSON.stringify(
+        process.env.CF_PAGES_COMMIT_SHA || '',
+      ),
+    },
   },
 });
