@@ -21,6 +21,9 @@ node_modules/
 # project
 TODO.md
 
+# fonts (private, fetched from R2 at build time)
+public/fonts/
+
 # os
 .DS_Store
 Thumbs.db
