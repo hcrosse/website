@@ -16,6 +16,9 @@ const commitSha =
 export default defineConfig({
   site: 'https://crosse.dev',
   output: 'static',
+  prefetch: {
+    defaultStrategy: 'hover',
+  },
   integrations: [sitemap()],
 
   markdown: {
