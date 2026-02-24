@@ -18,7 +18,7 @@ const nav = [
 ];
 ---
 
-<html lang="en">
+<html lang="en" class="loading">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -27,6 +27,7 @@ const nav = [
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script is:inline>requestAnimationFrame(() => document.documentElement.classList.remove('loading'))</script>
   </head>
   <body>
     <div class="max-w-2xl mx-auto px-6">
