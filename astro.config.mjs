@@ -31,7 +31,7 @@ export default defineConfig({
       'import.meta.env.COMMIT_SHA': JSON.stringify(commitSha),
     },
     ssr: {
-      external: ['satori', '@resvg/resvg-js'],
+      external: ['satori', '@resvg/resvg-js', 'node:fs', 'node:path'],
     },
   },
 
