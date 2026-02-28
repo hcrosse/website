@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import ContactList from '../components/ContactList.astro';
 import BlogListing from '../components/BlogListing.astro';
 import Prompt from '../components/Prompt.astro';
+import { pagesMeta } from '../data/pages';
 
 const aboutPage = await getEntry('pages', 'about');
 const { Content: AboutContent } = await render(aboutPage);
@@ -27,8 +28,8 @@ const workLines = workAll
 ---
 
 <BaseLayout
-  title="Harrison Crosse"
-  description="Harrison Crosse — software engineer building data infrastructure and tooling."
+  title={pagesMeta.index.title}
+  description={pagesMeta.index.description}
 >
   <script
     slot="head"

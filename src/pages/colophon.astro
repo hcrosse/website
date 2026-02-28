@@ -1,5 +1,6 @@
 ---
 import GlowPage from '../layouts/GlowPage.astro';
+import { pagesMeta } from '../data/pages';
 
 const commitSha = import.meta.env.COMMIT_SHA;
 const buildTime = new Date().toISOString();
@@ -12,8 +13,8 @@ const tailwindVersion = twPkg.version;
 
 <GlowPage
   page="colophon"
-  title="Colophon"
-  description="How this site is built."
+  title={pagesMeta.colophon.title}
+  description={pagesMeta.colophon.description}
 >
   <p class="glow-heading">## Built with</p>
   <ul>

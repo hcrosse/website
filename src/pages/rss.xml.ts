@@ -1,12 +1,13 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
+import { pagesMeta } from '../data/pages';
 
 export async function GET(context: APIContext) {
   const posts = await getCollection('blog');
   return rss({
     title: 'Harrison Crosse',
-    description: 'Writing on data, software, and tooling.',
+    description: pagesMeta.blog.description,
     site: context.site!,
     items: posts
       .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())

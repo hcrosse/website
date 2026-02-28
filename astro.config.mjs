@@ -30,6 +30,9 @@ export default defineConfig({
     define: {
       'import.meta.env.COMMIT_SHA': JSON.stringify(commitSha),
     },
+    ssr: {
+      external: ['satori', '@resvg/resvg-js'],
+    },
   },
 
   adapter: cloudflare(),

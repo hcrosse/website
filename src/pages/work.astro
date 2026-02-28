@@ -1,5 +1,10 @@
 ---
 import GlowPage from '../layouts/GlowPage.astro';
+import { pagesMeta } from '../data/pages';
 ---
 
-<GlowPage page="work" title="Work" description="Work history and projects." />
+<GlowPage
+  page="work"
+  title={pagesMeta.work.title}
+  description={pagesMeta.work.description}
+/>
