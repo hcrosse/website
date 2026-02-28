@@ -4,7 +4,7 @@ import Prompt from '../../components/Prompt.astro';
 import BlogListing from '../../components/BlogListing.astro';
 ---
 
-<BaseLayout title="Blog">
+<BaseLayout title="Blog" description="Writing on data, software, and tooling.">
   <div class="space-y-0.5">
     <p><Prompt cmd="cd" dir={{ href: '/blog', name: 'blog' }} /></p>
     <p><Prompt cwd="~/blog" cmd="eza -lr -s date -t created" /></p>

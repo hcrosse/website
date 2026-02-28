@@ -6,15 +6,16 @@ import { getEntry, render } from 'astro:content';
 interface Props {
   page: 'about' | 'work' | 'colophon';
   title: string;
+  description?: string;
 }
 
-const { page, title } = Astro.props;
+const { page, title, description } = Astro.props;
 const entry = await getEntry('pages', page);
 const { Content } = await render(entry);
 const filename = `${page}.md`;
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} description={description}>
   <p><Prompt cmd="glow" file={{ href: `/${page}`, name: filename }} /></p>
   <div class="prose prose-glow max-w-none mt-2">
     <Content />

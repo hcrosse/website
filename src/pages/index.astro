@@ -26,7 +26,22 @@ const workLines = workAll
   .slice(0, 6);
 ---
 
-<BaseLayout title="Harrison Crosse">
+<BaseLayout
+  title="Harrison Crosse"
+  description="Harrison Crosse — software engineer building data infrastructure and tooling."
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:text={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Harrison Crosse',
+      url: 'https://crosse.dev',
+      email: 'harrison@crosse.dev',
+      sameAs: ['https://github.com/hcrosse', 'https://linkedin.com/in/hcrosse'],
+    })}
+  />
   <div class="space-y-8">
     {/* about */}
     <section>

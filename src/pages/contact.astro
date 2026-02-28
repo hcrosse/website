@@ -4,7 +4,7 @@ import Prompt from '../components/Prompt.astro';
 import ContactList from '../components/ContactList.astro';
 ---
 
-<BaseLayout title="Contact">
+<BaseLayout title="Contact" description="Get in touch.">
   <p>
     <Prompt cmd="bat -pp" file={{ href: '/contact', name: 'contact.yaml' }} />
   </p>
