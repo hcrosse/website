@@ -1,4 +1,5 @@
 #!/bin/sh
+# CF Pages build command: sh scripts/fetch-fonts.sh && bun run build
 set -e
 mkdir -p public/fonts
 for f in BerkeleyMono-Regular BerkeleyMono-Bold BerkeleyMono-Oblique BerkeleyMono-Bold-Oblique; do
