@@ -1,6 +1,6 @@
 # website
 
-My personal website, built with [Astro](https://astro.build).
+[My personal website](https://crosse.dev), built with [Astro](https://astro.build).
 
 ## Development
 
