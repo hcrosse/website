@@ -34,7 +34,7 @@ export async function getStaticPaths() {
 }
 
 export async function GET({ props }: { props: PageMeta }) {
-  const { title, description, ogPrompt } = props;
+  const { title, description, ogDescription, ogPrompt } = props;
   const svg = await satori(
     {
       type: 'div',
@@ -46,7 +46,7 @@ export async function GET({ props }: { props: PageMeta }) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '60px 72px',
+          padding: '80px 72px 60px',
           fontFamily: 'BerkeleyMono',
         },
         children: [
@@ -60,14 +60,19 @@ export async function GET({ props }: { props: PageMeta }) {
           {
             type: 'div',
             props: {
-              style: { display: 'flex', flexDirection: 'column', gap: 20 },
+              style: {
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 20,
+                marginBottom: 40,
+              },
               children: [
                 {
                   type: 'div',
                   props: {
                     style: {
                       color: '#cdd6f4',
-                      fontSize: 80,
+                      fontSize: 88,
                       fontWeight: 700,
                       lineHeight: 1.1,
                     },
@@ -77,8 +82,8 @@ export async function GET({ props }: { props: PageMeta }) {
                 {
                   type: 'div',
                   props: {
-                    style: { color: '#6c7086', fontSize: 30 },
-                    children: description,
+                    style: { color: '#6c7086', fontSize: 34 },
+                    children: ogDescription ?? description,
                   },
                 },
               ],
