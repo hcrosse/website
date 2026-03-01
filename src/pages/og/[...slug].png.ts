@@ -84,13 +84,6 @@ export async function GET({ props }: { props: PageMeta }) {
               ],
             },
           },
-          {
-            type: 'div',
-            props: {
-              style: { color: '#45475a', fontSize: 24 },
-              children: 'crosse.dev',
-            },
-          },
         ],
       },
     },
