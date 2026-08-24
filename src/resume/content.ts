@@ -33,17 +33,14 @@ export type ResumeContent = {
   }>;
 };
 
-function assertRecord(
-  value: unknown,
-  path: string,
-): asserts value is Record<string, unknown> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+function assertRecord(value: unknown, path: string): asserts value is Record<string, unknown> {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
     throw new TypeError(`${path} must be an object`);
   }
 }
 
 function assertString(value: unknown, path: string): asserts value is string {
-  if (typeof value !== 'string' || value.trim() === '') {
+  if (typeof value !== "string" || value.trim() === "") {
     throw new TypeError(`${path} must be a non-empty string`);
   }
 }
@@ -55,21 +52,21 @@ function assertArray(value: unknown, path: string): asserts value is unknown[] {
 }
 
 function assertResumeContent(value: unknown): asserts value is ResumeContent {
-  assertRecord(value, 'resume');
+  assertRecord(value, "resume");
 
-  assertRecord(value.identity, 'identity');
-  assertString(value.identity.name, 'identity.name');
-  assertString(value.identity.email, 'identity.email');
-  assertString(value.identity.phone, 'identity.phone');
-  assertRecord(value.identity.linkedin, 'identity.linkedin');
-  assertString(value.identity.linkedin.handle, 'identity.linkedin.handle');
-  assertString(value.identity.linkedin.url, 'identity.linkedin.url');
-  assertRecord(value.identity.github, 'identity.github');
-  assertString(value.identity.github.handle, 'identity.github.handle');
-  assertString(value.identity.github.url, 'identity.github.url');
-  assertString(value.identity.location, 'identity.location');
+  assertRecord(value.identity, "identity");
+  assertString(value.identity.name, "identity.name");
+  assertString(value.identity.email, "identity.email");
+  assertString(value.identity.phone, "identity.phone");
+  assertRecord(value.identity.linkedin, "identity.linkedin");
+  assertString(value.identity.linkedin.handle, "identity.linkedin.handle");
+  assertString(value.identity.linkedin.url, "identity.linkedin.url");
+  assertRecord(value.identity.github, "identity.github");
+  assertString(value.identity.github.handle, "identity.github.handle");
+  assertString(value.identity.github.url, "identity.github.url");
+  assertString(value.identity.location, "identity.location");
 
-  assertArray(value.employment, 'employment');
+  assertArray(value.employment, "employment");
   value.employment.forEach((job, jobIndex) => {
     const path = `employment[${jobIndex}]`;
     assertRecord(job, path);
@@ -83,17 +80,17 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
     });
   });
 
-  assertRecord(value.education, 'education');
-  assertString(value.education.institution, 'education.institution');
-  assertString(value.education.degree, 'education.degree');
-  assertString(value.education.year, 'education.year');
+  assertRecord(value.education, "education");
+  assertString(value.education.institution, "education.institution");
+  assertString(value.education.degree, "education.degree");
+  assertString(value.education.year, "education.year");
 
-  assertArray(value.tools, 'tools');
+  assertArray(value.tools, "tools");
   value.tools.forEach((tool, toolIndex) => {
     assertString(tool, `tools[${toolIndex}]`);
   });
 
-  assertArray(value.selectedWork, 'selectedWork');
+  assertArray(value.selectedWork, "selectedWork");
   value.selectedWork.forEach((work, workIndex) => {
     const path = `selectedWork[${workIndex}]`;
     assertRecord(work, path);
@@ -110,64 +107,64 @@ export function parseResumeContent(value: unknown): ResumeContent {
   return value;
 }
 
-const loremIpsum = 'Lorem ipsum dolor sit amet.';
+const loremIpsum = "Lorem ipsum dolor sit amet.";
 
 export const generalResume: ResumeContent = {
   identity: {
-    name: 'Harrison Crosse',
-    email: 'harrison@crosse.dev',
-    phone: '703-472-7202',
+    name: "Harrison Crosse",
+    email: "harrison@crosse.dev",
+    phone: "703-472-7202",
     linkedin: {
-      handle: 'hcrosse',
-      url: 'https://linkedin.com/in/hcrosse',
+      handle: "hcrosse",
+      url: "https://linkedin.com/in/hcrosse",
     },
     github: {
-      handle: 'hcrosse',
-      url: 'https://github.com/hcrosse',
+      handle: "hcrosse",
+      url: "https://github.com/hcrosse",
     },
-    location: 'Arlington, VA, US',
+    location: "Arlington, VA, US",
   },
   employment: [
     {
-      company: 'Docker',
-      title: 'Senior Software Engineer',
-      start: '2025',
-      end: 'Present',
+      company: "Docker",
+      title: "Senior Software Engineer",
+      start: "2025",
+      end: "Present",
       highlights: [loremIpsum],
     },
     {
-      company: 'Calendly',
-      title: 'Senior Data Engineer',
-      start: '2024',
-      end: '2025',
+      company: "Calendly",
+      title: "Senior Data Engineer",
+      start: "2024",
+      end: "2025",
       highlights: [loremIpsum],
     },
     {
-      company: 'Calendly',
-      title: 'Data Engineer',
-      start: '2022',
-      end: '2024',
+      company: "Calendly",
+      title: "Data Engineer",
+      start: "2022",
+      end: "2024",
       highlights: [loremIpsum],
     },
     {
-      company: 'Amobee',
-      title: 'Software Engineer, Data Systems',
-      start: '2021',
-      end: '2022',
+      company: "Amobee",
+      title: "Software Engineer, Data Systems",
+      start: "2021",
+      end: "2022",
       highlights: [loremIpsum],
     },
     {
-      company: 'Sayari Labs',
-      title: 'Data Engineer',
-      start: '2020',
-      end: '2021',
+      company: "Sayari Labs",
+      title: "Data Engineer",
+      start: "2020",
+      end: "2021",
       highlights: [loremIpsum],
     },
     {
-      company: 'Booz Allen Hamilton',
-      title: 'Data Scientist',
-      start: '2019',
-      end: '2020',
+      company: "Booz Allen Hamilton",
+      title: "Data Scientist",
+      start: "2019",
+      end: "2020",
       highlights: [loremIpsum],
     },
   ],
@@ -176,12 +173,12 @@ export const generalResume: ResumeContent = {
     degree: loremIpsum,
     year: loremIpsum,
   },
-  tools: ['Python', 'Go', 'SQL', 'Kafka', 'Kubernetes', 'AWS'],
+  tools: ["Python", "Go", "SQL", "Kafka", "Kubernetes", "AWS"],
   selectedWork: [
     {
-      name: 'crosse.dev',
+      name: "crosse.dev",
       description: loremIpsum,
-      url: 'https://crosse.dev',
+      url: "https://crosse.dev",
     },
   ],
 };

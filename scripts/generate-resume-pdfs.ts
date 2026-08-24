@@ -1,28 +1,21 @@
-import { spawn, type ChildProcess } from 'node:child_process';
-import { randomUUID } from 'node:crypto';
-import {
-  access,
-  mkdir,
-  readFile,
-  realpath,
-  rename,
-  rm,
-} from 'node:fs/promises';
-import { createServer } from 'node:net';
-import { isAbsolute, relative, resolve } from 'node:path';
-import { setTimeout as delay } from 'node:timers/promises';
-import { PDFDocument } from 'pdf-lib';
-import { chromium, type Browser } from 'playwright';
-import { parseResumeContent } from '../src/resume/content';
+import { spawn, type ChildProcess } from "node:child_process";
+import { randomUUID } from "node:crypto";
+import { access, mkdir, readFile, realpath, rename, rm } from "node:fs/promises";
+import { createServer } from "node:net";
+import { isAbsolute, relative, resolve } from "node:path";
+import { setTimeout as delay } from "node:timers/promises";
+import { PDFDocument } from "pdf-lib";
+import { chromium, type Browser } from "playwright";
+import { parseResumeContent } from "../src/resume/content";
 
 type Arguments = {
   contentPath: string | undefined;
 };
 
-const themes = ['light', 'dark'] as const;
+const themes = ["light", "dark"] as const;
 type Theme = (typeof themes)[number];
-const outputDirectory = resolve('.resume');
-const publicDirectory = resolve('public');
+const outputDirectory = resolve(".resume");
+const publicDirectory = resolve("public");
 const readinessTimeoutMs = 30_000;
 const letterWidth = 612;
 const letterHeight = 792;
@@ -37,10 +30,7 @@ type GenerateResumePdfsOptions = {
   outputDirectory?: string;
   publicDirectory?: string;
   startedAt?: Date;
-  renderPdfs?: (
-    outputs: ResumeOutput[],
-    contentPath: string | undefined,
-  ) => Promise<void>;
+  renderPdfs?: (outputs: ResumeOutput[], contentPath: string | undefined) => Promise<void>;
 };
 
 export function createHarnessEnvironment(
@@ -48,6 +38,7 @@ export function createHarnessEnvironment(
   inheritedEnvironment: NodeJS.ProcessEnv = process.env,
 ): NodeJS.ProcessEnv {
   const environment = { ...inheritedEnvironment };
+  environment.ASTRO_DEV_BACKGROUND = "0";
   delete environment.RESUME_CONTENT_PATH;
   if (contentPath) environment.RESUME_CONTENT_PATH = contentPath;
   return environment;
@@ -56,11 +47,11 @@ export function createHarnessEnvironment(
 export function parseArguments(arguments_: string[]): Arguments {
   if (arguments_.length === 0) return { contentPath: undefined };
 
-  if (arguments_[0] !== '--content') {
+  if (arguments_[0] !== "--content") {
     throw new Error(`Unknown argument: ${arguments_[0]}`);
   }
   if (arguments_.length !== 2 || !arguments_[1]) {
-    throw new Error('--content requires exactly one path');
+    throw new Error("--content requires exactly one path");
   }
 
   return { contentPath: arguments_[1] };
@@ -79,32 +70,32 @@ async function preflightContent(contentPath: string): Promise<string> {
     realpath(resolvedPath),
   ]);
   assertPathInside(privateDirectoryPath, realContentPath);
-  parseResumeContent(JSON.parse(await readFile(realContentPath, 'utf8')));
+  parseResumeContent(JSON.parse(await readFile(realContentPath, "utf8")));
   return realContentPath;
 }
 
 function assertPathInside(directory: string, path: string): void {
   const relativePath = relative(directory, path);
   if (
-    relativePath === '' ||
-    relativePath === '..' ||
-    relativePath.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`) ||
+    relativePath === "" ||
+    relativePath === ".." ||
+    relativePath.startsWith(`..${process.platform === "win32" ? "\\" : "/"}`) ||
     isAbsolute(relativePath)
   ) {
-    throw new Error('Resume content path must be inside .resume');
+    throw new Error("Resume content path must be inside .resume");
   }
 }
 
 function formatDate(date: Date): string {
   return [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-    .map((part) => String(part).padStart(2, '0'))
-    .join('_');
+    .map((part) => String(part).padStart(2, "0"))
+    .join("_");
 }
 
 function formatTime(date: Date): string {
   return [date.getHours(), date.getMinutes(), date.getSeconds()]
-    .map((part) => String(part).padStart(2, '0'))
-    .join('_');
+    .map((part) => String(part).padStart(2, "0"))
+    .join("_");
 }
 
 function privatePath(directory: string, theme: Theme, suffix: string): string {
@@ -120,7 +111,7 @@ async function pathExists(path: string): Promise<boolean> {
     await access(path);
     return true;
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false;
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
     throw error;
   }
 }
@@ -135,15 +126,11 @@ async function createOutputs(
 
   if (privateMode) {
     const dateSuffix = formatDate(startedAt);
-    const dailyPaths = themes.map((theme) =>
-      privatePath(directory, theme, dateSuffix),
+    const dailyPaths = themes.map((theme) => privatePath(directory, theme, dateSuffix));
+    const useTimestamp = (await Promise.all(dailyPaths.map((path) => pathExists(path)))).some(
+      Boolean,
     );
-    const useTimestamp = (
-      await Promise.all(dailyPaths.map((path) => pathExists(path)))
-    ).some(Boolean);
-    const suffix = useTimestamp
-      ? `${dateSuffix}_${formatTime(startedAt)}`
-      : dateSuffix;
+    const suffix = useTimestamp ? `${dateSuffix}_${formatTime(startedAt)}` : dateSuffix;
     finalPaths = themes.map((theme) => privatePath(directory, theme, suffix));
 
     if (useTimestamp) {
@@ -162,10 +149,7 @@ async function createOutputs(
   return themes.map((theme, index) => ({
     theme,
     finalPath: finalPaths[index],
-    temporaryPath: resolve(
-      directory,
-      `.harrison-crosse-resume-${theme}-${randomUUID()}.tmp.pdf`,
-    ),
+    temporaryPath: resolve(directory, `.harrison-crosse-resume-${theme}-${randomUUID()}.tmp.pdf`),
   }));
 }
 
@@ -176,7 +160,7 @@ export async function verifyPdf(
   let document: PDFDocument;
   try {
     const bytes = await readFile(path);
-    if (bytes.length === 0) throw new Error('empty file');
+    if (bytes.length === 0) throw new Error("empty file");
     document = await PDFDocument.load(Uint8Array.from(bytes));
   } catch (error) {
     throw new Error(`Invalid PDF: ${relative(process.cwd(), path)}`, {
@@ -186,16 +170,11 @@ export async function verifyPdf(
 
   const pages = document.getPages();
   if (pages.length === 0) {
-    throw new Error(
-      `Invalid PDF contains no pages: ${relative(process.cwd(), path)}`,
-    );
+    throw new Error(`Invalid PDF contains no pages: ${relative(process.cwd(), path)}`);
   }
   for (const page of pages) {
     const { width, height } = page.getSize();
-    if (
-      Math.abs(width - letterWidth) > 0.01 ||
-      Math.abs(height - letterHeight) > 0.01
-    ) {
+    if (Math.abs(width - letterWidth) > 0.01 || Math.abs(height - letterHeight) > 0.01) {
       throw new Error(
         `Generated PDF is not US Letter (${letterWidth}x${letterHeight} points): ${relative(process.cwd(), path)}`,
       );
@@ -212,12 +191,12 @@ async function reservePort(): Promise<number> {
   const server = createServer();
 
   return await new Promise((resolvePort, reject) => {
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', () => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
       const address = server.address();
-      if (!address || typeof address === 'string') {
+      if (!address || typeof address === "string") {
         server.close();
-        reject(new Error('Failed to reserve a loopback port'));
+        reject(new Error("Failed to reserve a loopback port"));
         return;
       }
 
@@ -229,24 +208,18 @@ async function reservePort(): Promise<number> {
   });
 }
 
-async function fetchBeforeDeadline(
-  url: string,
-  deadline: number,
-): Promise<Response> {
+async function fetchBeforeDeadline(url: string, deadline: number): Promise<Response> {
   const remainingMs = deadline - Date.now();
   if (remainingMs <= 0) {
-    throw new Error('Resume harness readiness deadline expired');
+    throw new Error("Resume harness readiness deadline expired");
   }
   return await fetch(url, { signal: AbortSignal.timeout(remainingMs) });
 }
 
-async function waitForHarness(
-  harness: ChildProcess,
-  baseUrl: string,
-): Promise<void> {
+async function waitForHarness(harness: ChildProcess, baseUrl: string): Promise<void> {
   const deadline = Date.now() + readinessTimeoutMs;
   let spawnError: unknown;
-  harness.once('error', (error) => {
+  harness.once("error", (error) => {
     spawnError = error;
   });
 
@@ -255,9 +228,7 @@ async function waitForHarness(
     if (harness.exitCode !== null || harness.signalCode !== null) {
       throw new Error(
         `Resume harness exited with ${
-          harness.exitCode !== null
-            ? `code ${harness.exitCode}`
-            : `signal ${harness.signalCode}`
+          harness.exitCode !== null ? `code ${harness.exitCode}` : `signal ${harness.signalCode}`
         }`,
       );
     }
@@ -271,31 +242,20 @@ async function waitForHarness(
     await delay(Math.min(200, Math.max(0, deadline - Date.now())));
   }
 
-  throw new Error(
-    `Resume harness did not become ready within ${readinessTimeoutMs}ms`,
-  );
+  throw new Error(`Resume harness did not become ready within ${readinessTimeoutMs}ms`);
 }
 
 async function stopHarness(harness: ChildProcess): Promise<void> {
-  if (
-    harness.pid === undefined ||
-    harness.exitCode !== null ||
-    harness.signalCode !== null
-  ) {
+  if (harness.pid === undefined || harness.exitCode !== null || harness.signalCode !== null) {
     return;
   }
 
-  harness.kill('SIGTERM');
+  harness.kill("SIGTERM");
   const exited = new Promise<void>((resolveExit) => {
-    harness.once('exit', () => resolveExit());
+    harness.once("exit", () => resolveExit());
   });
-  if (
-    (await Promise.race([
-      exited.then(() => true),
-      delay(5_000).then(() => false),
-    ])) === false
-  ) {
-    harness.kill('SIGKILL');
+  if ((await Promise.race([exited.then(() => true), delay(5_000).then(() => false)])) === false) {
+    harness.kill("SIGKILL");
     await exited;
   }
 }
@@ -312,20 +272,21 @@ async function renderPdfsWithHarness(
     const port = await reservePort();
     const baseUrl = `http://127.0.0.1:${port}`;
     harness = spawn(
-      'bunx',
+      "bunx",
       [
-        'astro',
-        'dev',
-        '--config',
-        'scripts/resume/astro.config.mjs',
-        '--host',
-        '127.0.0.1',
-        '--port',
+        "astro",
+        "dev",
+        "--ignore-lock",
+        "--config",
+        "scripts/resume/astro.config.mjs",
+        "--host",
+        "127.0.0.1",
+        "--port",
         String(port),
       ],
       {
         env: createHarnessEnvironment(contentPath),
-        stdio: 'inherit',
+        stdio: "inherit",
       },
     );
 
@@ -335,17 +296,16 @@ async function renderPdfsWithHarness(
 
     for (const { theme, temporaryPath } of outputs) {
       const response = await page.goto(`${baseUrl}/${theme}`, {
-        waitUntil: 'networkidle',
+        waitUntil: "networkidle",
       });
-      if (!response?.ok())
-        throw new Error(`Failed to load ${theme} resume route`);
+      if (!response?.ok()) throw new Error(`Failed to load ${theme} resume route`);
       await page.evaluate(() => document.fonts.ready);
       await page.pdf({
         path: temporaryPath,
-        format: 'Letter',
+        format: "Letter",
         printBackground: true,
         preferCSSPageSize: true,
-        margin: { top: '0', right: '0', bottom: '0', left: '0' },
+        margin: { top: "0", right: "0", bottom: "0", left: "0" },
       });
     }
   } catch (error) {
@@ -373,7 +333,7 @@ async function renderPdfsWithHarness(
     throw primaryError;
   }
   if (cleanupErrors.length > 0) {
-    throw new AggregateError(cleanupErrors, 'Resume harness cleanup failed');
+    throw new AggregateError(cleanupErrors, "Resume harness cleanup failed");
   }
 }
 
@@ -390,9 +350,7 @@ export async function generateResumePdfs(
     mkdir(stableDirectory, { recursive: true }),
   ]);
 
-  const validatedContentPath = contentPath
-    ? await preflightContent(contentPath)
-    : undefined;
+  const validatedContentPath = contentPath ? await preflightContent(contentPath) : undefined;
   const outputs = await createOutputs(
     validatedContentPath !== undefined,
     directory,
@@ -403,9 +361,7 @@ export async function generateResumePdfs(
   let primaryError: unknown;
   try {
     await renderPdfs(outputs, validatedContentPath);
-    await Promise.all(
-      outputs.map(({ temporaryPath }) => verifyPdf(temporaryPath)),
-    );
+    await Promise.all(outputs.map(({ temporaryPath }) => verifyPdf(temporaryPath)));
     for (const output of outputs) {
       await rename(output.temporaryPath, output.finalPath);
     }
@@ -417,14 +373,14 @@ export async function generateResumePdfs(
     outputs.map(({ temporaryPath }) => rm(temporaryPath, { force: true })),
   );
   const cleanupErrors = cleanupResults.flatMap((result) =>
-    result.status === 'rejected' ? [result.reason] : [],
+    result.status === "rejected" ? [result.reason] : [],
   );
   if (primaryError !== undefined) {
     for (const error of cleanupErrors) console.error(error);
     throw primaryError;
   }
   if (cleanupErrors.length > 0) {
-    throw new AggregateError(cleanupErrors, 'Temporary PDF cleanup failed');
+    throw new AggregateError(cleanupErrors, "Temporary PDF cleanup failed");
   }
 
   for (const output of outputs) {

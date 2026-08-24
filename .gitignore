@@ -21,6 +21,7 @@ node_modules/
 # project
 TODO.md
 .resume/
+.superpowers/
 .worktrees/
 
 # fonts (private, fetched from R2 at build time)
