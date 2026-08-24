@@ -130,7 +130,7 @@ const { content, theme } = Astro.props;
 
       <section aria-labelledby="education-heading">
         <h2 id="education-heading">Education</h2>
-        <h3>{content.education.institution}</h3>
+        <h3 class="education-institution">{content.education.institution}</h3>
         <div class="education-degree-row">
           <p>{content.education.degree}</p>
           <p class="education-year">{content.education.year}</p>
@@ -396,8 +396,14 @@ const { content, theme } = Astro.props;
   }
 
   .education-minor {
+    margin-top: 0.03in;
     color: var(--resume-muted);
     font-size: 8.5pt;
+  }
+
+  .education-institution {
+    font-size: 10.5pt;
+    white-space: nowrap;
   }
 
   .education-degree-row {
