@@ -6,10 +6,31 @@ describe('parseResumeContent', () => {
     expect(parseResumeContent(generalResume)).toEqual(generalResume);
   });
 
+  test('defines the requested contact details', () => {
+    expect(generalResume.identity).toEqual({
+      name: 'Harrison Crosse',
+      email: 'harrison@crosse.dev',
+      phone: '703-472-7202',
+      linkedin: {
+        handle: 'hcrosse',
+        url: 'https://linkedin.com/in/hcrosse',
+      },
+      github: {
+        handle: 'hcrosse',
+        url: 'https://github.com/hcrosse',
+      },
+      location: 'Arlington, VA, US',
+    });
+  });
+
   test.each([
     [
       'missing name',
       { ...generalResume, identity: { ...generalResume.identity, name: '' } },
+    ],
+    [
+      'missing phone',
+      { ...generalResume, identity: { ...generalResume.identity, phone: '' } },
     ],
     ['empty employment', { ...generalResume, employment: [] }],
     [

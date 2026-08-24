@@ -13,23 +13,69 @@ const { content, theme } = Astro.props;
 ---
 
 <div class="resume" data-theme={theme}>
+  <svg class="icon-definitions" aria-hidden="true">
+    <defs>
+      <symbol id="icon-location" viewBox="0 0 24 24">
+        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+        <circle cx="12" cy="10" r="2.5"></circle>
+      </symbol>
+      <symbol id="icon-email" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+        <path d="m3 7 9 6 9-6"></path>
+      </symbol>
+      <symbol id="icon-phone" viewBox="0 0 24 24">
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92Z"
+        ></path>
+      </symbol>
+      <symbol id="icon-linkedin" viewBox="0 0 24 24">
+        <path
+          d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.29ZM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.04H3.54V8.98H7.1v11.47Z"
+        ></path>
+      </symbol>
+      <symbol id="icon-github" viewBox="0 0 24 24">
+        <path
+          d="M12 .3a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18a4.64 4.64 0 0 1 1.23 3.22c0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.3c0 .32.22.7.83.58A12 12 0 0 0 12 .3Z"
+        ></path>
+      </symbol>
+    </defs>
+  </svg>
+
   <header class="resume-header">
-    <div class="identity">
-      <h1>{content.identity.name}</h1>
-      <p>{content.identity.title}</p>
-    </div>
+    <h1>{content.identity.name}</h1>
 
     <address>
       <ul>
         <li>
+          <svg aria-hidden="true"><use href="#icon-location"></use></svg>
+          <span>{content.identity.location}</span>
+        </li>
+        <li>
+          <svg aria-hidden="true"><use href="#icon-email"></use></svg>
           <a href={`mailto:${content.identity.email}`}
             >{content.identity.email}</a
           >
         </li>
         <li>
-          <a href={content.identity.website}>{content.identity.website}</a>
+          <svg aria-hidden="true"><use href="#icon-phone"></use></svg>
+          <a href="tel:+17034727202">{content.identity.phone}</a>
         </li>
-        <li>{content.identity.location}</li>
+        <li>
+          <svg class="brand-icon" aria-hidden="true"
+            ><use href="#icon-linkedin"></use></svg
+          >
+          <a href={content.identity.linkedin.url}
+            >{content.identity.linkedin.handle}</a
+          >
+        </li>
+        <li>
+          <svg class="brand-icon" aria-hidden="true"
+            ><use href="#icon-github"></use></svg
+          >
+          <a href={content.identity.github.url}
+            >{content.identity.github.handle}</a
+          >
+        </li>
       </ul>
     </address>
   </header>
@@ -60,13 +106,6 @@ const { content, theme } = Astro.props;
     </section>
 
     <div class="utility">
-      <section aria-labelledby="tools-heading">
-        <h2 id="tools-heading">Tools</h2>
-        <ul class="tool-list">
-          {content.tools.map((tool) => <li>{tool}</li>)}
-        </ul>
-      </section>
-
       <section aria-labelledby="selected-work-heading">
         <h2 id="selected-work-heading">Selected Work</h2>
         {
@@ -87,6 +126,13 @@ const { content, theme } = Astro.props;
         <h3>{content.education.institution}</h3>
         <p>{content.education.degree}</p>
         <p class="education-year">{content.education.year}</p>
+      </section>
+
+      <section aria-labelledby="tools-heading">
+        <h2 id="tools-heading">Tools</h2>
+        <ul class="tool-list">
+          {content.tools.map((tool) => <li>{tool}</li>)}
+        </ul>
       </section>
     </div>
   </main>
@@ -120,20 +166,13 @@ const { content, theme } = Astro.props;
   .resume[data-theme='dark'] {
     --resume-background: #0d0d0d;
     --resume-text: #f2f2f2;
-    --resume-muted: #9aa4a6;
+    --resume-muted: #b8c0c2;
     --resume-accent: #6b8a5c;
   }
 
   .resume-header {
     border-bottom: 1.5pt solid var(--resume-accent);
     padding-bottom: 0.2in;
-  }
-
-  .identity {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.25in;
   }
 
   h1,
@@ -152,15 +191,6 @@ const { content, theme } = Astro.props;
     line-height: 1;
   }
 
-  .identity > p {
-    color: var(--resume-muted);
-    font-size: 10pt;
-    font-weight: 600;
-    letter-spacing: 0.5pt;
-    text-align: right;
-    text-transform: uppercase;
-  }
-
   address {
     margin-top: 0.14in;
     color: var(--resume-muted);
@@ -172,9 +202,38 @@ const { content, theme } = Astro.props;
   address ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.08in 0.24in;
+    gap: 0.08in 0.2in;
     padding: 0;
     list-style: none;
+  }
+
+  address li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.05in;
+  }
+
+  address svg {
+    width: 0.12in;
+    height: 0.12in;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  address .brand-icon {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .icon-definitions {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
   }
 
   a {
@@ -262,12 +321,23 @@ const { content, theme } = Astro.props;
   }
 
   .tool-list {
+    display: flex;
+    flex-wrap: wrap;
     padding: 0;
+    font-family: 'Chivo Mono', monospace;
+    font-size: 8pt;
     list-style: none;
   }
 
   .tool-list li + li {
-    margin-top: 0.06in;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .tool-list li + li::before {
+    margin: 0 0.07in;
+    color: var(--resume-muted);
+    content: '·';
   }
 
   .selected-work-entry {

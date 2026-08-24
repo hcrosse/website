@@ -1,9 +1,16 @@
 export type ResumeContent = {
   identity: {
     name: string;
-    title: string;
     email: string;
-    website: string;
+    phone: string;
+    linkedin: {
+      handle: string;
+      url: string;
+    };
+    github: {
+      handle: string;
+      url: string;
+    };
     location: string;
   };
   employment: Array<{
@@ -52,9 +59,14 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
 
   assertRecord(value.identity, 'identity');
   assertString(value.identity.name, 'identity.name');
-  assertString(value.identity.title, 'identity.title');
   assertString(value.identity.email, 'identity.email');
-  assertString(value.identity.website, 'identity.website');
+  assertString(value.identity.phone, 'identity.phone');
+  assertRecord(value.identity.linkedin, 'identity.linkedin');
+  assertString(value.identity.linkedin.handle, 'identity.linkedin.handle');
+  assertString(value.identity.linkedin.url, 'identity.linkedin.url');
+  assertRecord(value.identity.github, 'identity.github');
+  assertString(value.identity.github.handle, 'identity.github.handle');
+  assertString(value.identity.github.url, 'identity.github.url');
   assertString(value.identity.location, 'identity.location');
 
   assertArray(value.employment, 'employment');
@@ -103,10 +115,17 @@ const loremIpsum = 'Lorem ipsum dolor sit amet.';
 export const generalResume: ResumeContent = {
   identity: {
     name: 'Harrison Crosse',
-    title: 'Senior Software Engineer',
     email: 'harrison@crosse.dev',
-    website: 'https://crosse.dev',
-    location: 'United States',
+    phone: '703-472-7202',
+    linkedin: {
+      handle: 'hcrosse',
+      url: 'https://linkedin.com/in/hcrosse',
+    },
+    github: {
+      handle: 'hcrosse',
+      url: 'https://github.com/hcrosse',
+    },
+    location: 'Arlington, VA, US',
   },
   employment: [
     {
@@ -157,7 +176,7 @@ export const generalResume: ResumeContent = {
     degree: loremIpsum,
     year: loremIpsum,
   },
-  tools: [loremIpsum],
+  tools: ['Python', 'Go', 'SQL', 'Kafka', 'Kubernetes', 'AWS'],
   selectedWork: [
     {
       name: 'crosse.dev',
