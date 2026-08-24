@@ -3,7 +3,7 @@ import '@fontsource/archivo/latin-400.css';
 import '@fontsource/archivo/latin-600.css';
 import '@fontsource/chivo-mono/latin-400.css';
 import '@fontsource/chivo-mono/latin-600.css';
-import type { ResumeContent } from './content';
+import { sortToolItems, type ResumeContent } from './content';
 
 interface Props {
   content: ResumeContent;
@@ -88,14 +88,20 @@ const { content, theme } = Astro.props;
         content.employment.map((job) => (
           <article class="employment-entry">
             <header>
-              <div>
-                <h3>{job.company}</h3>
-                <p>{job.title}</p>
-              </div>
-              <p class="dates">
-                {job.start} - {job.end}
-              </p>
+              <h3>{job.company}</h3>
             </header>
+            <div class="role-list">
+              {
+                job.roles.map((role) => (
+                  <div class="role-entry">
+                    <p>{role.title}</p>
+                    <p class="dates">
+                      {role.start} - {role.end}
+                    </p>
+                  </div>
+                ))
+              }
+            </div>
             <ul>
               {job.highlights.map((highlight) => (
                 <li>{highlight}</li>
@@ -126,6 +132,7 @@ const { content, theme } = Astro.props;
         <h2 id="education-heading">Education</h2>
         <h3>{content.education.institution}</h3>
         <p>{content.education.degree}</p>
+        <p class="education-minor">{content.education.minor}</p>
         <p class="education-year">{content.education.year}</p>
       </section>
 
@@ -137,7 +144,7 @@ const { content, theme } = Astro.props;
               <div class="tool-group">
                 <h3 class="tool-category">{group.category}</h3>
                 <ul class="tool-list">
-                  {group.items.map((tool) => (
+                  {sortToolItems(group.items).map((tool) => (
                     <li>{tool}</li>
                   ))}
                 </ul>
@@ -284,15 +291,22 @@ const { content, theme } = Astro.props;
     margin-top: 0.2in;
   }
 
-  .employment-entry > header {
+  .role-list {
+    margin-top: 0.03in;
+  }
+
+  .role-entry {
     display: flex;
     align-items: start;
     justify-content: space-between;
     gap: 0.18in;
   }
 
-  .employment-entry header p:not(.dates) {
+  .role-entry + .role-entry {
     margin-top: 0.03in;
+  }
+
+  .role-entry > p:not(.dates) {
     color: var(--resume-muted);
   }
 
@@ -377,5 +391,9 @@ const { content, theme } = Astro.props;
   .selected-work-entry .work-url {
     margin-top: 0.05in;
     overflow-wrap: anywhere;
+  }
+
+  .education-minor {
+    color: var(--resume-muted);
   }
 </style>

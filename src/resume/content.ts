@@ -15,14 +15,17 @@ export type ResumeContent = {
   };
   employment: Array<{
     company: string;
-    title: string;
-    start: string;
-    end: string;
+    roles: Array<{
+      title: string;
+      start: string;
+      end: string;
+    }>;
     highlights: string[];
   }>;
   education: {
     institution: string;
     degree: string;
+    minor: string;
     year: string;
   };
   tools: Array<{
@@ -74,9 +77,14 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
     const path = `employment[${jobIndex}]`;
     assertRecord(job, path);
     assertString(job.company, `${path}.company`);
-    assertString(job.title, `${path}.title`);
-    assertString(job.start, `${path}.start`);
-    assertString(job.end, `${path}.end`);
+    assertArray(job.roles, `${path}.roles`);
+    job.roles.forEach((role, roleIndex) => {
+      const rolePath = `${path}.roles[${roleIndex}]`;
+      assertRecord(role, rolePath);
+      assertString(role.title, `${rolePath}.title`);
+      assertString(role.start, `${rolePath}.start`);
+      assertString(role.end, `${rolePath}.end`);
+    });
     assertArray(job.highlights, `${path}.highlights`);
     job.highlights.forEach((highlight, highlightIndex) => {
       assertString(highlight, `${path}.highlights[${highlightIndex}]`);
@@ -86,6 +94,7 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
   assertRecord(value.education, "education");
   assertString(value.education.institution, "education.institution");
   assertString(value.education.degree, "education.degree");
+  assertString(value.education.minor, "education.minor");
   assertString(value.education.year, "education.year");
 
   assertArray(value.tools, "tools");
@@ -116,6 +125,10 @@ export function parseResumeContent(value: unknown): ResumeContent {
   return value;
 }
 
+export function sortToolItems(items: string[]): string[] {
+  return items.toSorted((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+}
+
 const loremIpsum = "Lorem ipsum dolor sit amet.";
 
 export const generalResume: ResumeContent = {
@@ -136,56 +149,78 @@ export const generalResume: ResumeContent = {
   employment: [
     {
       company: "Docker",
-      title: "Senior Software Engineer",
-      start: "2025",
-      end: "Present",
+      roles: [{ title: "Senior Software Engineer", start: "2025", end: "Present" }],
       highlights: [loremIpsum],
     },
     {
       company: "Calendly",
-      title: "Senior Data Engineer",
-      start: "2024",
-      end: "2025",
-      highlights: [loremIpsum],
-    },
-    {
-      company: "Calendly",
-      title: "Data Engineer",
-      start: "2022",
-      end: "2024",
+      roles: [
+        { title: "Senior Data Engineer", start: "2024", end: "2025" },
+        { title: "Data Engineer", start: "2022", end: "2024" },
+      ],
       highlights: [loremIpsum],
     },
     {
       company: "Amobee",
-      title: "Software Engineer, Data Systems",
-      start: "2021",
-      end: "2022",
+      roles: [{ title: "Software Engineer, Data Systems", start: "2021", end: "2022" }],
       highlights: [loremIpsum],
     },
     {
       company: "Sayari Labs",
-      title: "Data Engineer",
-      start: "2020",
-      end: "2021",
+      roles: [{ title: "Data Engineer", start: "2020", end: "2021" }],
       highlights: [loremIpsum],
     },
     {
       company: "Booz Allen Hamilton",
-      title: "Data Scientist",
-      start: "2019",
-      end: "2020",
+      roles: [{ title: "Data Scientist", start: "2019", end: "2020" }],
       highlights: [loremIpsum],
     },
   ],
   education: {
-    institution: loremIpsum,
-    degree: loremIpsum,
-    year: loremIpsum,
+    institution: "University of Mary Washington",
+    degree: "B.S. Computer Science",
+    minor: "Minor in Data Science",
+    year: "2019",
   },
   tools: [
-    { category: "Languages", items: ["Python", "Go", "SQL"] },
-    { category: "Data Systems", items: ["Spark", "dbt", "Kafka", "Snowflake"] },
-    { category: "Infrastructure", items: ["AWS", "Kubernetes", "Linux"] },
+    {
+      category: "Languages",
+      items: ["Bash", "C", "Go", "Java", "Python", "Rust", "SQL", "TypeScript"],
+    },
+    {
+      category: "Data Systems",
+      items: [
+        "Airflow",
+        "Arrow",
+        "BigQuery",
+        "ClickHouse",
+        "dbt",
+        "Debezium",
+        "Flink",
+        "Iceberg",
+        "Kafka",
+        "Parquet",
+        "PostgreSQL",
+        "Protobuf",
+        "Snowflake",
+        "Spark",
+      ],
+    },
+    {
+      category: "Infrastructure",
+      items: [
+        "Argo",
+        "AWS",
+        "Docker",
+        "GCP",
+        "GitHub Actions",
+        "Grafana",
+        "Helm",
+        "Kubernetes",
+        "Linux",
+        "Terraform",
+      ],
+    },
   ],
   selectedWork: [
     {

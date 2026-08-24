@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { generalResume, parseResumeContent } from "./content";
+import { generalResume, parseResumeContent, sortToolItems } from "./content";
 
 describe("parseResumeContent", () => {
   test("accepts the general resume", () => {
@@ -25,10 +25,69 @@ describe("parseResumeContent", () => {
 
   test("groups tools by capability", () => {
     expect(generalResume.tools).toEqual([
-      { category: "Languages", items: ["Python", "Go", "SQL"] },
-      { category: "Data Systems", items: ["Spark", "dbt", "Kafka", "Snowflake"] },
-      { category: "Infrastructure", items: ["AWS", "Kubernetes", "Linux"] },
+      {
+        category: "Languages",
+        items: ["Bash", "C", "Go", "Java", "Python", "Rust", "SQL", "TypeScript"],
+      },
+      {
+        category: "Data Systems",
+        items: [
+          "Airflow",
+          "Arrow",
+          "BigQuery",
+          "ClickHouse",
+          "dbt",
+          "Debezium",
+          "Flink",
+          "Iceberg",
+          "Kafka",
+          "Parquet",
+          "PostgreSQL",
+          "Protobuf",
+          "Snowflake",
+          "Spark",
+        ],
+      },
+      {
+        category: "Infrastructure",
+        items: [
+          "Argo",
+          "AWS",
+          "Docker",
+          "GCP",
+          "GitHub Actions",
+          "Grafana",
+          "Helm",
+          "Kubernetes",
+          "Linux",
+          "Terraform",
+        ],
+      },
     ]);
+  });
+
+  test("sorts rendered tool items without mutating content", () => {
+    const items = ["TypeScript", "Bash", "dbt", "AWS"];
+    expect(sortToolItems(items)).toEqual(["AWS", "Bash", "dbt", "TypeScript"]);
+    expect(items).toEqual(["TypeScript", "Bash", "dbt", "AWS"]);
+  });
+
+  test("groups Calendly role progression under one employer", () => {
+    const calendly = generalResume.employment.filter((job) => job.company === "Calendly");
+    expect(calendly).toHaveLength(1);
+    expect(calendly[0].roles).toEqual([
+      { title: "Senior Data Engineer", start: "2024", end: "2025" },
+      { title: "Data Engineer", start: "2022", end: "2024" },
+    ]);
+  });
+
+  test("defines the general resume education", () => {
+    expect(generalResume.education).toEqual({
+      institution: "University of Mary Washington",
+      degree: "B.S. Computer Science",
+      minor: "Minor in Data Science",
+      year: "2019",
+    });
   });
 
   test.each([
