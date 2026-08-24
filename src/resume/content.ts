@@ -25,7 +25,10 @@ export type ResumeContent = {
     degree: string;
     year: string;
   };
-  tools: string[];
+  tools: Array<{
+    category: string;
+    items: string[];
+  }>;
   selectedWork: Array<{
     name: string;
     description: string;
@@ -86,8 +89,14 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
   assertString(value.education.year, "education.year");
 
   assertArray(value.tools, "tools");
-  value.tools.forEach((tool, toolIndex) => {
-    assertString(tool, `tools[${toolIndex}]`);
+  value.tools.forEach((group, groupIndex) => {
+    const path = `tools[${groupIndex}]`;
+    assertRecord(group, path);
+    assertString(group.category, `${path}.category`);
+    assertArray(group.items, `${path}.items`);
+    group.items.forEach((item, itemIndex) => {
+      assertString(item, `${path}.items[${itemIndex}]`);
+    });
   });
 
   assertArray(value.selectedWork, "selectedWork");
@@ -173,7 +182,11 @@ export const generalResume: ResumeContent = {
     degree: loremIpsum,
     year: loremIpsum,
   },
-  tools: ["Python", "Go", "SQL", "Kafka", "Kubernetes", "AWS"],
+  tools: [
+    { category: "Languages", items: ["Python", "Go", "SQL"] },
+    { category: "Data Systems", items: ["Spark", "dbt", "Kafka", "Snowflake"] },
+    { category: "Infrastructure", items: ["AWS", "Kubernetes", "Linux"] },
+  ],
   selectedWork: [
     {
       name: "crosse.dev",

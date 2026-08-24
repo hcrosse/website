@@ -2,6 +2,7 @@
 import '@fontsource/archivo/latin-400.css';
 import '@fontsource/archivo/latin-600.css';
 import '@fontsource/chivo-mono/latin-400.css';
+import '@fontsource/chivo-mono/latin-600.css';
 import type { ResumeContent } from './content';
 
 interface Props {
@@ -130,9 +131,20 @@ const { content, theme } = Astro.props;
 
       <section aria-labelledby="tools-heading">
         <h2 id="tools-heading">Tools</h2>
-        <ul class="tool-list">
-          {content.tools.map((tool) => <li>{tool}</li>)}
-        </ul>
+        <div class="tool-groups">
+          {
+            content.tools.map((group) => (
+              <div class="tool-group">
+                <h3 class="tool-category">{group.category}</h3>
+                <ul class="tool-list">
+                  {group.items.map((tool) => (
+                    <li>{tool}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
       </section>
     </div>
   </main>
@@ -253,7 +265,7 @@ const { content, theme } = Astro.props;
     color: var(--resume-accent);
     font-family: 'Chivo Mono', monospace;
     font-size: 8.5pt;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 1pt;
     text-transform: uppercase;
   }
@@ -320,24 +332,33 @@ const { content, theme } = Astro.props;
     margin-top: 0.3in;
   }
 
+  .tool-group + .tool-group {
+    margin-top: 0.08in;
+  }
+
+  .tool-category {
+    margin-bottom: 0.02in;
+    color: var(--resume-muted);
+    font-family: 'Chivo Mono', monospace;
+    font-size: 7pt;
+    font-weight: 600;
+    letter-spacing: 0.45pt;
+    text-transform: uppercase;
+  }
+
   .tool-list {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.04in 0.06in;
     padding: 0;
     font-family: 'Chivo Mono', monospace;
-    font-size: 8pt;
+    font-size: 7.5pt;
     list-style: none;
   }
 
-  .tool-list li + li {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .tool-list li + li::before {
-    margin: 0 0.07in;
-    color: var(--resume-muted);
-    content: '·';
+  .tool-list li {
+    padding: 0 0.04in 0.02in;
+    border-bottom: 0.75pt solid var(--resume-muted);
   }
 
   .selected-work-entry {

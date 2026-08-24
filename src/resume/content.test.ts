@@ -23,6 +23,14 @@ describe("parseResumeContent", () => {
     });
   });
 
+  test("groups tools by capability", () => {
+    expect(generalResume.tools).toEqual([
+      { category: "Languages", items: ["Python", "Go", "SQL"] },
+      { category: "Data Systems", items: ["Spark", "dbt", "Kafka", "Snowflake"] },
+      { category: "Infrastructure", items: ["AWS", "Kubernetes", "Linux"] },
+    ]);
+  });
+
   test.each([
     ["missing name", { ...generalResume, identity: { ...generalResume.identity, name: "" } }],
     ["missing phone", { ...generalResume, identity: { ...generalResume.identity, phone: "" } }],
@@ -35,6 +43,13 @@ describe("parseResumeContent", () => {
       },
     ],
     ["empty tools", { ...generalResume, tools: [] }],
+    [
+      "empty tool item",
+      {
+        ...generalResume,
+        tools: [{ category: "Languages", items: [""] }],
+      },
+    ],
   ])("rejects %s", (_name, value) => {
     expect(() => parseResumeContent(value)).toThrow();
   });
