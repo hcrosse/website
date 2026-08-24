@@ -1,0 +1,290 @@
+---
+import '@fontsource/archivo/latin-400.css';
+import '@fontsource/archivo/latin-600.css';
+import '@fontsource/chivo-mono/latin-400.css';
+import type { ResumeContent } from './content';
+
+interface Props {
+  content: ResumeContent;
+  theme: 'light' | 'dark';
+}
+
+const { content, theme } = Astro.props;
+---
+
+<div class="resume" data-theme={theme}>
+  <header class="resume-header">
+    <div class="identity">
+      <h1>{content.identity.name}</h1>
+      <p>{content.identity.title}</p>
+    </div>
+
+    <address>
+      <ul>
+        <li>
+          <a href={`mailto:${content.identity.email}`}
+            >{content.identity.email}</a
+          >
+        </li>
+        <li>
+          <a href={content.identity.website}>{content.identity.website}</a>
+        </li>
+        <li>{content.identity.location}</li>
+      </ul>
+    </address>
+  </header>
+
+  <main class="resume-body">
+    <section class="employment" aria-labelledby="employment-heading">
+      <h2 id="employment-heading">Employment</h2>
+      {
+        content.employment.map((job) => (
+          <article class="employment-entry">
+            <header>
+              <div>
+                <h3>{job.company}</h3>
+                <p>{job.title}</p>
+              </div>
+              <p class="dates">
+                {job.start} - {job.end}
+              </p>
+            </header>
+            <ul>
+              {job.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </section>
+
+    <div class="utility">
+      <section aria-labelledby="tools-heading">
+        <h2 id="tools-heading">Tools</h2>
+        <ul class="tool-list">
+          {content.tools.map((tool) => <li>{tool}</li>)}
+        </ul>
+      </section>
+
+      <section aria-labelledby="selected-work-heading">
+        <h2 id="selected-work-heading">Selected Work</h2>
+        {
+          content.selectedWork.map((work) => (
+            <article class="selected-work-entry">
+              <h3>
+                {work.url ? <a href={work.url}>{work.name}</a> : work.name}
+              </h3>
+              <p>{work.description}</p>
+              {work.url && <p class="work-url">{work.url}</p>}
+            </article>
+          ))
+        }
+      </section>
+
+      <section aria-labelledby="education-heading">
+        <h2 id="education-heading">Education</h2>
+        <h3>{content.education.institution}</h3>
+        <p>{content.education.degree}</p>
+        <p class="education-year">{content.education.year}</p>
+      </section>
+    </div>
+  </main>
+</div>
+
+<style>
+  .resume,
+  .resume * {
+    box-sizing: border-box;
+  }
+
+  .resume {
+    width: 8.5in;
+    height: 11in;
+    padding: 0.55in;
+    background: var(--resume-background);
+    color: var(--resume-text);
+    font-family: 'Archivo', Arial, Helvetica, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.35;
+    print-color-adjust: exact;
+  }
+
+  .resume[data-theme='light'] {
+    --resume-background: #f2f2f2;
+    --resume-text: #0d0d0d;
+    --resume-muted: #3e4a4f;
+    --resume-accent: #566e49;
+  }
+
+  .resume[data-theme='dark'] {
+    --resume-background: #0d0d0d;
+    --resume-text: #f2f2f2;
+    --resume-muted: #9aa4a6;
+    --resume-accent: #6b8a5c;
+  }
+
+  .resume-header {
+    border-bottom: 1.5pt solid var(--resume-accent);
+    padding-bottom: 0.2in;
+  }
+
+  .identity {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25in;
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  ul {
+    margin: 0;
+  }
+
+  h1 {
+    color: var(--resume-accent);
+    font-size: 34pt;
+    font-weight: 600;
+    letter-spacing: -0.8pt;
+    line-height: 1;
+  }
+
+  .identity > p {
+    color: var(--resume-muted);
+    font-size: 10pt;
+    font-weight: 600;
+    letter-spacing: 0.5pt;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  address {
+    margin-top: 0.14in;
+    color: var(--resume-muted);
+    font-family: 'Chivo Mono', monospace;
+    font-size: 8pt;
+    font-style: normal;
+  }
+
+  address ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.08in 0.24in;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .resume-body {
+    display: grid;
+    grid-template-columns: minmax(0, 68fr) minmax(0, 32fr);
+    gap: 0.38in;
+    padding-top: 0.28in;
+  }
+
+  h2 {
+    margin-bottom: 0.16in;
+    color: var(--resume-accent);
+    font-family: 'Chivo Mono', monospace;
+    font-size: 8.5pt;
+    font-weight: 400;
+    letter-spacing: 1pt;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: 11pt;
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  .employment-entry {
+    break-inside: avoid;
+  }
+
+  .employment-entry + .employment-entry {
+    margin-top: 0.2in;
+  }
+
+  .employment-entry > header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 0.18in;
+  }
+
+  .employment-entry header p:not(.dates) {
+    margin-top: 0.03in;
+    color: var(--resume-muted);
+  }
+
+  .dates,
+  .work-url,
+  .education-year {
+    color: var(--resume-muted);
+    font-family: 'Chivo Mono', monospace;
+    font-size: 7.5pt;
+  }
+
+  .dates {
+    flex: none;
+    padding-top: 0.02in;
+    white-space: nowrap;
+  }
+
+  .employment-entry ul {
+    margin-top: 0.09in;
+    padding-left: 0.16in;
+  }
+
+  .employment-entry li + li {
+    margin-top: 0.05in;
+  }
+
+  .utility {
+    border-left: 1pt solid var(--resume-muted);
+    padding-left: 0.28in;
+  }
+
+  .utility section {
+    break-inside: avoid;
+  }
+
+  .utility section + section {
+    margin-top: 0.3in;
+  }
+
+  .tool-list {
+    padding: 0;
+    list-style: none;
+  }
+
+  .tool-list li + li {
+    margin-top: 0.06in;
+  }
+
+  .selected-work-entry {
+    break-inside: avoid;
+  }
+
+  .selected-work-entry + .selected-work-entry {
+    margin-top: 0.18in;
+  }
+
+  .selected-work-entry > p,
+  .utility section > p {
+    margin-top: 0.07in;
+  }
+
+  .selected-work-entry .work-url {
+    margin-top: 0.05in;
+    overflow-wrap: anywhere;
+  }
+</style>

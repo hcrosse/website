@@ -8,12 +8,16 @@
     "preview": "bun run build && wrangler dev",
     "astro": "astro",
     "deploy": "bun run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "resume:pdf": "bun scripts/generate-resume-pdfs.ts",
+    "test:resume": "bun test src/resume/content.test.ts scripts/generate-resume-pdfs.test.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
+    "@fontsource/archivo": "^5.2.8",
+    "@fontsource/chivo-mono": "^5.2.8",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
@@ -27,6 +31,8 @@
     "@typescript-eslint/parser": "^8.56.0",
     "eslint": "^10.0.1",
     "eslint-plugin-astro": "^1.6.0",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.55.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1"
   }

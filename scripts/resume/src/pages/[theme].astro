@@ -1,0 +1,53 @@
+---
+import { readFileSync } from 'node:fs';
+import Resume from '../../../../src/resume/Resume.astro';
+import {
+  generalResume,
+  parseResumeContent,
+} from '../../../../src/resume/content';
+
+export function getStaticPaths() {
+  return ['light', 'dark'].map((theme) => ({ params: { theme } }));
+}
+
+const theme = Astro.params.theme as 'light' | 'dark';
+const contentPath = process.env.RESUME_CONTENT_PATH;
+const content = contentPath
+  ? parseResumeContent(JSON.parse(readFileSync(contentPath, 'utf8')))
+  : generalResume;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{content.identity.name} Resume</title>
+  </head>
+  <body>
+    <Resume content={content} theme={theme} />
+  </body>
+</html>
+
+<style>
+  @page {
+    size: Letter;
+    margin: 0;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: #0d0d0d;
+  }
+
+  @media print {
+    body {
+      background: transparent;
+    }
+  }
+</style>
