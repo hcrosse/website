@@ -2,11 +2,10 @@
 import { execSync } from "node:child_process";
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import { unified } from "@astrojs/markdown-remark";
 import tailwindcss from "@tailwindcss/vite";
 import remarkBreaks from "remark-breaks";
 import remarkGlow from "./src/plugins/remark-glow.mjs";
-
-import cloudflare from "@astrojs/cloudflare";
 
 const commitSha =
   process.env.CF_PAGES_COMMIT_SHA || execSync("git rev-parse HEAD").toString().trim();
@@ -21,7 +20,7 @@ export default defineConfig({
   integrations: [sitemap()],
 
   markdown: {
-    remarkPlugins: [remarkBreaks, remarkGlow],
+    processor: unified({ remarkPlugins: [remarkBreaks, remarkGlow] }),
   },
 
   vite: {
@@ -33,6 +32,4 @@ export default defineConfig({
       external: ["satori", "@resvg/resvg-js", "node:fs", "node:path"],
     },
   },
-
-  adapter: cloudflare(),
 });
