@@ -1,51 +1,45 @@
-import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 
 export const GET: APIRoute = async () => {
-  const pages = await getCollection('pages');
-  const blog = await getCollection('blog');
+  const pages = await getCollection("pages");
+  const blog = await getCollection("blog");
 
-  const sortedBlog = blog.sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-  );
+  const sortedBlog = blog.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-  const pageOrder = ['about', 'work', 'colophon'];
-  const sortedPages = pages.sort(
-    (a, b) => pageOrder.indexOf(a.id) - pageOrder.indexOf(b.id),
-  );
+  const pageOrder = ["about", "work", "colophon"];
+  const sortedPages = pages.toSorted((a, b) => pageOrder.indexOf(a.id) - pageOrder.indexOf(b.id));
 
   const pageLines = sortedPages.map(
-    (p) =>
-      `- [${p.data.title}](https://crosse.dev/${p.id}): ${p.data.description}`,
+    (p) => `- [${p.data.title}](https://crosse.dev/${p.id}): ${p.data.description}`,
   );
   pageLines.splice(
     2,
     0,
-    '- [Blog](https://crosse.dev/blog): Technical writing',
-    '- [Contact](https://crosse.dev/contact): Contact information',
+    "- [Blog](https://crosse.dev/blog): Technical writing",
+    "- [Contact](https://crosse.dev/contact): Contact information",
   );
 
   const blogLines = sortedBlog.map(
-    (p) =>
-      `- [${p.data.title}](https://crosse.dev/blog/${p.id}): ${p.data.description}`,
+    (p) => `- [${p.data.title}](https://crosse.dev/blog/${p.id}): ${p.data.description}`,
   );
 
   const body = [
-    '# Harrison Crosse',
-    '',
-    '> Software engineer. Personal website and blog.',
-    '',
-    '## Pages',
-    '',
+    "# Harrison Crosse",
+    "",
+    "> Software engineer. Personal website and blog.",
+    "",
+    "## Pages",
+    "",
     ...pageLines,
-    '',
-    '## Blog Posts',
-    '',
+    "",
+    "## Blog Posts",
+    "",
     ...blogLines,
-    '',
-  ].join('\n');
+    "",
+  ].join("\n");
 
   return new Response(body, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
 };

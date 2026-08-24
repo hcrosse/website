@@ -1,0 +1,52 @@
+minimum_prek_version = "0.4.13"
+
+[[repos]]
+repo = "builtin"
+
+[[repos.hooks]]
+id = "trailing-whitespace"
+files = "\\.astro$"
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "end-of-file-fixer"
+files = "\\.astro$"
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "check-added-large-files"
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "check-case-conflict"
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "check-illegal-windows-names"
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "check-merge-conflict"
+args = ["--assume-in-merge"]
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "detect-private-key"
+stages = ["pre-commit"]
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "oxlint"
+name = "Oxlint"
+language = "system"
+entry = "bun run lint"
+pass_filenames = false
+
+[[repos.hooks]]
+id = "oxfmt"
+name = "Oxfmt"
+language = "system"
+entry = "bun run format"
+pass_filenames = false
