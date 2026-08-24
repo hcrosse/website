@@ -131,9 +131,11 @@ const { content, theme } = Astro.props;
       <section aria-labelledby="education-heading">
         <h2 id="education-heading">Education</h2>
         <h3>{content.education.institution}</h3>
-        <p>{content.education.degree}</p>
+        <div class="education-degree-row">
+          <p>{content.education.degree}</p>
+          <p class="education-year">{content.education.year}</p>
+        </div>
         <p class="education-minor">{content.education.minor}</p>
-        <p class="education-year">{content.education.year}</p>
       </section>
 
       <section aria-labelledby="tools-heading">
@@ -395,5 +397,14 @@ const { content, theme } = Astro.props;
 
   .education-minor {
     color: var(--resume-muted);
+    font-size: 8.5pt;
+  }
+
+  .education-degree-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.12in;
+    margin-top: 0.07in;
   }
 </style>
