@@ -270,7 +270,7 @@ const { content, theme } = Astro.props;
   }
 
   h2 {
-    margin-bottom: 0.16in;
+    margin-bottom: 0.08in;
     color: var(--resume-accent);
     font-family: 'Chivo Mono', monospace;
     font-size: 11pt;
@@ -333,6 +333,10 @@ const { content, theme } = Astro.props;
 
   .employment-entry li + li {
     margin-top: 0.05in;
+  }
+
+  .employment-entry li::marker {
+    color: var(--resume-accent);
   }
 
   .utility {
