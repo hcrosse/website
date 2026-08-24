@@ -34,9 +34,10 @@ export type ResumeContent = {
   }>;
   selectedWork: Array<{
     name: string;
-    description: Array<{
-      text: string;
-      url?: string;
+    description: string;
+    links: Array<{
+      label: string;
+      url: string;
     }>;
   }>;
 };
@@ -115,14 +116,13 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
     const path = `selectedWork[${workIndex}]`;
     assertRecord(work, path);
     assertString(work.name, `${path}.name`);
-    assertArray(work.description, `${path}.description`);
-    work.description.forEach((segment, segmentIndex) => {
-      const segmentPath = `${path}.description[${segmentIndex}]`;
-      assertRecord(segment, segmentPath);
-      assertString(segment.text, `${segmentPath}.text`);
-      if (segment.url !== undefined) {
-        assertString(segment.url, `${segmentPath}.url`);
-      }
+    assertString(work.description, `${path}.description`);
+    assertArray(work.links, `${path}.links`);
+    work.links.forEach((link, linkIndex) => {
+      const linkPath = `${path}.links[${linkIndex}]`;
+      assertRecord(link, linkPath);
+      assertString(link.label, `${linkPath}.label`);
+      assertString(link.url, `${linkPath}.url`);
     });
   });
 }
@@ -232,39 +232,32 @@ export const generalResume: ResumeContent = {
   selectedWork: [
     {
       name: "DataFusion / Ballista",
-      description: [
-        { text: "Upstreamed non-blocking distributed shuffle execution by exposing " },
+      description:
+        "Upstreamed non-blocking distributed shuffle execution by exposing async batch partitioning in DataFusion and offloading Ballista shuffle writes from query workers.",
+      links: [
         {
-          text: "async batch partitioning in DataFusion",
+          label: "DataFusion #21341",
           url: "https://github.com/apache/datafusion/pull/21341",
         },
-        { text: " and " },
         {
-          text: "offloading Ballista shuffle writes from query workers",
+          label: "Ballista #1537",
           url: "https://github.com/apache/datafusion-ballista/pull/1537",
         },
-        { text: "." },
       ],
     },
     {
-      name: "Iceberg / Arrow",
-      description: [
-        { text: "Added " },
+      name: "Apache Iceberg / Arrow Go",
+      description:
+        "Improved Parquet writer compatibility by adding table-level page-version configuration to Iceberg and fixing invalid root-schema serialization in Arrow Go.",
+      links: [
         {
-          text: "configurable Parquet page versions to Iceberg",
+          label: "Iceberg #15700",
           url: "https://github.com/apache/iceberg/pull/15700",
         },
-        { text: ", fixed " },
         {
-          text: "Parquet root-schema interoperability in Arrow Go",
+          label: "Arrow Go #723",
           url: "https://github.com/apache/arrow-go/pull/723",
         },
-        { text: ", and " },
-        {
-          text: "fixed a goroutine leak in Iceberg Go's partitioned position-delete writes",
-          url: "https://github.com/apache/iceberg-go/pull/825",
-        },
-        { text: "." },
       ],
     },
   ],

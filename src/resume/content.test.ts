@@ -94,39 +94,32 @@ describe("parseResumeContent", () => {
     expect(generalResume.selectedWork).toEqual([
       {
         name: "DataFusion / Ballista",
-        description: [
-          { text: "Upstreamed non-blocking distributed shuffle execution by exposing " },
+        description:
+          "Upstreamed non-blocking distributed shuffle execution by exposing async batch partitioning in DataFusion and offloading Ballista shuffle writes from query workers.",
+        links: [
           {
-            text: "async batch partitioning in DataFusion",
+            label: "DataFusion #21341",
             url: "https://github.com/apache/datafusion/pull/21341",
           },
-          { text: " and " },
           {
-            text: "offloading Ballista shuffle writes from query workers",
+            label: "Ballista #1537",
             url: "https://github.com/apache/datafusion-ballista/pull/1537",
           },
-          { text: "." },
         ],
       },
       {
-        name: "Iceberg / Arrow",
-        description: [
-          { text: "Added " },
+        name: "Apache Iceberg / Arrow Go",
+        description:
+          "Improved Parquet writer compatibility by adding table-level page-version configuration to Iceberg and fixing invalid root-schema serialization in Arrow Go.",
+        links: [
           {
-            text: "configurable Parquet page versions to Iceberg",
+            label: "Iceberg #15700",
             url: "https://github.com/apache/iceberg/pull/15700",
           },
-          { text: ", fixed " },
           {
-            text: "Parquet root-schema interoperability in Arrow Go",
+            label: "Arrow Go #723",
             url: "https://github.com/apache/arrow-go/pull/723",
           },
-          { text: ", and " },
-          {
-            text: "fixed a goroutine leak in Iceberg Go's partitioned position-delete writes",
-            url: "https://github.com/apache/iceberg-go/pull/825",
-          },
-          { text: "." },
         ],
       },
     ]);
@@ -145,10 +138,10 @@ describe("parseResumeContent", () => {
     ],
     ["empty tools", { ...generalResume, tools: [] }],
     [
-      "empty selected-work description",
+      "empty selected-work links",
       {
         ...generalResume,
-        selectedWork: [{ ...generalResume.selectedWork[0], description: [] }],
+        selectedWork: [{ ...generalResume.selectedWork[0], links: [] }],
       },
     ],
     [
