@@ -20,9 +20,11 @@ node_modules/
 
 # project
 TODO.md
+.superpowers/
+.worktrees/
 
 # fonts (private, fetched from R2 at build time)
-public/fonts/
+public/fonts
 
 # os
 .DS_Store

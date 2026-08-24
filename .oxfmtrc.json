@@ -1,0 +1,3 @@
+{
+  "ignorePatterns": [".astro/**", ".superpowers/**", ".worktrees/**", "dist/**"]
+}
