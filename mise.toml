@@ -8,7 +8,7 @@ locked = true
 
 [tools]
 bun = "1.3"
-"aqua:j178/prek" = "0.4"
+"aqua:j178/prek" = "0.4.13"
 "aqua:koalaman/shellcheck" = "0.11"
 "aqua:rhysd/actionlint" = "1.7"
 "aqua:zizmorcore/zizmor" = "1"
