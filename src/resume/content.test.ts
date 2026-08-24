@@ -94,24 +94,39 @@ describe("parseResumeContent", () => {
     expect(generalResume.selectedWork).toEqual([
       {
         name: "DataFusion / Ballista",
-        description:
-          "Upstreamed non-blocking distributed shuffle execution by exposing async batch partitioning in DataFusion and moving Ballista disk I/O behind bounded channels and spawn_blocking.",
-        links: [
-          { label: "DataFusion #21341", url: "https://github.com/apache/datafusion/pull/21341" },
+        description: [
+          { text: "Upstreamed non-blocking distributed shuffle execution by exposing " },
           {
-            label: "Ballista #1537",
+            text: "async batch partitioning in DataFusion",
+            url: "https://github.com/apache/datafusion/pull/21341",
+          },
+          { text: " and " },
+          {
+            text: "offloading Ballista shuffle writes from query workers",
             url: "https://github.com/apache/datafusion-ballista/pull/1537",
           },
+          { text: "." },
         ],
       },
       {
         name: "Iceberg / Arrow",
-        description:
-          "Added configurable Parquet page versions to Iceberg, fixed Parquet root-schema interoperability in Arrow Go, and eliminated a position-delete goroutine leak in Iceberg Go.",
-        links: [
-          { label: "Iceberg #15700", url: "https://github.com/apache/iceberg/pull/15700" },
-          { label: "Arrow Go #723", url: "https://github.com/apache/arrow-go/pull/723" },
-          { label: "Iceberg Go #825", url: "https://github.com/apache/iceberg-go/pull/825" },
+        description: [
+          { text: "Added " },
+          {
+            text: "configurable Parquet page versions to Iceberg",
+            url: "https://github.com/apache/iceberg/pull/15700",
+          },
+          { text: ", fixed " },
+          {
+            text: "Parquet root-schema interoperability in Arrow Go",
+            url: "https://github.com/apache/arrow-go/pull/723",
+          },
+          { text: ", and " },
+          {
+            text: "fixed a goroutine leak in Iceberg Go's partitioned position-delete writes",
+            url: "https://github.com/apache/iceberg-go/pull/825",
+          },
+          { text: "." },
         ],
       },
     ]);
@@ -130,10 +145,10 @@ describe("parseResumeContent", () => {
     ],
     ["empty tools", { ...generalResume, tools: [] }],
     [
-      "empty selected-work links",
+      "empty selected-work description",
       {
         ...generalResume,
-        selectedWork: [{ ...generalResume.selectedWork[0], links: [] }],
+        selectedWork: [{ ...generalResume.selectedWork[0], description: [] }],
       },
     ],
     [

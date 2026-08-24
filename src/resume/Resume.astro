@@ -65,7 +65,7 @@ const { content, theme } = Astro.props;
           <svg class="brand-icon" aria-hidden="true"
             ><use href="#icon-linkedin"></use></svg
           >
-          <a href={content.identity.linkedin.url}
+          <a class="social-link" href={content.identity.linkedin.url}
             >{content.identity.linkedin.handle}</a
           >
         </li>
@@ -73,7 +73,7 @@ const { content, theme } = Astro.props;
           <svg class="brand-icon" aria-hidden="true"
             ><use href="#icon-github"></use></svg
           >
-          <a href={content.identity.github.url}
+          <a class="social-link" href={content.identity.github.url}
             >{content.identity.github.handle}</a
           >
         </li>
@@ -119,14 +119,19 @@ const { content, theme } = Astro.props;
           content.selectedWork.map((work) => (
             <article class="selected-work-entry">
               <h3>{work.name}</h3>
-              <p>{work.description}</p>
-              <ul class="work-links">
-                {work.links.map((link) => (
-                  <li>
-                    <a href={link.url}>{link.label}</a>
-                  </li>
-                ))}
-              </ul>
+              <p>
+                {
+                  work.description.map((segment) =>
+                    segment.url ? (
+                      <a class="contribution-link" href={segment.url}>
+                        {segment.text}
+                      </a>
+                    ) : (
+                      segment.text
+                    ),
+                  )
+                }
+              </p>
             </article>
           ))
         }
@@ -266,6 +271,15 @@ const { content, theme } = Astro.props;
     text-decoration: none;
   }
 
+  .contribution-link,
+  .social-link {
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+    text-decoration-color: var(--resume-muted);
+    text-decoration-thickness: 0.5pt;
+    text-underline-offset: 1.5pt;
+  }
+
   .resume-body {
     display: grid;
     grid-template-columns: minmax(0, 68fr) minmax(0, 32fr);
@@ -395,18 +409,6 @@ const { content, theme } = Astro.props;
   .selected-work-entry > p,
   .utility section > p:not(.education-minor) {
     margin-top: 0.07in;
-  }
-
-  .work-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.03in 0.12in;
-    margin-top: 0.05in;
-    padding: 0;
-    color: var(--resume-muted);
-    font-family: 'Chivo Mono', monospace;
-    font-size: 7pt;
-    list-style: none;
   }
 
   .education-minor {
