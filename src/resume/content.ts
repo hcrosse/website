@@ -35,7 +35,10 @@ export type ResumeContent = {
   selectedWork: Array<{
     name: string;
     description: string;
-    url?: string;
+    links: Array<{
+      label: string;
+      url: string;
+    }>;
   }>;
 };
 
@@ -114,9 +117,13 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
     assertRecord(work, path);
     assertString(work.name, `${path}.name`);
     assertString(work.description, `${path}.description`);
-    if (work.url !== undefined) {
-      assertString(work.url, `${path}.url`);
-    }
+    assertArray(work.links, `${path}.links`);
+    work.links.forEach((link, linkIndex) => {
+      const linkPath = `${path}.links[${linkIndex}]`;
+      assertRecord(link, linkPath);
+      assertString(link.label, `${linkPath}.label`);
+      assertString(link.url, `${linkPath}.url`);
+    });
   });
 }
 
@@ -224,9 +231,26 @@ export const generalResume: ResumeContent = {
   ],
   selectedWork: [
     {
-      name: "crosse.dev",
-      description: loremIpsum,
-      url: "https://crosse.dev",
+      name: "DataFusion / Ballista",
+      description:
+        "Upstreamed non-blocking distributed shuffle execution by exposing async batch partitioning in DataFusion and moving Ballista disk I/O behind bounded channels and spawn_blocking.",
+      links: [
+        { label: "DataFusion #21341", url: "https://github.com/apache/datafusion/pull/21341" },
+        {
+          label: "Ballista #1537",
+          url: "https://github.com/apache/datafusion-ballista/pull/1537",
+        },
+      ],
+    },
+    {
+      name: "Iceberg / Arrow",
+      description:
+        "Added configurable Parquet page versions to Iceberg, fixed Parquet root-schema interoperability in Arrow Go, and eliminated a position-delete goroutine leak in Iceberg Go.",
+      links: [
+        { label: "Iceberg #15700", url: "https://github.com/apache/iceberg/pull/15700" },
+        { label: "Arrow Go #723", url: "https://github.com/apache/arrow-go/pull/723" },
+        { label: "Iceberg Go #825", url: "https://github.com/apache/iceberg-go/pull/825" },
+      ],
     },
   ],
 };

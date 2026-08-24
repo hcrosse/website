@@ -118,11 +118,15 @@ const { content, theme } = Astro.props;
         {
           content.selectedWork.map((work) => (
             <article class="selected-work-entry">
-              <h3>
-                {work.url ? <a href={work.url}>{work.name}</a> : work.name}
-              </h3>
+              <h3>{work.name}</h3>
               <p>{work.description}</p>
-              {work.url && <p class="work-url">{work.url}</p>}
+              <ul class="work-links">
+                {work.links.map((link) => (
+                  <li>
+                    <a href={link.url}>{link.label}</a>
+                  </li>
+                ))}
+              </ul>
             </article>
           ))
         }
@@ -313,7 +317,6 @@ const { content, theme } = Astro.props;
   }
 
   .dates,
-  .work-url,
   .education-year {
     color: var(--resume-muted);
     font-family: 'Chivo Mono', monospace;
@@ -394,9 +397,16 @@ const { content, theme } = Astro.props;
     margin-top: 0.07in;
   }
 
-  .selected-work-entry .work-url {
+  .work-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.03in 0.12in;
     margin-top: 0.05in;
-    overflow-wrap: anywhere;
+    padding: 0;
+    color: var(--resume-muted);
+    font-family: 'Chivo Mono', monospace;
+    font-size: 7pt;
+    list-style: none;
   }
 
   .education-minor {

@@ -90,6 +90,33 @@ describe("parseResumeContent", () => {
     });
   });
 
+  test("highlights grouped upstream contributions", () => {
+    expect(generalResume.selectedWork).toEqual([
+      {
+        name: "DataFusion / Ballista",
+        description:
+          "Upstreamed non-blocking distributed shuffle execution by exposing async batch partitioning in DataFusion and moving Ballista disk I/O behind bounded channels and spawn_blocking.",
+        links: [
+          { label: "DataFusion #21341", url: "https://github.com/apache/datafusion/pull/21341" },
+          {
+            label: "Ballista #1537",
+            url: "https://github.com/apache/datafusion-ballista/pull/1537",
+          },
+        ],
+      },
+      {
+        name: "Iceberg / Arrow",
+        description:
+          "Added configurable Parquet page versions to Iceberg, fixed Parquet root-schema interoperability in Arrow Go, and eliminated a position-delete goroutine leak in Iceberg Go.",
+        links: [
+          { label: "Iceberg #15700", url: "https://github.com/apache/iceberg/pull/15700" },
+          { label: "Arrow Go #723", url: "https://github.com/apache/arrow-go/pull/723" },
+          { label: "Iceberg Go #825", url: "https://github.com/apache/iceberg-go/pull/825" },
+        ],
+      },
+    ]);
+  });
+
   test.each([
     ["missing name", { ...generalResume, identity: { ...generalResume.identity, name: "" } }],
     ["missing phone", { ...generalResume, identity: { ...generalResume.identity, phone: "" } }],
@@ -102,6 +129,13 @@ describe("parseResumeContent", () => {
       },
     ],
     ["empty tools", { ...generalResume, tools: [] }],
+    [
+      "empty selected-work links",
+      {
+        ...generalResume,
+        selectedWork: [{ ...generalResume.selectedWork[0], links: [] }],
+      },
+    ],
     [
       "empty tool item",
       {
