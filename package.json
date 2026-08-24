@@ -1,14 +1,22 @@
 {
   "name": "website",
-  "type": "module",
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
+    "check": "prek run --all-files && bun run format:check",
+    "check:build": "bun run check && bun run build",
     "dev": "astro dev",
     "build": "astro build",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "lint": "bun run lint:code && bun run lint:workflows",
+    "lint:code": "oxlint .",
+    "lint:workflows": "actionlint && zizmor --offline --strict-collection --collect=workflows .",
     "preview": "bun run build && wrangler dev",
     "astro": "astro",
     "deploy": "bun run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "setup": "bun ci && prek install"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
@@ -24,10 +32,8 @@
     "wrangler": "^4.68.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "^8.56.0",
-    "eslint": "^10.0.1",
-    "eslint-plugin-astro": "^1.6.0",
-    "prettier": "^3.8.1",
-    "prettier-plugin-astro": "^0.14.1"
-  }
+    "oxfmt": "0.63.0",
+    "oxlint": "1.78.0"
+  },
+  "packageManager": "bun@1.3.14"
 }

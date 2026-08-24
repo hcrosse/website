@@ -1,16 +1,16 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import type { APIContext } from 'astro';
-import { pagesMeta } from '../data/pages';
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import type { APIContext } from "astro";
+import { pagesMeta } from "../data/pages";
 
 export async function GET(context: APIContext) {
-  const posts = await getCollection('blog');
+  const posts = await getCollection("blog");
   return rss({
-    title: 'Harrison Crosse',
+    title: "Harrison Crosse",
     description: pagesMeta.blog.description,
     site: context.site!,
     items: posts
-      .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+      .toSorted((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
       .map((post) => ({
         title: post.data.title,
         description: post.data.description,

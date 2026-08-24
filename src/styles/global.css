@@ -1,17 +1,17 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @font-face {
-  font-family: 'Berkeley Mono';
-  src: url('/fonts/BerkeleyMono-Regular.woff2') format('woff2');
+  font-family: "Berkeley Mono";
+  src: url("/fonts/BerkeleyMono-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Berkeley Mono';
-  src: url('/fonts/BerkeleyMono-Bold.woff2') format('woff2');
+  font-family: "Berkeley Mono";
+  src: url("/fonts/BerkeleyMono-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -31,29 +31,22 @@
   --color-terminal-lavender: #b4befe;
   --color-terminal-border: #45475a;
   --font-mono:
-    'Berkeley Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
-    'Liberation Mono', monospace;
+    "Berkeley Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
+    monospace;
 }
 
 body {
   font-size: 0.875rem;
   line-height: 1.25rem;
   background-color: var(--color-terminal-bg);
-  background-image: radial-gradient(
-    rgba(166, 227, 161, 0.15) 1px,
-    transparent 1px
-  );
+  background-image: radial-gradient(rgba(166, 227, 161, 0.15) 1px, transparent 1px);
   background-size: 24px 24px;
   font-family: var(--font-mono);
   color: var(--color-terminal-text);
 }
 
 ::selection {
-  background-color: color-mix(
-    in srgb,
-    var(--color-terminal-green) 30%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--color-terminal-green) 30%, transparent);
   color: var(--color-terminal-bright);
 }
 
@@ -77,59 +70,53 @@ body {
   --tw-prose-td-borders: var(--color-terminal-border);
 }
 
-.prose :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   text-decoration: none;
   transition: color 0.15s;
 }
 
-.prose
-  :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)):hover {
+.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):hover {
   color: var(--color-terminal-blue);
 }
 
 .prose :where(h1)::before {
-  content: '# ';
+  content: "# ";
 }
 .prose :where(h2)::before {
-  content: '## ';
+  content: "## ";
 }
 .prose :where(h3)::before {
-  content: '### ';
+  content: "### ";
 }
 
-.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-family: var(--font-mono);
   font-size: 0.875em;
 }
 
-.prose :where(pre):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+.prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   border: 1px solid var(--color-terminal-border);
   border-radius: 0.375rem;
 }
 
 /* Glow-style prose overrides (tight spacing for page content) */
-.prose-glow
-  :where(p):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+.prose-glow :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   margin-top: 0;
   margin-bottom: 0;
 }
 
 .prose-glow
-  :where(p + p, ul + p, ol + p):not(
-    :where([class~='not-prose'], [class~='not-prose'] *)
-  ) {
+  :where(p + p, ul + p, ol + p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   margin-top: 0.75em;
 }
 
-.prose-glow
-  :where(ul, ol):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+.prose-glow :where(ul, ol):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   margin-top: 0.25em;
   margin-bottom: 0.25em;
   padding-left: 1.25em;
 }
 
-.prose-glow
-  :where(li):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+.prose-glow :where(li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 0;
