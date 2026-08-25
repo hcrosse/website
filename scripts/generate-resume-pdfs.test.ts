@@ -1,87 +1,31 @@
 import { describe, expect, test } from "bun:test";
-import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { PDFDocument } from "pdf-lib";
 import {
   createHarnessEnvironment,
   generateResumePdfs,
-  parseArguments,
-  resolvePrivateContentPath,
   verifyPdf,
   type ResumeOutput,
 } from "./generate-resume-pdfs";
-import { generalResume } from "../src/resume/content";
 
-const startedAt = new Date(2026, 7, 24, 9, 8, 7);
-
-describe("parseArguments", () => {
-  test("uses canonical content by default", () => {
-    expect(parseArguments([])).toEqual({ contentPath: undefined });
-  });
-
-  test("accepts one private content override", () => {
-    expect(parseArguments(["--content", ".resume/data-platform.json"])).toEqual({
-      contentPath: ".resume/data-platform.json",
-    });
-  });
-
-  test("rejects invalid arguments", () => {
-    expect(() => parseArguments(["--profile", "private"])).toThrow("Unknown argument");
-    expect(() => parseArguments(["--content"])).toThrow("--content requires exactly one path");
-    expect(() => parseArguments(["--content", ".resume/one.json", "extra"])).toThrow(
-      "--content requires exactly one path",
-    );
-  });
-});
-
-describe("resolvePrivateContentPath", () => {
-  test("accepts files inside .resume", () => {
-    expect(
-      resolvePrivateContentPath(".resume/data-platform.json").endsWith(
-        "/.resume/data-platform.json",
-      ),
-    ).toBe(true);
-  });
-
-  test("rejects paths outside .resume and the directory itself", () => {
-    expect(() => resolvePrivateContentPath("private.json")).toThrow("must be inside .resume");
-    expect(() => resolvePrivateContentPath(".resume")).toThrow("must be inside .resume");
-  });
-});
-
-describe("createHarnessEnvironment", () => {
-  test("removes an inherited content override for canonical content", () => {
-    expect(
-      createHarnessEnvironment(undefined, {
-        PATH: "/bin",
-        RESUME_CONTENT_PATH: "/tmp/private.json",
-      }),
-    ).toEqual({ ASTRO_DEV_BACKGROUND: "0", PATH: "/bin" });
-  });
-
-  test("replaces an inherited override with the validated explicit path", () => {
-    expect(
-      createHarnessEnvironment("/private/validated.json", {
-        PATH: "/bin",
-        RESUME_CONTENT_PATH: "/tmp/inherited.json",
-      }),
-    ).toEqual({
-      ASTRO_DEV_BACKGROUND: "0",
+test("removes inherited resume overrides from the harness environment", () => {
+  expect(
+    createHarnessEnvironment({
       PATH: "/bin",
-      RESUME_CONTENT_PATH: "/private/validated.json",
-    });
-  });
+      RESUME_CONTENT_PATH: "/tmp/private.json",
+    }),
+  ).toEqual({ ASTRO_DEV_BACKGROUND: "0", PATH: "/bin" });
 });
 
 describe("generateResumePdfs", () => {
-  test("selects stable public paths for canonical generation", async () => {
+  test("installs stable canonical PDFs and removes temporary files", async () => {
     const workspace = await createTestWorkspace();
 
     try {
-      await generateResumePdfs(undefined, {
+      await generateResumePdfs({
         outputDirectory: workspace.temporaryDirectory,
         publicDirectory: workspace.publicDirectory,
-        startedAt,
         renderPdfs: writeLetterPdfs,
       });
 
@@ -95,106 +39,14 @@ describe("generateResumePdfs", () => {
     }
   });
 
-  test("uses one daily suffix when both private daily names are free", async () => {
-    const workspace = await createTestWorkspace();
-
-    try {
-      const contentPath = await writePrivateContent(workspace.temporaryDirectory);
-      await generateResumePdfs(contentPath, {
-        outputDirectory: workspace.temporaryDirectory,
-        publicDirectory: workspace.publicDirectory,
-        startedAt,
-        renderPdfs: writeLetterPdfs,
-      });
-
-      expect((await readdir(workspace.temporaryDirectory)).toSorted()).toEqual([
-        "content.json",
-        "harrison_crosse_resume_dark_2026_08_24.pdf",
-        "harrison_crosse_resume_light_2026_08_24.pdf",
-      ]);
-    } finally {
-      await rm(workspace.root, { recursive: true, force: true });
-    }
-  });
-
-  for (const existingTheme of ["light", "dark"] as const) {
-    test(`uses one full timestamp suffix when the ${existingTheme} private daily file exists`, async () => {
-      const workspace = await createTestWorkspace();
-
-      try {
-        const contentPath = await writePrivateContent(workspace.temporaryDirectory);
-        await writeFile(
-          resolve(
-            workspace.temporaryDirectory,
-            `harrison_crosse_resume_${existingTheme}_2026_08_24.pdf`,
-          ),
-          "existing",
-        );
-        await generateResumePdfs(contentPath, {
-          outputDirectory: workspace.temporaryDirectory,
-          publicDirectory: workspace.publicDirectory,
-          startedAt,
-          renderPdfs: writeLetterPdfs,
-        });
-
-        expect((await readdir(workspace.temporaryDirectory)).toSorted()).toEqual(
-          [
-            "content.json",
-            `harrison_crosse_resume_${existingTheme}_2026_08_24.pdf`,
-            "harrison_crosse_resume_dark_2026_08_24_09_08_07.pdf",
-            "harrison_crosse_resume_light_2026_08_24_09_08_07.pdf",
-          ].toSorted(),
-        );
-      } finally {
-        await rm(workspace.root, { recursive: true, force: true });
-      }
-    });
-  }
-
-  test("refuses a private full timestamp collision before rendering", async () => {
-    const workspace = await createTestWorkspace();
-    let rendered = false;
-
-    try {
-      const contentPath = await writePrivateContent(workspace.temporaryDirectory);
-      const collisionPath = resolve(
-        workspace.temporaryDirectory,
-        "harrison_crosse_resume_dark_2026_08_24_09_08_07.pdf",
-      );
-      await Promise.all([
-        writeFile(
-          resolve(workspace.temporaryDirectory, "harrison_crosse_resume_light_2026_08_24.pdf"),
-          "existing daily",
-        ),
-        writeFile(collisionPath, "existing timestamp"),
-      ]);
-
-      await expect(
-        generateResumePdfs(contentPath, {
-          outputDirectory: workspace.temporaryDirectory,
-          publicDirectory: workspace.publicDirectory,
-          startedAt,
-          renderPdfs: async () => {
-            rendered = true;
-          },
-        }),
-      ).rejects.toThrow("already exists");
-      expect(rendered).toBe(false);
-      expect(await readFile(collisionPath, "utf8")).toBe("existing timestamp");
-    } finally {
-      await rm(workspace.root, { recursive: true, force: true });
-    }
-  });
-
-  test("cleans ordinary temporary PDFs when rendering fails", async () => {
+  test("cleans temporary PDFs when rendering fails", async () => {
     const workspace = await createTestWorkspace();
 
     try {
       await expect(
-        generateResumePdfs(undefined, {
+        generateResumePdfs({
           outputDirectory: workspace.temporaryDirectory,
           publicDirectory: workspace.publicDirectory,
-          startedAt,
           renderPdfs: async (outputs) => {
             await writeFile(outputs[0].temporaryPath, "partial PDF");
             throw new Error("render failed");
@@ -282,12 +134,6 @@ async function createTestWorkspace(): Promise<{
     mkdir(temporaryDirectory, { recursive: true }),
   ]);
   return { root, publicDirectory, temporaryDirectory };
-}
-
-async function writePrivateContent(directory: string): Promise<string> {
-  const path = resolve(directory, "content.json");
-  await writeFile(path, JSON.stringify(generalResume));
-  return path;
 }
 
 async function writeLetterPdfs(outputs: ResumeOutput[]): Promise<void> {

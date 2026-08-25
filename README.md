@@ -57,19 +57,6 @@ They are published at
 `https://crosse.dev/harrison-crosse-resume-dark.pdf`. The website has no resume
 HTML route or navigation item.
 
-Generate private tailored PDFs with content stored under the ignored `.resume/`
-directory:
-
-```sh
-bun run resume:pdf --content .resume/data-platform.json
-```
-
-Private output names use the local generation date, for example
-`.resume/harrison_crosse_resume_light_2026_08_24.pdf` and
-`.resume/harrison_crosse_resume_dark_2026_08_24.pdf`. If either dated file
-already exists, both new files share a full timestamp suffix such as
-`2026_08_24_09_08_07`. A colliding full-timestamp name is not overwritten.
-
-Both modes require parseable, non-empty US Letter PDFs. A resume that spans more
-than one Letter page is retained and reported with a warning so content can be
-adjusted manually.
+Generated files must be parseable, non-empty US Letter PDFs. A resume that spans
+more than one Letter page is retained and reported with a warning so content can
+be adjusted manually.
