@@ -136,8 +136,6 @@ export function sortToolItems(items: string[]): string[] {
   return items.toSorted((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
 }
 
-const loremIpsum = "Lorem ipsum dolor sit amet.";
-
 export const generalResume: ResumeContent = {
   identity: {
     name: "Harrison Crosse",
@@ -180,17 +178,25 @@ export const generalResume: ResumeContent = {
     {
       company: "Amobee",
       roles: [{ title: "Software Engineer, Data Systems", start: "2021", end: "2022" }],
-      highlights: [loremIpsum],
+      highlights: [
+        "Migrated clickstream processing from batch Spark jobs to Spark Structured Streaming, making event data continuously available to downstream consumers.",
+        "Moved Spark workloads from EMR to Kubernetes with Spark Operator, standardizing deployments and eliminating EMR service charges.",
+      ],
     },
     {
       company: "Sayari Labs",
       roles: [{ title: "Data Engineer", start: "2020", end: "2021" }],
-      highlights: [loremIpsum],
+      highlights: [
+        "Built web-scraping and fastText NER pipelines to transform corporate registry data into structured entities and social graphs.",
+        "Migrated Sayari's cloud infrastructure from GCP to AWS GovCloud using Terraform and Docker.",
+      ],
     },
     {
       company: "Booz Allen Hamilton",
       roles: [{ title: "Data Scientist", start: "2019", end: "2020" }],
-      highlights: [loremIpsum],
+      highlights: [
+        "Modeled Marine Corps unit performance for the Inspector General using clustering and gradient-boosted trees.",
+      ],
     },
   ],
   education: {
