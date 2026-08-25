@@ -156,10 +156,10 @@ export const generalResume: ResumeContent = {
       company: "Docker",
       roles: [{ title: "Senior Software Engineer", start: "2025", end: "Present" }],
       highlights: [
-        "Co-designed Marlin, Docker's event ingestion and processing platform, for tens of thousands of events per second. Established its initial SDK and ingestion architecture and guided expansion into managed stream processing and audit-log analytics.",
-        "Built Marlin client SDKs for browser, Node.js, and Rust using shared protobuf data contracts for consistent event schemas. Productionized the SDKs with batching, retries, integration tests, and release automation.",
-        "Designed Marlin's privacy architecture and implemented annotation-driven PII handling across client SDKs, ingestion workers, and Iceberg storage, supporting Docker's ISO 27701 certification.",
-        "Hardened Marlin's production ingestion with schema preflight validation, version-gated migrations, DLQs, and production observability.",
+        "Co-designed Marlin, Docker's event platform for tens of thousands of events per second. Established its SDK and ingestion architecture and guided expansion into stream processing and audit-log analytics.",
+        "Built Marlin SDKs for browser, Node.js, and Rust around shared protobuf contracts. Productionized them with batching, retries, integration tests, and release automation.",
+        "Designed Marlin's privacy architecture and annotation-driven PII handling across SDKs, ingestion workers, and Iceberg, supporting Docker's ISO 27701 certification.",
+        "Hardened Marlin ingestion with schema validation, version-gated migrations, DLQs, and production observability.",
       ],
     },
     {
@@ -169,17 +169,17 @@ export const generalResume: ResumeContent = {
         { title: "Data Engineer", start: "2022", end: "2024" },
       ],
       highlights: [
-        "Built Calendly's new data platform from the ground up, migrating Postgres and event data from Redshift to BigQuery and establishing Airflow, CI/CD, permissions, data quality, and developer tooling.",
-        "Processed 50 TB of malformed Segment replay data with Spark to complete its migration to BigQuery.",
-        "Built and operated production Flink pipelines processing thousands of records per second with hundreds of gigabytes of state. Productionized them with observability, blue-green deployments, data-quality gates, and E2E tests.",
-        "Led the rollout of Segment Data Contracts across hundreds of event types, building schema generation, CLI tooling, and CI/CD to keep application and data-platform schemas synchronized.",
+        "Built Calendly's data platform from the ground up, migrating Postgres and event data from Redshift to BigQuery and establishing Airflow, CI/CD, data quality, and developer tooling.",
+        "Processed 50 TB of malformed Segment replay data with Spark for BigQuery.",
+        "Built production Flink pipelines processing thousands of records per second with hundreds of gigabytes of state. Added observability, blue-green deployments, data-quality checks for cutovers, and E2E tests.",
+        "Replaced an unreliable Google Sheets-controlled schema process with a GitOps Data Contracts workflow across hundreds of Segment event types.",
       ],
     },
     {
       company: "Amobee",
       roles: [{ title: "Software Engineer, Data Systems", start: "2021", end: "2022" }],
       highlights: [
-        "Migrated clickstream processing from batch Spark jobs to Spark Structured Streaming, making event data continuously available to downstream consumers.",
+        "Moved clickstream processing from batch Spark to Structured Streaming, making data continuously available downstream.",
         "Moved Spark workloads from EMR to Kubernetes with Spark Operator, standardizing deployments and eliminating EMR service charges.",
       ],
     },
@@ -187,7 +187,7 @@ export const generalResume: ResumeContent = {
       company: "Sayari Labs",
       roles: [{ title: "Data Engineer", start: "2020", end: "2021" }],
       highlights: [
-        "Built web-scraping and fastText NER pipelines to transform corporate registry data into structured entities and social graphs.",
+        "Built scraping and fastText NER pipelines to transform corporate registry data into structured entities and social graphs.",
         "Migrated Sayari's cloud infrastructure from GCP to AWS GovCloud using Terraform and Docker.",
       ],
     },
