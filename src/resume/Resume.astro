@@ -88,7 +88,7 @@ const { content, theme } = Astro.props;
         content.employment.map((job) => (
           <article class="employment-entry">
             <header>
-              <h3>{job.company}</h3>
+              <h3><a href={job.url}>{job.company}</a></h3>
             </header>
             <div class="role-list">
               {

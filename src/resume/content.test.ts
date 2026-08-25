@@ -36,6 +36,13 @@ describe("parseResumeContent", () => {
     ["missing phone", { ...generalResume, identity: { ...generalResume.identity, phone: "" } }],
     ["empty employment", { ...generalResume, employment: [] }],
     [
+      "empty employer URL",
+      {
+        ...generalResume,
+        employment: [{ ...generalResume.employment[0], url: "" }],
+      },
+    ],
+    [
       "empty role title",
       {
         ...generalResume,

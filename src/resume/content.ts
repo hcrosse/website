@@ -15,6 +15,7 @@ export type ResumeContent = {
   };
   employment: Array<{
     company: string;
+    url: string;
     roles: Array<{
       title: string;
       start: string;
@@ -80,6 +81,7 @@ function assertResumeContent(value: unknown): asserts value is ResumeContent {
     const path = `employment[${jobIndex}]`;
     assertRecord(job, path);
     assertString(job.company, `${path}.company`);
+    assertString(job.url, `${path}.url`);
     assertArray(job.roles, `${path}.roles`);
     job.roles.forEach((role, roleIndex) => {
       const rolePath = `${path}.roles[${roleIndex}]`;
@@ -154,16 +156,17 @@ export const generalResume: ResumeContent = {
   employment: [
     {
       company: "Docker",
+      url: "https://www.docker.com/",
       roles: [{ title: "Senior Software Engineer", start: "2025", end: "Present" }],
       highlights: [
-        "Co-designed Marlin, Docker's event platform for tens of thousands of events per second. Established its SDK and ingestion architecture and guided expansion into stream processing and audit-log analytics.",
+        "Co-designed Marlin, Docker's event platform, to handle tens of thousands of events per second. Established its SDK and ingestion architecture and guided expansion into stream processing and audit-log analytics.",
         "Built Marlin SDKs for browser, Node.js, and Rust around shared protobuf contracts. Productionized them with batching, retries, integration tests, and release automation.",
         "Designed Marlin's privacy architecture and annotation-driven PII handling across SDKs, ingestion workers, and Iceberg, supporting Docker's ISO 27701 certification.",
-        "Hardened Marlin ingestion with schema validation, version-gated migrations, DLQs, and production observability.",
       ],
     },
     {
       company: "Calendly",
+      url: "https://calendly.com/",
       roles: [
         { title: "Senior Data Engineer", start: "2024", end: "2025" },
         { title: "Data Engineer", start: "2022", end: "2024" },
@@ -177,14 +180,16 @@ export const generalResume: ResumeContent = {
     },
     {
       company: "Amobee",
+      url: "https://www.amobee.com/",
       roles: [{ title: "Software Engineer, Data Systems", start: "2021", end: "2022" }],
       highlights: [
-        "Moved clickstream processing from batch Spark to Structured Streaming, making data continuously available downstream.",
+        "Migrated clickstream processing from batch Spark to Structured Streaming, making data continuously available downstream.",
         "Moved Spark workloads from EMR to Kubernetes with Spark Operator, standardizing deployments and eliminating EMR service charges.",
       ],
     },
     {
-      company: "Sayari Labs",
+      company: "Sayari",
+      url: "https://sayari.com/",
       roles: [{ title: "Data Engineer", start: "2020", end: "2021" }],
       highlights: [
         "Built scraping and fastText NER pipelines to transform corporate registry data into structured entities and social graphs.",
@@ -193,6 +198,7 @@ export const generalResume: ResumeContent = {
     },
     {
       company: "Booz Allen Hamilton",
+      url: "https://www.boozallen.com/",
       roles: [{ title: "Data Scientist", start: "2019", end: "2020" }],
       highlights: [
         "Modeled Marine Corps unit performance for the Inspector General using clustering and gradient-boosted trees.",
