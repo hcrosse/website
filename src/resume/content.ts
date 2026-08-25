@@ -170,7 +170,12 @@ export const generalResume: ResumeContent = {
         { title: "Senior Data Engineer", start: "2024", end: "2025" },
         { title: "Data Engineer", start: "2022", end: "2024" },
       ],
-      highlights: [loremIpsum],
+      highlights: [
+        "Built Calendly's new data platform from the ground up, migrating Postgres and event data from Redshift to BigQuery and establishing Airflow, CI/CD, permissions, data quality, and developer tooling.",
+        "Processed 50 TB of malformed Segment replay data with Spark to complete its migration to BigQuery.",
+        "Built and operated production Flink pipelines processing thousands of records per second with hundreds of gigabytes of state. Productionized them with observability, blue-green deployments, data-quality gates, and E2E tests.",
+        "Led the rollout of Segment Data Contracts across hundreds of event types, building schema generation, CLI tooling, and CI/CD to keep application and data-platform schemas synchronized.",
+      ],
     },
     {
       company: "Amobee",
