@@ -172,7 +172,7 @@ export const generalResume: ResumeContent = {
         "Built Calendly's data platform from the ground up, migrating Postgres and event data from Redshift to BigQuery and establishing Airflow, CI/CD, data quality, and developer tooling.",
         "Processed 50 TB of malformed Segment replay data with Spark for BigQuery.",
         "Built production Flink pipelines processing thousands of records per second with hundreds of gigabytes of state. Added observability, blue-green deployments, data-quality checks for cutovers, and E2E tests.",
-        "Replaced an unreliable Google Sheets-controlled schema process with a GitOps Data Contracts workflow across hundreds of Segment event types.",
+        "Replaced unreliable Google Sheets-defined schemas with a GitOps Data Contracts workflow across hundreds of Segment event types.",
       ],
     },
     {
