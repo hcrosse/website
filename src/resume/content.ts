@@ -157,7 +157,12 @@ export const generalResume: ResumeContent = {
     {
       company: "Docker",
       roles: [{ title: "Senior Software Engineer", start: "2025", end: "Present" }],
-      highlights: [loremIpsum],
+      highlights: [
+        "Co-designed Marlin, Docker's event ingestion and processing platform, for tens of thousands of events per second. Established its initial SDK and ingestion architecture and guided expansion into managed stream processing and audit-log analytics.",
+        "Built Marlin client SDKs for browser, Node.js, and Rust using shared protobuf data contracts for consistent event schemas. Productionized the SDKs with batching, retries, integration tests, and release automation.",
+        "Designed Marlin's privacy architecture and implemented annotation-driven PII handling across client SDKs, ingestion workers, and Iceberg storage, supporting Docker's ISO 27701 certification.",
+        "Hardened Marlin's production ingestion with schema preflight validation, version-gated migrations, DLQs, and production observability.",
+      ],
     },
     {
       company: "Calendly",
