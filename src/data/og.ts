@@ -1,8 +1,8 @@
-import type satori from "satori";
+import type satori from "satori"
 
-import type { PageMeta } from "./pages";
+import type { PageMeta } from "./pages"
 
-type SatoriNode = Parameters<typeof satori>[0];
+type SatoriNode = Parameters<typeof satori>[0]
 
 function titleBlock(title: string, description: string): SatoriNode {
   return {
@@ -23,7 +23,7 @@ function titleBlock(title: string, description: string): SatoriNode {
         },
       ],
     },
-  };
+  }
 }
 
 export function ogCard(meta: PageMeta): SatoriNode {
@@ -48,5 +48,5 @@ export function ogCard(meta: PageMeta): SatoriNode {
         titleBlock(meta.title, meta.ogDescription ?? meta.description),
       ],
     },
-  };
+  }
 }

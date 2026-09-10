@@ -1,4 +1,4 @@
-import { defineConfig } from "oxlint";
+import { defineConfig } from "oxlint"
 
 export default defineConfig({
   categories: {
@@ -74,4 +74,4 @@ export default defineConfig({
     ],
     "eslint/max-params": ["error", { countThis: "except-void", max: 3 }],
   },
-});
+})

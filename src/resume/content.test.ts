@@ -1,10 +1,10 @@
-import { expect, test } from "bun:test";
+import { expect, test } from "bun:test"
 
-import * as hegel from "@hegeldev/hegel";
-import * as generators from "@hegeldev/hegel/generators";
-import type { ReadonlyDeep } from "type-fest";
+import * as hegel from "@hegeldev/hegel"
+import * as generators from "@hegeldev/hegel/generators"
+import type { ReadonlyDeep } from "type-fest"
 
-import { sortToolItems } from "./content";
+import { sortToolItems } from "./content"
 
 test("sorts rendered tool items without losing or mutating values", () => {
   hegel.test((testCase: ReadonlyDeep<hegel.TestCase>) => {
@@ -17,16 +17,16 @@ test("sorts rendered tool items without losing or mutating values", () => {
         }),
         { maxSize: 30 },
       ),
-    );
+    )
 
-    const original = [...items];
-    const sorted = sortToolItems(items);
+    const original = [...items]
+    const sorted = sortToolItems(items)
 
-    expect(items).toEqual(original);
+    expect(items).toEqual(original)
     expect(sorted).toEqual(
       sorted.toSorted((a, b) => a.localeCompare(b, "en", { sensitivity: "base" })),
-    );
-    expect(sorted.toSorted()).toEqual(original.toSorted());
-    expect(sortToolItems(sorted)).toEqual(sorted);
-  });
-});
+    )
+    expect(sorted.toSorted()).toEqual(original.toSorted())
+    expect(sortToolItems(sorted)).toEqual(sorted)
+  })
+})

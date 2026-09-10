@@ -1,50 +1,50 @@
 export type ResumeContent = {
   identity: {
-    name: string;
-    email: string;
-    phone: string;
+    name: string
+    email: string
+    phone: string
     linkedin: {
-      handle: string;
-      url: string;
-    };
+      handle: string
+      url: string
+    }
     github: {
-      handle: string;
-      url: string;
-    };
-    location: string;
-  };
+      handle: string
+      url: string
+    }
+    location: string
+  }
   employment: Array<{
-    company: string;
-    url: string;
+    company: string
+    url: string
     roles: Array<{
-      title: string;
-      start: string;
-      end: string;
-    }>;
-    highlights: string[];
-  }>;
+      title: string
+      start: string
+      end: string
+    }>
+    highlights: string[]
+  }>
   education: {
-    institution: string;
-    degree: string;
-    minor: string;
-    year: string;
-  };
+    institution: string
+    degree: string
+    minor: string
+    year: string
+  }
   tools: Array<{
-    category: string;
-    items: string[];
-  }>;
+    category: string
+    items: string[]
+  }>
   selectedWork: Array<{
-    name: string;
-    description: string;
+    name: string
+    description: string
     links: Array<{
-      label: string;
-      url: string;
-    }>;
-  }>;
-};
+      label: string
+      url: string
+    }>
+  }>
+}
 
 export function sortToolItems(items: readonly string[]): string[] {
-  return items.toSorted((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+  return items.toSorted((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }))
 }
 
 export const generalResume: ResumeContent = {
@@ -192,4 +192,4 @@ export const generalResume: ResumeContent = {
       ],
     },
   ],
-};
+}
