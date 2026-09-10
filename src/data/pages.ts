@@ -1,8 +1,8 @@
 export type PageMeta = {
-  title: string;
-  description: string;
-  ogDescription?: string;
-  ogPrompt: string;
+  readonly title: string;
+  readonly description: string;
+  readonly ogDescription?: string;
+  readonly ogPrompt: string;
 };
 
 export const pagesMeta = {
@@ -43,8 +43,8 @@ export const pagesMeta = {
     description: "Writing on data infrastructure, software engineering, and tooling.",
     ogPrompt: "crosse.dev ~/blog $ eza -lr -s date -t created",
   },
-} satisfies Record<string, PageMeta>;
+} as const satisfies Record<string, PageMeta>;
 
 export type PageKey = keyof typeof pagesMeta;
 
-export const blogPostOgPrompt = (id: string) => `crosse.dev ~/blog $ glow -s blog ${id}.md`;
+export const blogPostOgPrompt = (id: string): string => `crosse.dev ~/blog $ glow -s blog ${id}.md`;

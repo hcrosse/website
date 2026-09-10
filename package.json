@@ -3,21 +3,24 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "check": "prek run --all-files && bun run format:check && bun run test:resume",
-    "check:build": "bun run check && bun run build",
-    "dev": "astro dev",
+    "astro": "astro",
+    "audit": "bun audit",
     "build": "astro build",
+    "check": "prek run --all-files && bun run format:check && bun run typecheck && bun run test",
+    "check:build": "bun run check && bun run build",
+    "deploy": "sh scripts/fetch-fonts.sh && bun run build && wrangler pages deploy dist --project-name website",
+    "dev": "astro dev",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "lint": "bun run lint:code && bun run lint:workflows",
-    "lint:code": "oxlint .",
+    "lint:code": "astro sync && oxlint .",
     "lint:workflows": "actionlint && zizmor --offline --strict-collection --collect=workflows .",
     "preview": "astro preview",
-    "astro": "astro",
-    "deploy": "sh scripts/fetch-fonts.sh && bun run build && wrangler pages deploy dist --project-name website",
     "resume:pdf": "bun scripts/generate-resume-pdfs.ts",
+    "setup": "bun ci && prek install",
+    "test": "bun test",
     "test:resume": "bun test src/resume/content.test.ts scripts/generate-resume-pdfs.test.ts",
-    "setup": "bun ci && prek install"
+    "typecheck": "astro check"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.0",
@@ -32,14 +35,23 @@
     "remark-breaks": "4.0.0",
     "satori": "0.33.4",
     "tailwindcss": "4.3.3",
+    "unist-util-visit": "5.1.0",
     "wrangler": "4.129.0"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.10",
     "@hegeldev/hegel": "0.4.5",
+    "@oxlint/plugins": "1.81.0",
+    "@types/bun": "1.4.0",
+    "@types/mdast": "4.0.4",
     "oxfmt": "0.66.0",
     "oxlint": "1.81.0",
+    "oxlint-tsgolint": "7.0.2001",
     "pdf-lib": "1.17.1",
-    "playwright": "1.62.1"
+    "playwright": "1.62.1",
+    "type-fest": "5.9.0",
+    "typescript": "6.0.3",
+    "unified": "11.0.5"
   },
   "overrides": {
     "fflate": "0.7.5",

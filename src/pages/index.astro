@@ -8,20 +8,26 @@ import Prompt from '../components/Prompt.astro';
 import { pagesMeta } from '../data/pages';
 
 const aboutPage = await getEntry('pages', 'about');
+
+if (!aboutPage) throw new Error('Missing content page: about');
+
 const { Content: AboutContent } = await render(aboutPage);
 
 const workRaw = fs.readFileSync(
   `${process.cwd()}/src/content/pages/work.md`,
   'utf-8',
 );
+
 const workAll = workRaw
-  .replace(/^---[\s\S]*?---\n/, '')
+  .replace(/^---[\s\S]*?---\n/u, '')
   .trim()
   .split('\n');
+
 const workLines = workAll
   .filter((line, i) => {
     if (line.trim() !== '') return true;
     const next = workAll[i + 1];
+
     return next && next.startsWith('## ');
   })
   .slice(0, 6);
@@ -32,6 +38,7 @@ const workLines = workAll
   description={pagesMeta.index.description}
 >
   <script
+    is:inline
     slot="head"
     type="application/ld+json"
     set:text={JSON.stringify({

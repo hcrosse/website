@@ -1,10 +1,13 @@
 import { expect, test } from "bun:test";
+
 import * as hegel from "@hegeldev/hegel";
 import * as generators from "@hegeldev/hegel/generators";
+import type { ReadonlyDeep } from "type-fest";
+
 import { sortToolItems } from "./content";
 
-test("sorts rendered tool items without losing or mutating values", () =>
-  hegel.test((testCase) => {
+test("sorts rendered tool items without losing or mutating values", () => {
+  hegel.test((testCase: ReadonlyDeep<hegel.TestCase>) => {
     const items = testCase.draw(
       generators.arrays(
         generators.text({
@@ -15,6 +18,7 @@ test("sorts rendered tool items without losing or mutating values", () =>
         { maxSize: 30 },
       ),
     );
+
     const original = [...items];
     const sorted = sortToolItems(items);
 
@@ -24,4 +28,5 @@ test("sorts rendered tool items without losing or mutating values", () =>
     );
     expect(sorted.toSorted()).toEqual(original.toSorted());
     expect(sortToolItems(sorted)).toEqual(sorted);
-  }));
+  });
+});

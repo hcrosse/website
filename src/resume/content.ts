@@ -43,7 +43,7 @@ export type ResumeContent = {
   }>;
 };
 
-export function sortToolItems(items: string[]): string[] {
+export function sortToolItems(items: readonly string[]): string[] {
   return items.toSorted((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
 }
 
