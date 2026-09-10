@@ -12,7 +12,6 @@
   "insertFinalNewline": true,
   "printWidth": 100,
   "proseWrap": "preserve",
-  "semi": true,
   "singleQuote": false,
   "sortImports": true,
   "sortPackageJson": { "sortScripts": true },
