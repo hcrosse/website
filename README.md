@@ -5,6 +5,7 @@
 ## Development
 
 ```sh
+mise install
 bun install
 bun run dev
 ```

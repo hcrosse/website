@@ -166,6 +166,7 @@ async function renderPdfsWithHarness(outputs: ResumeOutput[]): Promise<void> {
     harness = spawn(
       "bunx",
       [
+        "--bun",
         "astro",
         "dev",
         "--ignore-lock",
