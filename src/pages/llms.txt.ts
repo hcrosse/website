@@ -1,28 +1,46 @@
-import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
+import type { APIRoute } from "astro"
+import { getCollection, type CollectionEntry } from "astro:content"
+import type { ReadonlyDeep } from "type-fest"
 
-export const GET: APIRoute = async () => {
-  const pages = await getCollection("pages");
-  const blog = await getCollection("blog");
+import { newestFirst, type BlogSummary } from "../data/blog"
 
-  const sortedBlog = blog.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime());
+async function pageLinks(): Promise<string[]> {
+  const pages = await getCollection("pages")
+  const pageOrder = ["about", "work", "colophon"]
 
-  const pageOrder = ["about", "work", "colophon"];
-  const sortedPages = pages.toSorted((a, b) => pageOrder.indexOf(a.id) - pageOrder.indexOf(b.id));
+  const sorted = pages.toSorted(
+    (a: ReadonlyDeep<CollectionEntry<"pages">>, b: ReadonlyDeep<CollectionEntry<"pages">>) =>
+      pageOrder.indexOf(a.id) - pageOrder.indexOf(b.id),
+  )
 
-  const pageLines = sortedPages.map(
-    (p) => `- [${p.data.title}](https://crosse.dev/${p.id}): ${p.data.description}`,
-  );
-  pageLines.splice(
+  const links = sorted.map(
+    (page: ReadonlyDeep<CollectionEntry<"pages">>) =>
+      `- [${page.data.title}](https://crosse.dev/${page.id}): ${page.data.description}`,
+  )
+
+  links.splice(
     2,
     0,
     "- [Blog](https://crosse.dev/blog): Technical writing",
     "- [Contact](https://crosse.dev/contact): Contact information",
-  );
+  )
 
-  const blogLines = sortedBlog.map(
-    (p) => `- [${p.data.title}](https://crosse.dev/blog/${p.id}): ${p.data.description}`,
-  );
+  return links
+}
+
+async function blogLinks(): Promise<string[]> {
+  const posts = await getCollection("blog")
+
+  return posts
+    .toSorted(newestFirst)
+    .map(
+      (post: BlogSummary) =>
+        `- [${post.data.title}](https://crosse.dev/blog/${post.id}): ${post.data.description}`,
+    )
+}
+
+export const GET: APIRoute = async () => {
+  const [pages, posts] = await Promise.all([pageLinks(), blogLinks()])
 
   const body = [
     "# Harrison Crosse",
@@ -31,15 +49,15 @@ export const GET: APIRoute = async () => {
     "",
     "## Pages",
     "",
-    ...pageLines,
+    ...pages,
     "",
     "## Blog Posts",
     "",
-    ...blogLines,
+    ...posts,
     "",
-  ].join("\n");
+  ].join("\n")
 
   return new Response(body, {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
-  });
-};
+  })
+}

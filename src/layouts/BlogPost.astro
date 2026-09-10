@@ -9,7 +9,8 @@ interface Props {
 }
 
 const { title, description, date } = Astro.props;
-const slug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
+
+const slug = Astro.url.pathname.replace(/^\/blog\//u, '').replace(/\/$/u, '');
 ---
 
 <BaseLayout title={title} description={description}>

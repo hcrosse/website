@@ -2,12 +2,16 @@
 import GlowPage from '../layouts/GlowPage.astro';
 import { pagesMeta } from '../data/pages';
 
-const commitSha = import.meta.env.COMMIT_SHA;
+const commitSha = import.meta.env['COMMIT_SHA'];
+
 const buildTime = new Date().toISOString();
 
 const { default: astroPkg } = await import('astro/package.json');
+
 const { default: twPkg } = await import('tailwindcss/package.json');
+
 const astroVersion = astroPkg.version;
+
 const tailwindVersion = twPkg.version;
 ---
 

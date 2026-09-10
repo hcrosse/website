@@ -1,3 +1,22 @@
 {
-  "ignorePatterns": [".astro/**", ".superpowers/**", ".worktrees/**", "dist/**"]
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "endOfLine": "lf",
+  "ignorePatterns": [
+    ".astro/**",
+    ".resume/**",
+    ".superpowers/**",
+    ".worktrees/**",
+    "dist/**",
+    "tools/oxlint/anti-slop/**"
+  ],
+  "insertFinalNewline": true,
+  "printWidth": 100,
+  "proseWrap": "preserve",
+  "semi": false,
+  "singleQuote": false,
+  "sortImports": true,
+  "sortPackageJson": { "sortScripts": true },
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false
 }

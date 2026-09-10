@@ -10,8 +10,13 @@ interface Props {
 }
 
 const { page, title, description } = Astro.props;
+
 const entry = await getEntry('pages', page);
+
+if (!entry) throw new Error(`Missing content page: ${page}`);
+
 const { Content } = await render(entry);
+
 const filename = `${page}.md`;
 ---
 

@@ -2,11 +2,16 @@
 import Resume from '../../../../src/resume/Resume.astro';
 import { generalResume } from '../../../../src/resume/content';
 
-export function getStaticPaths() {
-  return ['light', 'dark'].map((theme) => ({ params: { theme } }));
+type Props = { theme: 'light' | 'dark' };
+
+export function getStaticPaths(): Array<{ params: { theme: string }; props: Props }> {
+  return [
+    { params: { theme: 'light' }, props: { theme: 'light' } },
+    { params: { theme: 'dark' }, props: { theme: 'dark' } },
+  ];
 }
 
-const theme = Astro.params.theme as 'light' | 'dark';
+const { theme } = Astro.props;
 ---
 
 <!doctype html>
