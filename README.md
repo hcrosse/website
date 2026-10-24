@@ -37,11 +37,10 @@ not compatible with Wrangler's `CLOUDFLARE_API_TOKEN` authentication.
 Install the local browser once:
 
 ```sh
-bunx playwright install chromium
+bunx --bun playwright install chromium
 ```
 
-Generate the canonical light and dark resumes from the committed general
-content:
+Generate the light and dark resumes from `src/resume/content.ts`:
 
 ```sh
 bun run resume:pdf

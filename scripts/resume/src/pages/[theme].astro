@@ -1,6 +1,6 @@
 ---
 import Resume from '../../../../src/resume/Resume.astro';
-import { generalResume } from '../../../../src/resume/content';
+import { resume } from '../../../../src/resume/content';
 
 type Props = { theme: 'light' | 'dark' };
 
@@ -19,10 +19,10 @@ const { theme } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>{generalResume.identity.name} Resume</title>
+    <title>{resume.identity.name} Resume</title>
   </head>
   <body>
-    <Resume content={generalResume} theme={theme} />
+    <Resume content={resume} theme={theme} />
   </body>
 </html>
 
