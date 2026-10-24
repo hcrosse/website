@@ -25,7 +25,7 @@ Bun runs project commands via `bunfig.toml`. Preserve the seven-day release-age 
 - `src/data/`: page metadata and OG image layout.
 - `src/plugins/remark-glow.ts`: Markdown transformations.
 - `src/resume/`: résumé content and print layout.
-- `scripts/resume/`: local browser rendering, PDF validation, and temporary files.
+- `scripts/resume/`: local rendering harness, PDF validation, and publishing into `public/`.
 - `tools/oxlint/anti-slop/`: vendored lint rules. Preserve the upstream code and license.
 - `public/fonts/`: private fonts. Build setup is documented in [README.md](README.md).
 

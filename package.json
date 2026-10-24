@@ -19,7 +19,7 @@
     "resume:pdf": "bun scripts/generate-resume-pdfs.ts",
     "setup": "bun ci && prek install",
     "test": "bun test",
-    "test:resume": "bun test src/resume/content.test.ts scripts/generate-resume-pdfs.test.ts",
+    "test:resume": "bun test scripts/resume",
     "typecheck": "astro check"
   },
   "dependencies": {
@@ -40,7 +40,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "@hegeldev/hegel": "0.4.5",
     "@oxlint/plugins": "1.81.0",
     "@types/bun": "1.4.4",
     "@types/mdast": "4.0.4",
