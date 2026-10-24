@@ -1,26 +1,18 @@
 {
   "name": "website",
   "version": "0.0.1",
+  "private": true,
   "type": "module",
   "scripts": {
     "astro": "astro",
     "audit": "bun audit",
     "build": "astro build",
-    "check": "prek run --all-files && bun run format:check && bun run typecheck && bun run test",
-    "check:build": "bun run check && bun run build",
     "deploy": "sh scripts/fetch-fonts.sh && bun run build && wrangler pages deploy dist --project-name website",
     "dev": "astro dev",
-    "format": "oxfmt .",
-    "format:check": "oxfmt --check .",
-    "lint": "bun run lint:code && bun run lint:workflows",
-    "lint:code": "astro sync && oxlint .",
-    "lint:workflows": "actionlint && zizmor --offline --strict-collection --collect=workflows .",
     "preview": "astro preview",
     "resume:pdf": "bun scripts/generate-resume-pdfs.ts",
-    "setup": "bun ci && prek install",
     "test": "bun test",
-    "test:resume": "bun test scripts/resume",
-    "typecheck": "astro check"
+    "test:resume": "bun test scripts/resume"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.3",

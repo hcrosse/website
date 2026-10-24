@@ -6,14 +6,17 @@
 
 ```sh
 mise install
-bun install
+mise run setup
 bun run dev
 ```
+
+`mise run format` applies automatic fixes, and `mise run lint`, `mise run test`,
+and `mise run audit` run the checks CI runs.
 
 ## Build
 
 ```sh
-bun run build
+mise run build
 bun run preview
 ```
 

@@ -10,5 +10,34 @@ locked = true
 bun = "1.4.4"
 "aqua:j178/prek" = "0.5.5"
 "aqua:koalaman/shellcheck" = "0.11"
-"aqua:rhysd/actionlint" = "1.7"
+"aqua:mvdan/sh" = "3.14"
 "aqua:zizmorcore/zizmor" = "1"
+"github:jdx/jactionlint" = "2.2"
+
+[tasks.setup]
+description = "Install locked dependencies and the Git hook"
+run = ["bun ci", "prek install"]
+
+[tasks.deps]
+description = "Install locked dependencies without changing bun.lock"
+run = "bun ci"
+
+[tasks.build]
+description = "Build the static site into dist"
+run = "bun run build"
+
+[tasks.format]
+description = "Apply every automatic fix"
+run = "prek run --all-files --group fix"
+
+[tasks.lint]
+description = "Run every check without modifying files"
+run = "prek run --all-files --group check"
+
+[tasks.test]
+description = "Run Bun tests"
+run = "bun run test"
+
+[tasks.audit]
+description = "Audit the Bun dependency graph"
+run = "bun run audit"

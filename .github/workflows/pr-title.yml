@@ -1,0 +1,27 @@
+name: Pull Request Title
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  title:
+    name: Conventional title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate pull request title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|test)(\([a-z0-9][a-z0-9._/-]*\))?!?: .*[^[:space:]]$'
+          if [[ ! $PR_TITLE =~ $pattern ]]; then
+            echo "::error title=Pull request title::Use Conventional Commits: <type>[(scope)][!]: <description>"
+            exit 1
+          fi
