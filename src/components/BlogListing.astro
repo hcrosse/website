@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import fs from 'node:fs';
+import { newestFirst } from '../data/blog';
 
 interface Props {
   limit?: number;
@@ -8,23 +9,15 @@ interface Props {
 
 const { limit } = Astro.props;
 
-const allPosts = (await getCollection('blog')).toSorted(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const allPosts = (await getCollection('blog')).toSorted(newestFirst);
 
 const posts = limit ? allPosts.slice(0, limit) : allPosts;
 
-const sizes = new Map<string, number>();
-
-for (const post of posts) {
+function fileSize(id: string): number {
   try {
-    const stat = fs.statSync(
-      `${process.cwd()}/src/content/blog/${post.id}.md`,
-    );
-
-    sizes.set(post.id, stat.size);
+    return fs.statSync(`${process.cwd()}/src/content/blog/${id}.md`).size;
   } catch {
-    sizes.set(post.id, 0);
+    return 0;
   }
 }
 
@@ -43,7 +36,7 @@ function formatDate(date: Date): string {
   return `${day} ${month} ${hours}:${mins}`;
 }
 
-const listings = posts.map((post) => ({ post, size: formatSize(sizes.get(post.id) ?? 0) }));
+const listings = posts.map((post) => ({ post, size: formatSize(fileSize(post.id)) }));
 
 const maxSizeLen = Math.max(...listings.map(({ size }) => size.length));
 ---

@@ -45,6 +45,4 @@ export const pagesMeta = {
   },
 } as const satisfies Record<string, PageMeta>
 
-export type PageKey = keyof typeof pagesMeta
-
 export const blogPostOgPrompt = (id: string): string => `crosse.dev ~/blog $ glow -s blog ${id}.md`
