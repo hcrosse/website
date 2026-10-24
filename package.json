@@ -42,7 +42,7 @@
     "@astrojs/check": "0.9.10",
     "@hegeldev/hegel": "0.4.5",
     "@oxlint/plugins": "1.81.0",
-    "@types/bun": "1.4.0",
+    "@types/bun": "1.4.4",
     "@types/mdast": "4.0.4",
     "oxfmt": "0.66.0",
     "oxlint": "1.81.0",
@@ -57,5 +57,5 @@
     "fflate": "0.7.5",
     "sharp": "0.35.4"
   },
-  "packageManager": "bun@1.4.0"
+  "packageManager": "bun@1.4.4"
 }

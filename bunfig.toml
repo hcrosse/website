@@ -2,7 +2,7 @@
 auto = "disable"
 exact = true
 minimumReleaseAge = 604800
-minimumReleaseAgeExcludes = []
+minimumReleaseAgeExcludes = ["@types/bun@1.4.4", "bun-types@1.4.4"]
 saveTextLockfile = true
 
 [run]
