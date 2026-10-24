@@ -1,8 +1,10 @@
 [install]
+# bun.lock records tarball URLs from any non-default registry, so pin the public one to keep it portable.
+registry = "https://registry.npmjs.org/"
 auto = "disable"
 exact = true
 minimumReleaseAge = 604800
-minimumReleaseAgeExcludes = ["@types/bun@1.4.4", "bun-types@1.4.4"]
+minimumReleaseAgeExcludes = ["@types/bun@1.4.4", "bun-types@1.4.4", "fast-uri@3.1.9"]
 saveTextLockfile = true
 
 [run]
