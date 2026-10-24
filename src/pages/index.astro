@@ -14,9 +14,7 @@ const { Content: AboutContent } = await render(aboutPage);
 
 const workPage = await getEntry('pages', 'work');
 
-if (!workPage) throw new Error('Missing content page: work');
-
-if (!workPage.body) throw new Error('Missing content page body: work');
+if (!workPage || !workPage.body) throw new Error('Missing content page: work');
 
 const workAll = workPage.body.trim().split('\n');
 
