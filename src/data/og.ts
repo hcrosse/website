@@ -32,6 +32,7 @@ export function ogCard(meta: PageMeta): SatoriNode {
     props: {
       style: {
         background: "#1e1e2e",
+        boxSizing: "border-box",
         width: "100%",
         height: "100%",
         display: "flex",
