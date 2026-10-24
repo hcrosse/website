@@ -8,11 +8,12 @@ Static Astro website deployed to Cloudflare Pages, with local résumé PDF gener
 
 Run from the repository root:
 
-- `mise install && bun ci` installs the locked toolchain and dependencies.
-- `bun run check:build` runs hooks, formatting, type checks, tests, and the site build.
-- `bun run lint` checks code and GitHub workflows.
-- `bun run format` formats project files.
-- `bun run audit` checks dependency advisories. It requires registry access.
+- `mise install && mise run deps` installs the locked toolchain and dependencies. `mise run setup` also installs the prek Git hook.
+- `mise run lint` runs every check without modifying files: file hygiene, formatting, Oxlint, Astro type checks, shell scripts, and GitHub workflows.
+- `mise run format` applies every automatic fix.
+- `mise run test` runs the Bun tests.
+- `mise run build` builds the site. It requires the private fonts, so CI skips it.
+- `mise run audit` checks dependency advisories. It requires registry access.
 - `bun run preview` serves the built site.
 - `bun run resume:pdf` regenerates both tracked résumé PDFs. Install Chromium first with `bunx --bun playwright install chromium`.
 

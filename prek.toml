@@ -1,52 +1,164 @@
-minimum_prek_version = "0.4.13"
+minimum_prek_version = "0.5.4"
 
 [[repos]]
 repo = "builtin"
 
 [[repos.hooks]]
-id = "trailing-whitespace"
-files = "\\.astro$"
+id = "check-added-large-files"
+groups = ["check"]
+
+[[repos.hooks]]
+id = "check-case-conflict"
+groups = ["check"]
+
+[[repos.hooks]]
+id = "check-illegal-windows-names"
+groups = ["check"]
+
+[[repos.hooks]]
+id = "check-json"
+groups = ["check"]
+
+[[repos.hooks]]
+id = "check-merge-conflict"
+# Check outside a merge too: markers from a scripted resolution can be committed later.
+args = ["--assume-in-merge"]
+groups = ["check"]
+
+[[repos.hooks]]
+id = "check-toml"
+groups = ["check"]
+
+[[repos.hooks]]
+id = "check-yaml"
+groups = ["check"]
+
+[[repos.hooks]]
+id = "detect-private-key"
+groups = ["check"]
+
+[[repos.hooks]]
+id = "end-of-file-fixer"
+name = "End of file newline"
+groups = ["fix"]
 stages = ["pre-commit"]
 
 [[repos.hooks]]
 id = "end-of-file-fixer"
-files = "\\.astro$"
+name = "End of file newline (check)"
+args = ["--check"]
+groups = ["check"]
+stages = ["manual"]
+
+[[repos.hooks]]
+id = "trailing-whitespace"
+name = "Trailing whitespace"
+groups = ["fix"]
 stages = ["pre-commit"]
 
 [[repos.hooks]]
-id = "check-added-large-files"
-stages = ["pre-commit"]
-
-[[repos.hooks]]
-id = "check-case-conflict"
-stages = ["pre-commit"]
-
-[[repos.hooks]]
-id = "check-illegal-windows-names"
-stages = ["pre-commit"]
-
-[[repos.hooks]]
-id = "check-merge-conflict"
-args = ["--assume-in-merge"]
-stages = ["pre-commit"]
-
-[[repos.hooks]]
-id = "detect-private-key"
-stages = ["pre-commit"]
+id = "trailing-whitespace"
+name = "Trailing whitespace (check)"
+args = ["--check"]
+groups = ["check"]
+stages = ["manual"]
 
 [[repos]]
 repo = "local"
 
 [[repos.hooks]]
-id = "oxlint"
-name = "Oxlint"
+id = "oxfmt"
+name = "Oxfmt formatting"
+entry = "mise exec -- bun x --no-install oxfmt ."
 language = "system"
-entry = "bun run lint"
 pass_filenames = false
+groups = ["fix"]
+stages = ["pre-commit"]
 
 [[repos.hooks]]
-id = "oxfmt"
-name = "Oxfmt"
+id = "oxfmt-check"
+name = "Oxfmt formatting (check)"
+entry = "mise exec -- bun x --no-install oxfmt --check ."
 language = "system"
-entry = "bun run format"
 pass_filenames = false
+groups = ["check"]
+stages = ["manual"]
+
+[[repos.hooks]]
+id = "astro-sync"
+name = "Astro types"
+# Oxlint's type-aware rules read the generated .astro/types.d.ts.
+entry = "mise exec -- bun x --no-install astro sync"
+language = "system"
+pass_filenames = false
+groups = ["check", "fix"]
+
+[[repos.hooks]]
+id = "oxlint"
+name = "Oxlint"
+entry = "mise exec -- bun x --no-install oxlint --fix ."
+language = "system"
+pass_filenames = false
+groups = ["fix"]
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "oxlint-check"
+name = "Oxlint (check)"
+entry = "mise exec -- bun x --no-install oxlint ."
+language = "system"
+pass_filenames = false
+groups = ["check"]
+stages = ["manual"]
+
+[[repos.hooks]]
+id = "astro-check"
+name = "Astro type check"
+entry = "mise exec -- bun x --no-install astro check"
+language = "system"
+pass_filenames = false
+groups = ["check"]
+stages = ["manual"]
+
+[[repos.hooks]]
+id = "shfmt"
+name = "shfmt formatting"
+entry = "mise exec -- shfmt -w"
+language = "system"
+types = ["shell"]
+groups = ["fix"]
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "shfmt-check"
+name = "shfmt formatting (check)"
+entry = "mise exec -- shfmt -d"
+language = "system"
+types = ["shell"]
+groups = ["check"]
+stages = ["manual"]
+
+[[repos.hooks]]
+id = "shellcheck"
+name = "ShellCheck"
+entry = "mise exec -- shellcheck"
+language = "system"
+types = ["shell"]
+groups = ["check"]
+
+[[repos.hooks]]
+id = "jactionlint"
+name = "jactionlint"
+# pyflakes is not installed by mise, so leave its integration off for the same result on every machine.
+entry = "mise exec -- jactionlint --pyflakes="
+language = "system"
+files = '^\.github/workflows/.*\.ya?ml$'
+groups = ["check"]
+
+[[repos.hooks]]
+id = "zizmor"
+name = "zizmor"
+entry = "mise exec -- zizmor --offline --strict-collection"
+language = "system"
+files = '^\.github/(workflows/.*|dependabot)\.ya?ml$|(^|/)action\.ya?ml$'
+groups = ["check"]
