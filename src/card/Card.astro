@@ -1,0 +1,129 @@
+---
+import '@fontsource/archivo/latin-600.css';
+import '@fontsource/chivo-mono/latin-400.css';
+import { resume } from '../resume/content';
+import { backMountains, frontMountains, HEIGHT, textLines, WIDTH } from './mountains';
+
+const { name, email, phone } = resume.identity;
+
+// The résumé's 118deg sheen line in page px: through the centre, its length reaching the far corners as in CSS.
+const angle = (118 * Math.PI) / 180;
+
+const reach = (WIDTH * Math.abs(Math.sin(angle)) + HEIGHT * Math.abs(Math.cos(angle))) / 2;
+
+const sheen = {
+  x1: WIDTH / 2 - Math.sin(angle) * reach,
+  y1: HEIGHT / 2 + Math.cos(angle) * reach,
+  x2: WIDTH / 2 + Math.sin(angle) * reach,
+  y2: HEIGHT / 2 - Math.cos(angle) * reach,
+};
+---
+
+<div class="card">
+  <section class="page" aria-label="Front">
+    <svg class="type" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} width={WIDTH} height={HEIGHT}>
+      <linearGradient id="card-sheen" gradientUnits="userSpaceOnUse" {...sheen}>
+        <stop class="ink" offset="0.09"></stop>
+        <stop class="moss-55" offset="0.19"></stop>
+        <stop class="ink" offset="0.42"></stop>
+        <stop class="ink" offset="0.5"></stop>
+        <stop class="moss-70" offset="0.63"></stop>
+        <stop class="ink" offset="0.78"></stop>
+      </linearGradient>
+      <text
+        class="name"
+        data-line="name"
+        x={textLines.name.x}
+        y={textLines.name.y}
+        font-size={`${textLines.name.size}pt`}>{name}</text
+      >
+      <text
+        class="contact"
+        data-line="email"
+        x={textLines.email.x}
+        y={textLines.email.y}
+        font-size={`${textLines.email.size}pt`}>{email}</text
+      >
+      <text
+        class="contact"
+        data-line="phone"
+        x={textLines.phone.x}
+        y={textLines.phone.y}
+        font-size={`${textLines.phone.size}pt`}>{phone.number}</text
+      >
+    </svg>
+
+    <div class="mountains" set:html={frontMountains()} />
+  </section>
+
+  <section class="page" aria-label="Back">
+    <div class="mountains" set:html={backMountains()} />
+  </section>
+</div>
+
+<style>
+  .card {
+    --card-ink: #1b1a17;
+    --card-muted: #55514a;
+    --card-moss: #42602d;
+  }
+
+  .page {
+    position: relative;
+    width: 3.75in;
+    height: 2.25in;
+    overflow: hidden;
+  }
+
+  .page + .page {
+    break-before: page;
+  }
+
+  .type {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* The résumé blends its sheen over the page with lighten, which tints only the ink. The card prints on bare
+     stock with no background to blend over, so the same bands fill the name directly. */
+  .name {
+    fill: url(#card-sheen);
+    font-family: 'Archivo', Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .ink {
+    stop-color: var(--card-ink);
+  }
+
+  .moss-55 {
+    stop-color: color-mix(in srgb, var(--card-moss) 55%, var(--card-ink));
+  }
+
+  .moss-70 {
+    stop-color: color-mix(in srgb, var(--card-moss) 70%, var(--card-ink));
+  }
+
+  .contact {
+    fill: var(--card-muted);
+    font-family: 'Chivo Mono', monospace;
+  }
+
+  /* Rendered at 1.5x the page, so the dots shrink to two thirds of a px at the page's width. */
+  .mountains {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: var(--card-moss);
+    line-height: 0;
+  }
+
+  .mountains :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

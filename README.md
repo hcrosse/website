@@ -57,3 +57,22 @@ route or navigation item.
 Generated files must be parseable, non-empty US Letter PDFs. A resume that spans
 more than one Letter page is retained and reported with a warning so content can
 be adjusted manually.
+
+## Business card PDF
+
+Generate the print file for Jukebox Print from `src/card/` with the same browser:
+
+```sh
+bun run card:pdf
+```
+
+This replaces the tracked `print/harrison-crosse-card.pdf` only after it passes
+validation: two pages, front then back, each 3.75 × 2.25 in, which is the
+3.5 × 2 in card with 0.125 in bleed on every side, marked by each page's TrimBox
+and BleedBox. The PDF is RGB with embedded fonts and vector dots, and has no
+background or crop marks because it prints on cream stock. Jukebox's prepress
+converts it to CMYK. `print/` is not published.
+
+If edited contact details no longer start at the text edge or outgrow the widths
+the mountains are tested against, generation fails with the values to set in
+`textLines` in `src/card/mountains.ts`.

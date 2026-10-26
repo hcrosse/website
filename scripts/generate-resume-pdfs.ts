@@ -1,12 +1,4 @@
-import path from "node:path"
+import { checkTextLayout, generatePdf } from "./resume/browser"
+import { resumePdf } from "./resume/files"
 
-import { renderPdf } from "./resume/browser"
-import { installPdf, prepareOutput } from "./resume/files"
-
-const output = await prepareOutput(path.resolve(".resume"), path.resolve("public"))
-
-await renderPdf(output)
-
-await installPdf(output)
-
-process.stdout.write(`Generated ${path.relative(process.cwd(), output.publishedPath)}\n`)
+await generatePdf(resumePdf, "public", checkTextLayout)
