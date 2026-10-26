@@ -67,7 +67,59 @@ function atkinson(input: ArrayLike<number>, columns: number): Uint8Array {
   return out
 }
 
-/** Atkinson dots over the tone, each tagged with the range under its centre (the nearest range off the terrain). */
+/** Dots closer than this many CSS px in both x and y belong to the same cluster. */
+const LINK = 5
+
+/** Largest cluster dropped: a few dots with nothing else nearby read as specks floating on the paper. */
+const SPECK = 5
+
+/** Grid indices within LINK of `p` that hold a dot. */
+function linked(range: ArrayLike<number>, columns: number, p: number): number[] {
+  const rows = range.length / columns
+  const x = p % columns
+  const y = (p - x) / columns
+  const found: number[] = []
+
+  for (let yy = Math.max(0, y - LINK); yy <= Math.min(rows - 1, y + LINK); yy += 1) {
+    for (let xx = Math.max(0, x - LINK); xx <= Math.min(columns - 1, x + LINK); xx += 1) {
+      if (at(range, yy * columns + xx) >= 0) found.push(yy * columns + xx)
+    }
+  }
+
+  return found
+}
+
+/** Every dot reachable from `start` through dots within LINK of each other. */
+function cluster(range: ArrayLike<number>, columns: number, start: number): Set<number> {
+  const members = new Set([start])
+
+  for (const p of members) for (const q of linked(range, columns, p)) members.add(q)
+
+  return members
+}
+
+function withoutSpecks(range: ArrayLike<number>, columns: number): Int8Array {
+  const out = Int8Array.from(range)
+  const done = new Uint8Array(range.length)
+
+  for (let p = 0; p < range.length; p += 1) {
+    if (at(range, p) < 0 || at(done, p) === 1) continue
+    const members = cluster(range, columns, p)
+
+    for (const q of members) {
+      done[q] = 1
+
+      if (members.size <= SPECK) out[q] = -1
+    }
+  }
+
+  return out
+}
+
+/**
+ * Atkinson dots over the tone, each tagged with the range under its centre (the nearest range off the terrain),
+ * without clusters of SPECK or fewer dots.
+ */
 export function dither(tone: ArrayLike<number>, raster: Raster, style: DitherStyle): Dots {
   const columns = raster.columns / SCALE
   const on = atkinson(levels(tone, raster, style), columns)
@@ -83,5 +135,5 @@ export function dither(tone: ArrayLike<number>, raster: Raster, style: DitherSty
     return l < 0 ? nearest : l
   })
 
-  return { columns, range }
+  return { columns, range: withoutSpecks(range, columns) }
 }

@@ -56,6 +56,19 @@ function marks(svg: string): Mark[] {
   return found
 }
 
+/** The marks reachable from `first` through marks within 5 px of each other in x and y. */
+function groupOf(first: Mark, among: readonly Mark[]): Set<Mark> {
+  const group = new Set([first])
+
+  for (const mark of group) {
+    for (const other of among) {
+      if (Math.abs(other.x - mark.x) <= 5 && Math.abs(other.y - mark.y) <= 5) group.add(other)
+    }
+  }
+
+  return group
+}
+
 const svgs = new Map(
   [underText, teeth, shallow].map((limitAt) => [limitAt, mountainSvg(compose(limitOf(limitAt)))]),
 )
@@ -88,6 +101,19 @@ test("runs the nearest range to the bottom edge across the page", () => {
   const gaps = lowest.map((_, x) => 1055 - Math.max(...lowest.slice(Math.max(0, x - 3), x + 4)))
 
   expect(Math.max(...gaps)).toBeLessThanOrEqual(8)
+})
+
+test("leaves no small cluster of dots apart from the rest", () => {
+  for (const svg of svgs.values()) {
+    const left = new Set(marks(svg))
+
+    for (const first of left) {
+      const group = groupOf(first, [...left])
+
+      for (const mark of group) left.delete(mark)
+      expect(group.size).toBeGreaterThan(5)
+    }
+  }
 })
 
 test("renders the same SVG every time", () => {
