@@ -1,17 +1,6 @@
 ---
 import Resume from '../../../../src/resume/Resume.astro';
 import { resume } from '../../../../src/resume/content';
-
-type Props = { theme: 'light' | 'dark' };
-
-export function getStaticPaths(): Array<{ params: { theme: string }; props: Props }> {
-  return [
-    { params: { theme: 'light' }, props: { theme: 'light' } },
-    { params: { theme: 'dark' }, props: { theme: 'dark' } },
-  ];
-}
-
-const { theme } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,7 +11,7 @@ const { theme } = Astro.props;
     <title>{resume.identity.name} Resume</title>
   </head>
   <body>
-    <Resume content={resume} theme={theme} />
+    <Resume content={resume} />
   </body>
 </html>
 

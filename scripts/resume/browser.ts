@@ -3,7 +3,7 @@ import { chromium } from "playwright"
 
 import type { ResumeOutput } from "./files"
 
-export async function renderPdfs(outputs: readonly ResumeOutput[]): Promise<void> {
+export async function renderPdf({ renderedPath }: ResumeOutput): Promise<void> {
   await using resources = new AsyncDisposableStack()
 
   const server = await dev({
@@ -22,17 +22,13 @@ export async function renderPdfs(outputs: readonly ResumeOutput[]): Promise<void
   })
   const page = await browser.newPage()
 
-  /* oxlint-disable eslint/no-await-in-loop -- Both themes navigate and print through the same browser page. */
-  for (const { theme, renderedPath } of outputs) {
-    const response = await page.goto(`http://127.0.0.1:${server.address.port}/${theme}`, {
-      waitUntil: "networkidle",
-    })
+  const response = await page.goto(`http://127.0.0.1:${server.address.port}/`, {
+    waitUntil: "networkidle",
+  })
 
-    if (response === null || !response.ok()) throw new Error(`Failed to load ${theme} resume route`)
-    await page.evaluate(async () => {
-      await document.fonts.ready
-    })
-    await page.pdf({ path: renderedPath, printBackground: true, preferCSSPageSize: true })
-  }
-  /* oxlint-enable eslint/no-await-in-loop */
+  if (response === null || !response.ok()) throw new Error("Failed to load resume route")
+  await page.evaluate(async () => {
+    await document.fonts.ready
+  })
+  await page.pdf({ path: renderedPath, printBackground: true, preferCSSPageSize: true })
 }

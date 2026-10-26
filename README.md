@@ -35,7 +35,7 @@ bindings or Secrets Store entries. They are required only while downloading the
 private font files from R2. An R2 S3 API token created from the R2 dashboard is
 not compatible with Wrangler's `CLOUDFLARE_API_TOKEN` authentication.
 
-## Resume PDFs
+## Resume PDF
 
 Install the local browser once:
 
@@ -43,22 +43,16 @@ Install the local browser once:
 bunx --bun playwright install chromium
 ```
 
-Generate the light and dark resumes from `src/resume/content.ts`:
+Generate the resume from `src/resume/content.ts`:
 
 ```sh
 bun run resume:pdf
 ```
 
-This replaces the stable tracked files only after both generated PDFs pass
-validation:
-
-- `public/harrison-crosse-resume-light.pdf`
-- `public/harrison-crosse-resume-dark.pdf`
-
-They are published at
-`https://crosse.dev/harrison-crosse-resume-light.pdf` and
-`https://crosse.dev/harrison-crosse-resume-dark.pdf`. The website has no resume
-HTML route or navigation item.
+This replaces the tracked `public/harrison-crosse-resume.pdf` only after the
+generated PDF passes validation. It is published at
+`https://crosse.dev/harrison-crosse-resume.pdf`. The website has no resume HTML
+route or navigation item.
 
 Generated files must be parseable, non-empty US Letter PDFs. A resume that spans
 more than one Letter page is retained and reported with a warning so content can

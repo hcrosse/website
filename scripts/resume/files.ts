@@ -4,27 +4,21 @@ import path from "node:path"
 import { PDFDocument } from "pdf-lib"
 
 export type ResumeOutput = {
-  readonly theme: "light" | "dark"
   readonly renderedPath: string
   readonly publishedPath: string
 }
 
-export async function prepareOutputs(
+export async function prepareOutput(
   renderDirectory: string,
   publicDirectory: string,
-): Promise<ResumeOutput[]> {
+): Promise<ResumeOutput> {
   await mkdir(renderDirectory, { recursive: true })
-  const themes = ["light", "dark"] as const
+  const filename = "harrison-crosse-resume.pdf"
 
-  return themes.map((theme) => {
-    const filename = `harrison-crosse-resume-${theme}.pdf`
-
-    return {
-      theme,
-      renderedPath: path.join(renderDirectory, filename),
-      publishedPath: path.join(publicDirectory, filename),
-    }
-  })
+  return {
+    renderedPath: path.join(renderDirectory, filename),
+    publishedPath: path.join(publicDirectory, filename),
+  }
 }
 
 async function readPdf(filename: string): Promise<PDFDocument> {
@@ -56,15 +50,7 @@ export async function verifyPdf(filename: string): Promise<void> {
   }
 }
 
-export async function installPdfs(outputs: readonly ResumeOutput[]): Promise<void> {
-  await Promise.all(
-    outputs.map(async ({ renderedPath }: ResumeOutput) => {
-      await verifyPdf(renderedPath)
-    }),
-  )
-  await Promise.all(
-    outputs.map(async ({ renderedPath, publishedPath }: ResumeOutput) => {
-      await rename(renderedPath, publishedPath)
-    }),
-  )
+export async function installPdf({ renderedPath, publishedPath }: ResumeOutput): Promise<void> {
+  await verifyPdf(renderedPath)
+  await rename(renderedPath, publishedPath)
 }
