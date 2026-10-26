@@ -14,17 +14,16 @@ type MistLevel = {
   readonly depth: ArrayLike<number>
 }
 
-function neighbours(raster: Raster, p: number): number[] {
-  const x = p % raster.columns
-  const found: number[] = []
+/** The pixel above, left of, or right of p for sides 0, 1, and 2; -1 past the raster's edge. */
+function neighbour(raster: Raster, p: number, side: number): number {
+  const { columns } = raster
+  const x = p % columns
 
-  if (p >= raster.columns) found.push(p - raster.columns)
+  if (side === 0) return p >= columns ? p - columns : -1
 
-  if (x > 0) found.push(p - 1)
+  if (side === 1) return x > 0 ? p - 1 : -1
 
-  if (x < raster.columns - 1) found.push(p + 1)
-
-  return found
+  return x < columns - 1 ? p + 1 : -1
 }
 
 // 1 on silhouettes (against a farther range or paper above or beside), up to 0.9 where the depth jumps within a
@@ -37,7 +36,10 @@ function edgeAt(raster: Raster, p: number): number {
   const threshold = (0.03 * span) / Math.max(0.25, rise)
   let edge = 0
 
-  for (const q of neighbours(raster, p)) {
+  for (let side = 0; side < 3; side += 1) {
+    const q = neighbour(raster, p, side)
+
+    if (q < 0) continue
     const lq = at(layer, q)
 
     if (lq < l) return p < columns ? Math.min(0.9, edge) : 1
@@ -93,11 +95,8 @@ function mist(raster: Raster): Float32Array {
     if (!level) return 0
     const x = p % raster.columns
     const height = at(level.base, x) - ((p - x) / raster.columns + 0.5)
-    const depth = at(level.depth, x)
 
-    if (depth > 0) return 1 - smoothstep(0, depth, height)
-
-    return height < 0 ? 1 : 0
+    return 1 - smoothstep(0, at(level.depth, x), height)
   })
 }
 

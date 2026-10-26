@@ -40,9 +40,8 @@ export type Camera = {
   readonly exaggeration: number
 }
 
+/** Dots are 1 CSS px squares. */
 export type DitherStyle = {
-  /** Dot edge in CSS px. */
-  readonly dot: 1 | 0.5
   /** Densest dot coverage. */
   readonly cap: number
   /** Exponent on the tone; below 1 lifts pale areas. */
@@ -63,56 +62,36 @@ export type MountainComposition = {
   readonly dither: DitherStyle
 }
 
-/** One opacity per range: the farthest range fades by `fade`, nearer ranges proportionally less. */
-function rangeOpacities(composition: MountainComposition): number[] {
-  const count = composition.ranges.length
-  const { fade } = composition.dither
+/** Path data per range: one rectangle per horizontal run of dots, in page px. */
+function runs(dots: Dots, count: number, top: number): string[] {
+  const { columns, range: cells } = dots
+  const byRange = Array.from({ length: count }, () => "")
+  let p = 0
 
-  return composition.ranges.map((_, index) =>
-    Number((1 - fade * (1 - rankOf(index, count))).toFixed(3)),
-  )
-}
-
-function runLength(cells: ArrayLike<number>, p: number, columns: number): number {
-  const x = p % columns
-  let n = 1
-
-  while (x + n < columns && at(cells, p + n) === at(cells, p)) n += 1
-
-  return n
-}
-
-/** Path data per range: one rectangle per horizontal run of dots, in dot-grid units from the page top. */
-function runs(cells: ArrayLike<number>, columns: number, firstRow: number): string[] {
-  const byRange: string[] = []
-
-  for (let p = 0; p < cells.length; p += 1) {
+  while (p < cells.length) {
     const range = at(cells, p)
     const x = p % columns
-    const starts = range >= 0 && (x === 0 || at(cells, p - 1) !== range)
+    let n = 1
 
-    if (starts) {
-      const n = runLength(cells, p, columns)
-      const y = firstRow + (p - x) / columns
+    while (x + n < columns && at(cells, p + n) === range) n += 1
 
-      byRange[range] = `${byRange[range] ?? ""}M${x} ${y}h${n}v1h-${n}z`
+    if (range >= 0) {
+      byRange[range] = `${byRange[range] ?? ""}M${x} ${top + (p - x) / columns}h${n}v1h-${n}z`
     }
+
+    p += n
   }
 
   return byRange
 }
 
-/** One path per distinct opacity, filled with currentColor; ranges that share an opacity share a path. */
+/** One path per range with dots, filled with currentColor; the farthest range fades by `fade`, nearer ones less. */
 function pathElements(composition: MountainComposition, byRange: readonly string[]): string {
-  const byOpacity = new Map<number, string>()
-
-  for (const [index, opacity] of rangeOpacities(composition).entries()) {
-    byOpacity.set(opacity, (byOpacity.get(opacity) ?? "") + (byRange[index] ?? ""))
-  }
-
   let out = ""
 
-  for (const [opacity, d] of byOpacity) {
+  for (const [index, d] of byRange.entries()) {
+    const rank = rankOf(index, byRange.length)
+    const opacity = Number((1 - composition.dither.fade * (1 - rank)).toFixed(3))
     const fade = opacity < 1 ? ` fill-opacity="${opacity}"` : ""
 
     if (d) out += `<path fill="currentColor"${fade} d="${d}"/>`
@@ -122,13 +101,12 @@ function pathElements(composition: MountainComposition, byRange: readonly string
 }
 
 function svg(composition: MountainComposition, top: number, dots: Dots): string {
-  const { columns, density, range: cells } = dots
+  const { columns, range: cells } = dots
   let first = 0
 
   while (first < cells.length && at(cells, first) < 0) first += 1
-  const bandTop = top + Math.floor(first / columns) / density
-  const drawn = pathElements(composition, runs(cells, columns, top * density))
-  const body = density === 1 ? drawn : `<g transform="scale(${1 / density})">${drawn}</g>`
+  const bandTop = top + Math.floor(first / columns)
+  const body = pathElements(composition, runs(dots, composition.ranges.length, top))
   const { width } = composition
   const height = composition.height - bandTop
 
@@ -138,19 +116,26 @@ function svg(composition: MountainComposition, top: number, dots: Dots): string 
 function check(composition: MountainComposition): void {
   const { height, limit, ranges, width } = composition
 
-  if (!Number.isInteger(width) || !Number.isInteger(height)) {
-    throw new TypeError(`Page size must be whole CSS px, got ${width}x${height}`)
+  if (![width, height].every((size) => Number.isInteger(size) && size > 0)) {
+    throw new TypeError(`Page size must be whole CSS px above 0, got ${width}x${height}`)
   }
 
   if (limit.length !== width)
     throw new Error(`Expected ${width} limit columns, got ${limit.length}`)
+
+  if (!limit.every((y) => Number.isFinite(y)))
+    throw new Error("Every limit must be a finite page y")
+
+  if (Math.min(...limit) >= height) {
+    throw new Error(`The limit leaves no room for marks above the page bottom at y = ${height}`)
+  }
 
   if (ranges.length === 0) throw new Error("A mountain composition needs at least one range")
 }
 
 /**
  * Dithered mountains for the band from the highest mark to the page bottom, as SVG in page coordinates
- * (the viewBox starts at the band's top). Dots fill with currentColor, one path per range opacity.
+ * (the viewBox starts at the band's top). Dots fill with currentColor, one path per range.
  */
 export function mountainSvg(composition: MountainComposition): string {
   check(composition)

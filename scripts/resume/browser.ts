@@ -1,5 +1,5 @@
 import { dev } from "astro"
-import { chromium } from "playwright"
+import { chromium, type Page } from "playwright"
 
 import { textLayout } from "../../src/resume/mountains"
 import type { ResumeOutput } from "./files"
@@ -11,31 +11,28 @@ type Box = {
   readonly height: number
 }
 
-type TextBoxes = {
-  readonly page: Box
-  readonly lastJob: Box
-  readonly tools: Box
-  readonly utility: Box
-}
+/** The footer mountains are fitted to textLayout; fail rather than print text over them. */
+async function checkTextLayout(page: Readonly<Pick<Page, "locator">>): Promise<void> {
+  const box = async (selector: string): Promise<Box> => {
+    const found = await page.locator(selector).boundingBox()
 
-async function textBoxes(box: (selector: string) => Promise<Box>): Promise<TextBoxes> {
-  const [page, lastJob, tools, utility] = await Promise.all([
+    if (found === null) throw new Error(`Missing ${selector} on the resume page`)
+
+    return found
+  }
+
+  const [resume, lastJob, tools, utility] = await Promise.all([
     box(".resume"),
     box(".employment-entry:last-of-type"),
     box(".utility > :last-child"),
     box(".utility"),
   ])
 
-  return { page, lastJob, tools, utility }
-}
-
-/** The footer mountains are fitted to textLayout; fail rather than print text over them. */
-function checkTextLayout({ page, lastJob, tools, utility }: TextBoxes): void {
   const measured: Record<keyof typeof textLayout, number> = {
-    employmentBottom: lastJob.y + lastJob.height - page.y,
-    toolsBottom: tools.y + tools.height - page.y,
-    ruleBottom: utility.y + utility.height - page.y,
-    ruleX: utility.x - page.x,
+    employmentBottom: lastJob.y + lastJob.height - resume.y,
+    toolsBottom: tools.y + tools.height - resume.y,
+    ruleBottom: utility.y + utility.height - resume.y,
+    ruleX: utility.x - resume.x,
   }
 
   const moved = (["employmentBottom", "toolsBottom", "ruleBottom", "ruleX"] as const).filter(
@@ -69,6 +66,8 @@ export async function renderPdf({ renderedPath }: ResumeOutput): Promise<void> {
   })
   const page = await browser.newPage()
 
+  await page.emulateMedia({ media: "print" })
+
   const response = await page.goto(`http://127.0.0.1:${server.address.port}/`, {
     waitUntil: "networkidle",
   })
@@ -78,14 +77,6 @@ export async function renderPdf({ renderedPath }: ResumeOutput): Promise<void> {
     await document.fonts.ready
   })
 
-  checkTextLayout(
-    await textBoxes(async (selector) => {
-      const found = await page.locator(selector).boundingBox()
-
-      if (found === null) throw new Error(`Missing ${selector} on the resume page`)
-
-      return found
-    }),
-  )
+  await checkTextLayout(page)
   await page.pdf({ path: renderedPath, printBackground: true, preferCSSPageSize: true })
 }

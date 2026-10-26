@@ -96,7 +96,7 @@ export const backAndForth: Pick<MountainComposition, "camera" | "ranges" | "dith
       ],
     },
   ],
-  dither: { dot: 1, cap: 0.38, curve: 0.5, fade: 0.55 },
+  dither: { cap: 0.38, curve: 0.5, fade: 0.55 },
 }
 
 export const resumeMountains = (): string =>

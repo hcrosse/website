@@ -107,11 +107,56 @@ test("rejects a limit that does not span the page width", () => {
   )
 })
 
+test("rejects a limit that is not finite or leaves no room above the page bottom", () => {
+  for (const bad of [Number.NaN, Infinity]) {
+    const limit = limitOf((x) => (x === 400 ? bad : underText(x)))
+
+    expect(() => mountainSvg(compose(limit))).toThrow("Every limit must be a finite page y")
+  }
+
+  expect(() => mountainSvg(compose(limitOf(() => 1056)))).toThrow("no room for marks")
+})
+
+test("rejects a page without area", () => {
+  const { camera, ranges, dither } = backAndForth
+
+  for (const [width, height] of [
+    [0, 1056],
+    [816, 0],
+  ] as const) {
+    const limit = limitOf(underText).slice(0, width)
+
+    expect(() => mountainSvg({ width, height, limit, camera, ranges, dither })).toThrow(
+      "Page size must be whole CSS px above 0",
+    )
+  }
+})
+
 test("rejects a crop that reaches past the stored terrain", () => {
   const crop = { x: 700, y: 700, turn: 0, width: 9000, depth: 2700, front: 2000, floor: 300 }
   const ranges = [{ crop, left: 0.3, right: 0.3, split: 400, bumps: [] }]
 
   expect(() => mountainSvg(compose(limitOf(underText), ranges))).toThrow(
+    "outside the stored terrain",
+  )
+})
+
+// A small crop facing north at the grid's left edge, where the border pixels hold data. At x = 9.9 its leftmost
+// samples need a stencil column left of the grid; at x = 10.7 the stencil stays inside.
+const edgeRanges = (x: number): MountainRange[] => [
+  {
+    crop: { x, y: 169.5, turn: -45, width: 36, depth: 20, front: 10, floor: 300 },
+    left: 0.3,
+    right: 0.3,
+    split: 400,
+    bumps: [],
+  },
+]
+
+test("rejects a crop that reaches just past a data pixel on the grid's border", () => {
+  expect(() => mountainSvg(compose(limitOf(underText), edgeRanges(10.7)))).not.toThrow()
+
+  expect(() => mountainSvg(compose(limitOf(underText), edgeRanges(9.9)))).toThrow(
     "outside the stored terrain",
   )
 })

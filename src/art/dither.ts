@@ -3,12 +3,9 @@ import type { DitherStyle } from "./mountains"
 import { at } from "./profile"
 import { SCALE } from "./taper"
 
-/** Dot grid in rows of `columns` cells; `range` holds each dot's range index, -1 where there is no dot. */
+/** 1 CSS px dot grid in rows of `columns`; `range` holds each dot's range index, -1 where there is no dot. */
 export type Dots = {
   readonly columns: number
-  readonly rows: number
-  /** Cells per CSS px. */
-  readonly density: number
   readonly range: ArrayLike<number>
 }
 
@@ -21,42 +18,25 @@ const ATKINSON: readonly (readonly [number, number])[] = [
   [0, 2],
 ]
 
-/** Area average of the tone over one cell, in device pixels from (x0, y0) with edge `cell`. */
-function average(
-  tone: ArrayLike<number>,
-  columns: number,
-  corner: readonly [number, number, number],
-): number {
-  const [x0, y0, cell] = corner
+/** Mean tone over the SCALE x SCALE device pixels whose top-left pixel is `corner`. */
+function mean(tone: ArrayLike<number>, columns: number, corner: number): number {
   let sum = 0
-  let weights = 0
 
-  for (let y = Math.floor(y0); y < Math.ceil(y0 + cell); y += 1) {
-    const wy = Math.min(y + 1, y0 + cell) - Math.max(y, y0)
-
-    for (let x = Math.floor(x0); x < Math.ceil(x0 + cell); x += 1) {
-      const w = (Math.min(x + 1, x0 + cell) - Math.max(x, x0)) * wy
-
-      sum += at(tone, y * columns + x) * w
-      weights += w
-    }
+  for (let y = 0; y < SCALE; y += 1) {
+    for (let x = 0; x < SCALE; x += 1) sum += at(tone, corner + y * columns + x)
   }
 
-  return sum / weights
+  return sum / (SCALE * SCALE)
 }
 
 // Atkinson diffuses only three quarters of the error, which wipes out pale tones; its input is lifted by 1.2.
 function levels(tone: ArrayLike<number>, raster: Raster, style: DitherStyle): Float32Array {
-  const cell = SCALE * style.dot
-  const columns = raster.columns / cell
+  const columns = raster.columns / SCALE
 
-  return Float32Array.from({ length: columns * (raster.rows / cell) }, (_, p) => {
+  return Float32Array.from({ length: columns * (raster.rows / SCALE) }, (_, p) => {
     const gx = p % columns
-
-    const t = Math.min(
-      1,
-      average(tone, raster.columns, [gx * cell, ((p - gx) / columns) * cell, cell]),
-    )
+    const gy = (p - gx) / columns
+    const t = Math.min(1, mean(tone, raster.columns, (gy * raster.columns + gx) * SCALE))
 
     return t < 0.02 ? 0 : t ** style.curve * style.cap * 1.2
   })
@@ -89,20 +69,19 @@ function atkinson(input: ArrayLike<number>, columns: number): Uint8Array {
 
 /** Atkinson dots over the tone, each tagged with the range under its centre (the nearest range off the terrain). */
 export function dither(tone: ArrayLike<number>, raster: Raster, style: DitherStyle): Dots {
-  const cell = SCALE * style.dot
-  const columns = raster.columns / cell
+  const columns = raster.columns / SCALE
   const on = atkinson(levels(tone, raster, style), columns)
   const nearest = raster.span.length - 1
 
   const range = Int8Array.from(on, (dot, p) => {
     if (!dot) return -1
     const gx = p % columns
-    const x = Math.min(raster.columns - 1, Math.floor((gx + 0.5) * cell))
-    const y = Math.min(raster.rows - 1, Math.floor(((p - gx) / columns + 0.5) * cell))
+    const x = Math.min(raster.columns - 1, Math.floor((gx + 0.5) * SCALE))
+    const y = Math.min(raster.rows - 1, Math.floor(((p - gx) / columns + 0.5) * SCALE))
     const l = at(raster.layer, y * raster.columns + x)
 
     return l < 0 ? nearest : l
   })
 
-  return { columns, rows: on.length / columns, density: 1 / style.dot, range }
+  return { columns, range }
 }

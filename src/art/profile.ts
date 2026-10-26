@@ -9,12 +9,10 @@ export function smoothstep(edge0: number, edge1: number, value: number): number 
   return t * t * (3 - 2 * t)
 }
 
-/** Gaussian blur with clamped ends; a sigma under half a sample copies the input. */
+/** Gaussian blur with clamped ends. */
 export function blur(values: ArrayLike<number>, sigma: number): Float32Array {
   const n = values.length
-  const out = Float32Array.from(values)
-
-  if (sigma < 0.5) return out
+  const out = new Float32Array(n)
   const radius = Math.ceil(sigma * 3)
 
   const kernel = Array.from({ length: 2 * radius + 1 }, (_, i) =>

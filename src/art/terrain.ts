@@ -60,13 +60,15 @@ export function blueRidge(): Terrain {
   return blueRidgeTerrain
 }
 
-/** Catmull-Rom bicubic elevation at mosaic position (x, y) in data pixels, clamped at the grid's borders. */
+/** Catmull-Rom bicubic elevation at mosaic position (x, y) in data pixels; NaN if its stencil leaves the grid. */
 export function elevationAt(terrain: Terrain, x: number, y: number): number {
   const { width, height, elevation: z } = terrain
   const gx = x - terrain.originX
   const gy = y - terrain.originY
   const xi = Math.floor(gx)
   const yi = Math.floor(gy)
+
+  if (xi < 1 || yi < 1 || xi + 2 >= width || yi + 2 >= height) return Number.NaN
   const tx = gx - xi
   const ty = gy - yi
   const tx2 = tx * tx
@@ -77,16 +79,11 @@ export function elevationAt(terrain: Terrain, x: number, y: number): number {
   const a1 = (2 - 5 * tx2 + 3 * tx3) * 0.5
   const a2 = (tx + 4 * tx2 - 3 * tx3) * 0.5
   const a3 = (-tx2 + tx3) * 0.5
-  const column = (i: number): number => Math.min(width - 1, Math.max(0, i))
-  const x0 = column(xi - 1)
-  const x1 = column(xi)
-  const x2 = column(xi + 1)
-  const x3 = column(xi + 2)
 
   const row = (i: number): number => {
-    const o = Math.min(height - 1, Math.max(0, i)) * width
+    const o = i * width + xi
 
-    return a0 * at(z, o + x0) + a1 * at(z, o + x1) + a2 * at(z, o + x2) + a3 * at(z, o + x3)
+    return a0 * at(z, o - 1) + a1 * at(z, o) + a2 * at(z, o + 1) + a3 * at(z, o + 2)
   }
 
   const b0 = (-ty + 2 * ty2 - ty3) * 0.5
