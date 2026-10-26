@@ -1,6 +1,6 @@
 # Website
 
-Static Astro website deployed to Cloudflare Pages, with local résumé PDF generation.
+Static Astro website deployed to Cloudflare Pages, with local résumé and business card PDF generation.
 
 <!-- harness-upgrade:v1:repository-map:begin -->
 
@@ -16,6 +16,7 @@ Run from the repository root:
 - `mise run audit` checks dependency advisories. It requires registry access.
 - `bun run preview` serves the built site.
 - `bun run resume:pdf` regenerates the tracked résumé PDF. Install Chromium first with `bunx --bun playwright install chromium`.
+- `bun run card:pdf` regenerates the tracked business card PDF in `print/`.
 
 Bun runs project commands via `bunfig.toml`. Preserve the seven-day release-age policies and exact dependency pins.
 
@@ -26,11 +27,13 @@ Bun runs project commands via `bunfig.toml`. Preserve the seven-day release-age 
 - `src/data/`: page metadata and OG image layout.
 - `src/plugins/remark-glow.ts`: Markdown transformations.
 - `src/resume/`: résumé content and print layout.
-- `scripts/resume/`: local rendering harness, PDF validation, and publishing into `public/`.
+- `src/card/`: business card layout and mountains, built from the résumé's contact details and terrain crops.
+- `scripts/resume/`: local rendering harness, PDF validation, and publishing into `public/` (résumé) and `print/` (card).
+- `print/`: tracked print files. The site does not serve them.
 - `tools/oxlint/anti-slop/`: vendored lint rules. Preserve the upstream code and license.
 - `public/fonts/`: private fonts. Build setup is documented in [README.md](README.md).
 
-Build output in `dist/`, `.astro/`, and `.resume/` is generated. Regenerate the tracked résumé PDF only when requested or when résumé output intentionally changes.
+Build output in `dist/`, `.astro/`, and `.resume/` is generated. Regenerate the tracked résumé or card PDF only when requested or when its output intentionally changes.
 
 ## Code and prose
 

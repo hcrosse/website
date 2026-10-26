@@ -1,0 +1,40 @@
+---
+import Card from '../../../../src/card/Card.astro';
+import { resume } from '../../../../src/resume/content';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{resume.identity.name} Business Card</title>
+  </head>
+  <body>
+    <Card />
+  </body>
+</html>
+
+<style>
+  @page {
+    size: 3.75in 2.25in;
+    margin: 0;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Stands in for the cream stock on screen; the print has no background. */
+  body {
+    background: #f6f5f0;
+  }
+
+  @media print {
+    body {
+      background: transparent;
+    }
+  }
+</style>
