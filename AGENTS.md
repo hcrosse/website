@@ -15,7 +15,7 @@ Run from the repository root:
 - `mise run build` builds the site. It requires the private fonts, so CI skips it.
 - `mise run audit` checks dependency advisories. It requires registry access.
 - `bun run preview` serves the built site.
-- `bun run resume:pdf` regenerates both tracked résumé PDFs. Install Chromium first with `bunx --bun playwright install chromium`.
+- `bun run resume:pdf` regenerates the tracked résumé PDF. Install Chromium first with `bunx --bun playwright install chromium`.
 
 Bun runs project commands via `bunfig.toml`. Preserve the seven-day release-age policies and exact dependency pins.
 
@@ -30,7 +30,7 @@ Bun runs project commands via `bunfig.toml`. Preserve the seven-day release-age 
 - `tools/oxlint/anti-slop/`: vendored lint rules. Preserve the upstream code and license.
 - `public/fonts/`: private fonts. Build setup is documented in [README.md](README.md).
 
-Build output in `dist/`, `.astro/`, and `.resume/` is generated. Regenerate tracked résumé PDFs only when requested or when résumé output intentionally changes.
+Build output in `dist/`, `.astro/`, and `.resume/` is generated. Regenerate the tracked résumé PDF only when requested or when résumé output intentionally changes.
 
 ## Code and prose
 

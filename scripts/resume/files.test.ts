@@ -6,7 +6,7 @@ import path from "node:path"
 
 import { PDFDocument } from "pdf-lib"
 
-import { installPdfs, prepareOutputs, verifyPdf } from "./files"
+import { installPdf, prepareOutput, verifyPdf } from "./files"
 
 const letter = [612, 792] as const
 
@@ -70,39 +70,27 @@ test("rejects empty, malformed, pageless, and non-Letter PDFs", async () => {
   await assert.rejects(verifyPdf(a4), /US Letter/u)
 })
 
-test("publishes both rendered PDFs when they are valid", async () => {
+test("publishes the rendered PDF when it is valid", async () => {
   const publicDirectory = path.join(root, "public")
   await mkdir(publicDirectory)
-  const outputs = await prepareOutputs(path.join(root, "render"), publicDirectory)
-  await Promise.all(
-    outputs.map(async ({ renderedPath }) => {
-      await writePdf(renderedPath, [letter])
-    }),
-  )
+  const output = await prepareOutput(path.join(root, "render"), publicDirectory)
+  await writePdf(output.renderedPath, [letter])
 
-  await installPdfs(outputs)
+  await installPdf(output)
 
-  expect((await readdir(publicDirectory)).toSorted()).toEqual([
-    "harrison-crosse-resume-dark.pdf",
-    "harrison-crosse-resume-light.pdf",
-  ])
+  expect(await readdir(publicDirectory)).toEqual(["harrison-crosse-resume.pdf"])
 })
 
-test("leaves published PDFs untouched when either rendered PDF is invalid", async () => {
+test("leaves the published PDF untouched when the rendered PDF is invalid", async () => {
   const publicDirectory = path.join(root, "public")
   await mkdir(publicDirectory)
-  const published = path.join(publicDirectory, "harrison-crosse-resume-light.pdf")
+  const published = path.join(publicDirectory, "harrison-crosse-resume.pdf")
   await writeFile(published, "previous published content")
-  const outputs = await prepareOutputs(path.join(root, "render"), publicDirectory)
-  await Promise.all(
-    outputs.map(async ({ theme, renderedPath }) => {
-      if (theme === "dark") await writeFile(renderedPath, "invalid PDF")
-      else await writePdf(renderedPath, [letter])
-    }),
-  )
+  const output = await prepareOutput(path.join(root, "render"), publicDirectory)
+  await writeFile(output.renderedPath, "invalid PDF")
 
-  await assert.rejects(installPdfs(outputs), /Invalid PDF/u)
+  await assert.rejects(installPdf(output), /Invalid PDF/u)
 
   expect(await readFile(published, "utf8")).toBe("previous published content")
-  expect(await readdir(publicDirectory)).toEqual(["harrison-crosse-resume-light.pdf"])
+  expect(await readdir(publicDirectory)).toEqual(["harrison-crosse-resume.pdf"])
 })

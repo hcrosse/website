@@ -4,16 +4,16 @@ import '@fontsource/archivo/latin-600.css';
 import '@fontsource/chivo-mono/latin-400.css';
 import '@fontsource/chivo-mono/latin-600.css';
 import type { ResumeContent } from './content';
+import Ginkgo from './ginkgo.svg';
 
 interface Props {
   content: ResumeContent;
-  theme: 'light' | 'dark';
 }
 
-const { content, theme } = Astro.props;
+const { content } = Astro.props;
 ---
 
-<div class="resume" data-theme={theme}>
+<div class="resume">
   <svg class="icon-definitions" aria-hidden="true">
     <defs>
       <symbol id="icon-location" viewBox="0 0 24 24">
@@ -79,6 +79,8 @@ const { content, theme } = Astro.props;
         </li>
       </ul>
     </address>
+
+    <Ginkgo class="ginkgo" aria-hidden="true" />
   </header>
 
   <main class="resume-body">
@@ -159,6 +161,8 @@ const { content, theme } = Astro.props;
       </section>
     </div>
   </main>
+
+  <div class="sheen" aria-hidden="true"></div>
 </div>
 
 <style>
@@ -168,6 +172,12 @@ const { content, theme } = Astro.props;
   }
 
   .resume {
+    --resume-background: #f6f5f0;
+    --resume-text: #1b1a17;
+    --resume-muted: #55514a;
+    --resume-accent: #42602d;
+
+    position: relative;
     width: 8.5in;
     height: 11in;
     padding: 0.55in;
@@ -177,25 +187,37 @@ const { content, theme } = Astro.props;
     font-size: 9.5pt;
     line-height: 1.35;
     print-color-adjust: exact;
+    isolation: isolate;
   }
 
-  .resume[data-theme='light'] {
-    --resume-background: #f2f2f2;
-    --resume-text: #0d0d0d;
-    --resume-muted: #333e42;
-    --resume-accent: #566e49;
-  }
-
-  .resume[data-theme='dark'] {
-    --resume-background: #0d0d0d;
-    --resume-text: #f2f2f2;
-    --resume-muted: #b8c0c2;
-    --resume-accent: #6b8a5c;
+  /* Moss bands blended with lighten tint only the ink, the darkest colour on the page. The gradient fades through
+     the ink colour rather than transparency so Chromium prints it as a vector shading instead of a page-sized image. */
+  .sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      118deg,
+      var(--resume-text) 6%,
+      color-mix(in srgb, var(--resume-accent) 55%, var(--resume-text)) 16%,
+      var(--resume-text) 28%,
+      var(--resume-text) 50%,
+      color-mix(in srgb, var(--resume-accent) 70%, var(--resume-text)) 63%,
+      var(--resume-text) 78%
+    );
+    mix-blend-mode: lighten;
+    pointer-events: none;
   }
 
   .resume-header {
     border-bottom: 1.5pt solid var(--resume-accent);
     padding-bottom: 0.2in;
+  }
+
+  .ginkgo {
+    position: absolute;
+    top: 44px;
+    left: 640px;
+    color: var(--resume-accent);
   }
 
   h1,
@@ -207,7 +229,6 @@ const { content, theme } = Astro.props;
   }
 
   h1 {
-    color: var(--resume-accent);
     font-size: 34pt;
     font-weight: 600;
     letter-spacing: -0.8pt;

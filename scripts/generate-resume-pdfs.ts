@@ -1,13 +1,12 @@
 import path from "node:path"
 
-import { renderPdfs } from "./resume/browser"
-import { installPdfs, prepareOutputs } from "./resume/files"
+import { renderPdf } from "./resume/browser"
+import { installPdf, prepareOutput } from "./resume/files"
 
-const outputs = await prepareOutputs(path.resolve(".resume"), path.resolve("public"))
+const output = await prepareOutput(path.resolve(".resume"), path.resolve("public"))
 
-await renderPdfs(outputs)
+await renderPdf(output)
 
-await installPdfs(outputs)
+await installPdf(output)
 
-for (const { publishedPath } of outputs)
-  process.stdout.write(`Generated ${path.relative(process.cwd(), publishedPath)}\n`)
+process.stdout.write(`Generated ${path.relative(process.cwd(), output.publishedPath)}\n`)
