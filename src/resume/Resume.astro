@@ -5,6 +5,7 @@ import '@fontsource/chivo-mono/latin-400.css';
 import '@fontsource/chivo-mono/latin-600.css';
 import type { ResumeContent } from './content';
 import Ginkgo from './ginkgo.svg';
+import { resumeMountains } from './mountains';
 
 interface Props {
   content: ResumeContent;
@@ -162,6 +163,8 @@ const { content } = Astro.props;
     </div>
   </main>
 
+  <div class="mountains" set:html={resumeMountains()} />
+
   <div class="sheen" aria-hidden="true"></div>
 </div>
 
@@ -188,6 +191,14 @@ const { content } = Astro.props;
     line-height: 1.35;
     print-color-adjust: exact;
     isolation: isolate;
+  }
+
+  .mountains {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: var(--resume-accent);
+    line-height: 0;
   }
 
   /* Moss bands blended with lighten tint only the ink, the darkest colour on the page. The gradient fades through
