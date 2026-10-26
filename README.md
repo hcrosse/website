@@ -51,9 +51,8 @@ bun run resume:pdf
 
 This replaces the tracked `public/harrison-crosse-resume.pdf` only after the
 generated PDF passes validation. It is published at
-`https://crosse.dev/harrison-crosse-resume.pdf`, and `public/_redirects`
-permanently redirects the retired `-light` and `-dark` PDF URLs to it. The
-website has no resume HTML route or navigation item.
+`https://crosse.dev/harrison-crosse-resume.pdf`. The website has no resume HTML
+route or navigation item.
 
 Generated files must be parseable, non-empty US Letter PDFs. A resume that spans
 more than one Letter page is retained and reported with a warning so content can
