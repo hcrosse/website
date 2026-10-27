@@ -28,7 +28,7 @@ export const resume = {
         "Built Marlin's browser, Node.js, and Rust SDKs on shared protobuf data contracts and moved Docker's web and inference services onto them, which let Docker retire Heap and cut Segment volume >75%.",
         "Designed and built automatic, schema-driven PII management for Marlin, part of Docker's ISO 27701 certification.",
         "Built the service that delivers customers' audit logs to their SIEMs, such as Splunk and Datadog, and made its Postgres work queue 3.5× cheaper to poll.",
-        "Built the Flink infrastructure for real-time risk scoring of AI agent activity, and took its alerting service from design to a working demo in less than a week.",
+        "Deployed the Flink infrastructure for real-time risk scoring of AI agent activity, and took its alerting service from design to a working demo in less than a week.",
       ],
     },
     {
