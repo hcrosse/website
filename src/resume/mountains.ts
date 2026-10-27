@@ -5,9 +5,9 @@ import { type MountainComposition, mountainSvg } from "../art/mountains"
  * scripts/resume/browser.ts fails the PDF build when the rendered page no longer matches.
  */
 export const textLayout = {
-  employmentBottom: 979.171875,
+  employmentBottom: 964.953125,
   toolsBottom: 902.578125,
-  ruleBottom: 979.171875,
+  ruleBottom: 964.953125,
   ruleX: 544.46875,
 } as const
 
