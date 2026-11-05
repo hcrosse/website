@@ -6,7 +6,7 @@ import { type MountainComposition, mountainSvg } from "../art/mountains"
  */
 export const textLayout = {
   employmentBottom: 964.953125,
-  toolsBottom: 902.578125,
+  toolsBottom: 918.03125,
   ruleBottom: 964.953125,
   ruleX: 544.46875,
 } as const

@@ -27,7 +27,7 @@ export const resume = {
         "Raised audit log ingestion throughput 8× per worker by batching and pipelining Postgres writes.",
         "Built Marlin's browser, Node.js, and Rust SDKs on shared protobuf data contracts and moved Docker's web and inference services onto them, which let Docker retire Heap and cut Segment volume >75%.",
         "Designed and built automatic, schema-driven PII management for Marlin, part of Docker's ISO 27701 certification.",
-        "Built the service that delivers customers' audit logs to their SIEMs, such as Splunk and Datadog, and made its Postgres work queue 3.5× cheaper to poll.",
+        "Cut Iceberg commit retries more than 200× in production by writing data files once and retrying only the metadata commit on conflict.",
         "Deployed the Flink infrastructure for real-time risk scoring of AI agent activity, and took its alerting service from design to a working demo in less than a week.",
       ],
     },
@@ -135,8 +135,12 @@ export const resume = {
     {
       name: "Apache Iceberg / Arrow Go",
       description:
-        "Improved Parquet writer compatibility by adding table-level page-version configuration to Iceberg and fixing invalid root-schema serialization in Arrow Go.",
+        "Fixed how iceberg-go detects and retries commit conflicts, added Iceberg's Parquet page-version property, and made Arrow Go's Parquet readable by Snowflake.",
       links: [
+        {
+          label: "iceberg-go #2100",
+          url: "https://github.com/apache/iceberg-go/pull/2100",
+        },
         {
           label: "Iceberg #15700",
           url: "https://github.com/apache/iceberg/pull/15700",
